@@ -1,283 +1,285 @@
 .root {
-	padding: 50px 16px;
-	position: relative;
+  padding: 50px 16px;
+  position: relative;
 }
 .root .container {
-	display: flex;
-	align-items: flex-start;
-	justify-content: space-between;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
 .sidebar {
-	flex-basis: 26%;
-	/* background: #133b4c; */
+  flex-basis: 26%;
+  /* background: #133b4c; */
 }
 .nft-collections {
-	flex-basis: 65%;
+  flex-basis: 65%;
 }
 .filter {
-	padding-bottom: 12px;
-	border-bottom: 1px solid #40c6ff;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #40c6ff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 .filter h4,
 .hero h4 {
-	font-weight: 600;
-	font-size: 18px;
+  font-weight: 600;
+  font-size: 18px;
 }
 .hero {
-	padding: 20px 0px;
-	border-bottom: 1px solid #40c6ff;
+  padding: 20px 0px;
+  border-bottom: 1px solid #40c6ff;
 }
 .hero h4 {
-	color: #c6eeff !important;
+  color: #c6eeff !important;
 }
 .hero p {
-	color: #fff;
-	margin-top: 14px;
+  color: #fff;
+  margin-top: 14px;
 }
 .hero a {
-	margin-top: 20px;
-	text-decoration: none;
-	color: white;
-	display: block;
-	text-align: center;
-	background-color: #40c6ff;
-	padding: 12px 0px;
-	border-radius: 20px;
+  margin-top: 20px;
+  text-decoration: none;
+  color: white;
+  display: block;
+  text-align: center;
+  background-color: #40c6ff;
+  padding: 12px 0px;
+  border-radius: 20px;
 }
 .filter a {
-	text-decoration: none;
-	color: #40c6ff;
-	font-size: 14px;
-	transition: all 0.25s ease-in;
+  text-decoration: none;
+  color: #40c6ff;
+  font-size: 14px;
+  transition: all 0.25s ease-in;
 }
 .filter-btn {
-	display: none;
-	text-decoration: none;
-	color: #fff;
-	background-color: #40c6ff;
-	margin: 0px 0px 45px 0px;
-	padding: 12px 0px;
-	width: 120px;
-	text-align: center;
-	border-radius: 20px;
-	text-transform: uppercase;
-	letter-spacing: 1px;
+  display: none;
+  text-decoration: none;
+  color: #fff;
+  background-color: #40c6ff;
+  margin: 0px 0px 45px 0px;
+  padding: 12px 0px;
+  width: 120px;
+  text-align: center;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .hero a:hover,
 .filter-btn:hover {
-	background-color: #41c6ffdc;
+  background-color: #41c6ffdc;
 }
 .checkbox {
-	padding: 12px 0px;
+  padding: 12px 0px;
 }
 .checkbox .checkmark {
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 22px;
-	width: 22px;
-	border: 1px solid #41c6ff !important;
-	border: 1px solid #ffffff;
-	border-radius: 5px !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 22px;
+  width: 22px;
+  border: 1px solid #41c6ff !important;
+  border: 1px solid #ffffff;
+  border-radius: 5px !important;
 }
 .skin {
-	border-bottom: none !important;
+  border-bottom: none !important;
 }
 .price {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
 }
 .price span {
-	display: block;
-	width: 10px;
-	height: 2px;
-	background-color: #fff;
+  display: block;
+  width: 10px;
+  height: 2px;
+  background-color: #fff;
 }
 .price-inpt input {
-	outline: none;
-	border: none;
-	padding: 14px;
-	border: 1px solid #40c6ff;
-	border-radius: 5px;
-	background: transparent;
-	font-family: "Montserrat", sans-serif;
-	font-size: 16px;
-	color: #fff;
-	width: 145px;
+  outline: none;
+  border: none;
+  padding: 14px;
+  border: 1px solid #40c6ff;
+  border-radius: 5px;
+  background: transparent;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  color: #fff;
+  width: 145px;
 }
 .price-inpt input::placeholder {
-	color: #557685;
-	font-family: "Montserrat", sans-serif;
-	font-size: 16px;
+  color: #557685;
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
 }
 .levels {
-	margin: 12px 0px;
+  margin: 12px 0px;
 }
 .nft-collections {
-	display: flex;
-	justify-content: space-between;
-	flex-basis: 70%;
-	flex-wrap: wrap;
+  display: flex;
+  justify-content: space-between;
+  flex-basis: 70%;
+  flex-wrap: wrap;
 }
 .card {
-	flex-basis: 32%;
-	background-color: #133b4c;
-	position: relative;
-	top: 44px;
-	padding: 12px;
-	border-radius: 24px;
-	margin-bottom: 60px;
+  flex-basis: 32%;
+  background-color: #133b4c;
+  position: relative;
+  top: 44px;
+  padding: 12px;
+  border-radius: 24px;
+  margin-bottom: 60px;
 }
 .card-img {
-	background-color: #f37777;
-	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-	border-radius: 24px;
-	position: relative;
-	margin-top: -55px;
+  background-color: #f37777;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 24px;
+  position: relative;
+  margin-top: -55px;
 }
 .card-img img {
-	border-radius: 24px;
-	width: 100%;
-	position: relative;
-	top: 4px;
+  border-radius: 24px;
+  width: 100%;
+  position: relative;
+  top: 4px;
 }
 .card-title {
-	padding: 16px 0px;
-	border-bottom: 1px solid #40c6ff;
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0px;
+  border-bottom: 1px solid #40c6ff;
 }
 .card-title h4 {
-	font-weight: 600;
-	font-size: 18px;
+  font-weight: 600;
+  font-size: 18px;
 }
 .card-title span {
-	color: #68e4ff;
-	font-size: 14px;
-	line-height: 1.3;
+  color: #68e4ff;
+  font-size: 14px;
+  line-height: 1.3;
 }
 .card-price {
-	display: flex;
-	justify-content: space-between;
-	padding: 16px 0px 0px 0px;
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 0px 0px 0px;
 }
 .card-price p {
-	color: #fff;
-	font-weight: 600;
+  color: #fff;
+  font-weight: 600;
 }
 .card-price span,
 .card-price small {
-	color: #ffffff;
-	line-height: 1.5;
+  color: #ffffff;
+  line-height: 1.5;
 }
 .bg-blue {
-	background-color: #41c5ff !important;
+  background-color: #41c5ff !important;
 }
 .bg-red {
-	background-color: #ff6653 !important;
+  background-color: #ff6653 !important;
 }
 
 .pagination-wrap {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	/* background-color: #133b4c; */
-	width: 100%;
-	padding-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color: #133b4c; */
+  width: 100%;
+  padding-top: 16px;
 }
 .pagination {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 .icon a {
-	display: block;
-	background-color: #40c6ff;
-	height: 55px;
-	width: 55px;
-	border-radius: 50%;
-	padding: 14px;
-	margin: 0px 12px;
-	text-align: center;
+  display: block;
+  background-color: #40c6ff;
+  height: 55px;
+  width: 55px;
+  border-radius: 50%;
+  padding: 14px;
+  margin: 0px 12px;
+  text-align: center;
 }
 .icon a:hover {
-	background-color: #41c6ffdc;
+  background-color: #41c6ffdc;
 }
 .icon img {
-	width: 100%;
-	max-width: 17px;
+  width: 100%;
+  max-width: 17px;
 }
 .number {
-	color: #fff;
+  color: #fff;
 }
 .number span {
-	margin-right: 10px;
-	color: #fff;
-	border: 1px solid #41c5ff;
-	display: inline-block;
-	padding: 10px 24px;
-	border-radius: 10px;
+  margin-right: 10px;
+  color: #fff;
+  border: 1px solid #41c5ff;
+  display: inline-block;
+  padding: 10px 24px;
+  border-radius: 10px;
 }
 @media (max-width: 1065px) {
-	.sidebar {
-		display: none;
-		position: absolute;
-		z-index: 15;
-		background: #133b4c;
-		top: 0;
-		left: 0;
-		width: 328px;
-		padding: 12px;
-	}
-	.nft-collections {
-		flex-basis: 100%;
-	}
-	.thumb {
-		width: 304px;
-	}
-	.root {
-		padding: 50px 0px;
-	}
-	.nft-collections {
-		padding: 0px 16px;
-	}
-	.filter-btn {
-		display: block;
-	}
-	.fitermob {
-		padding: 0px 16px;
-		display: flex;
-		align-items: flex-end;
-		justify-content: flex-end;
-	}
+  .sidebar {
+    display: none;
+    position: absolute;
+    z-index: 15;
+    background: #133b4c;
+    top: 0;
+    left: 0;
+    width: 328px;
+    padding: 12px;
+  }
+  .nft-collections {
+    flex-basis: 100%;
+  }
+  .thumb {
+    width: 304px;
+  }
+  .root {
+    padding: 50px 0px;
+  }
+  .nft-collections {
+    padding: 0px 16px;
+  }
+  .filter-btn {
+    display: block;
+  }
+  .fitermob {
+    padding: 0px 16px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+  }
 }
 @media (max-width: 768px) {
-	.card {
-		flex-basis: 48%;
-	}
-	.price-inpt input {
-		width: 125px;
-	}
+  .card {
+    flex-basis: 48%;
+  }
+  .price-inpt input {
+    width: 125px;
+  }
 }
 @media (max-width: 420px) {
-	.card-title h4 {
-		font-weight: 600;
-		font-size: 16px;
-	}
-	.card {
-		flex-basis: 100%;
-	}
+  .card-title h4 {
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .card {
+    flex-basis: 100%;
+  }
 }
 @media (max-width: 360px) {
-	.card-title h4 {
-		font-weight: 600;
-		font-size: 14px;
-	}
+  .card-title h4 {
+    font-weight: 600;
+    font-size: 14px;
+  }
 }
 .sidebar-active {
-	display: block;
+  display: block;
 }
