@@ -1,0 +1,200 @@
+.wallet-container {
+	background-color: #133b4c8c;
+	position: fixed;
+	z-index: 200;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	top: 0;
+	height: 100vh;
+	padding: 0px 16px;
+}
+.wallet-wrap {
+	width: 100%;
+	max-width: 1180px;
+	margin: 0 auto;
+	background: #133b4c;
+	padding: 40px 50px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 29px;
+	position: relative;
+}
+.wallet-wrap h1 {
+	font-weight: 500;
+	line-height: 55px;
+}
+.wallet-wrap p {
+	color: #ffffff;
+}
+.wallets {
+	margin-top: 40px;
+}
+.wallet-opt {
+	display: flex;
+	margin-top: 12px;
+	margin-bottom: 50px;
+	justify-content: space-between;
+}
+.wallet {
+	border: 2px solid #ff6653;
+	padding: 35px 0px;
+	text-align: center;
+	border-radius: 29px;
+	flex-basis: 32%;
+}
+.wallet.active {
+	background: #41c6ff33;
+	border: 2px solid #41c6ff;
+}
+.wallets p a {
+	color: #ff6653;
+	text-decoration: none;
+}
+.wallets p a:hover {
+	text-decoration: underline;
+}
+.checkbox-wrap {
+	display: block;
+	position: relative;
+	padding-left: 35px;
+	padding-top: 2px;
+	margin-top: 16px;
+	cursor: pointer;
+	font-size: 16px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	color: #ffffff;
+}
+
+.checkbox-wrap input {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+	height: 0;
+	width: 0;
+}
+.checkmark {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 22px;
+	width: 22px;
+	background-color: #133b4c;
+	border: 1px solid #ffffff;
+	border-radius: 2px;
+}
+
+/* On mouse-over, add a grey background color */
+.checkbox-wrap:hover input ~ .checkmark {
+	background-color: #133b4c;
+	border: 1px solid #ffffff;
+	border-radius: 2px;
+}
+
+/* When the checkbox is checked, add a blue background */
+.checkbox-wrap input:checked ~ .checkmark {
+	background: rgba(255, 255, 255, 0.1);
+	border: 1px solid #ffffff;
+	border-radius: 2px;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+	content: "";
+	position: absolute;
+	display: none;
+}
+
+/* Show the checkmark when checked */
+.checkbox-wrap input:checked ~ .checkmark:after {
+	display: block;
+}
+
+/* Style the checkmark/indicator */
+.checkbox-wrap .checkmark:after {
+	left: 6px;
+	top: 2px;
+	width: 5px;
+	height: 10px;
+	border: solid white;
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+.close {
+	cursor: pointer;
+	position: absolute;
+	top: 25px;
+	right: 25px;
+}
+
+.close div {
+	height: 4px;
+	width: 30px;
+	background-color: white;
+	margin: 4px 0;
+	transition: all 0.3s ease;
+}
+.close .line1 {
+	transform: rotate(-45deg) translate(-5px, 6px);
+}
+.close .line2 {
+	transform: rotate(45deg) translate(0px, 0px);
+}
+@media (max-width: 768px) {
+	.wallet-container {
+		padding: 50px;
+	}
+	.wallet-opt {
+		display: block;
+	}
+	.wallet {
+		margin-bottom: 12px;
+		padding: 12px 0px;
+	}
+	.wallet-wrap h1 {
+		font-weight: 500;
+		font-size: 24px;
+	}
+	.wallet-wrap {
+		padding: 30px;
+	}
+}
+@media (max-width: 540px) {
+	.wallet h1 {
+		font-size: 16px;
+	}
+	.wallet img {
+		width: 40px;
+		margin-right: 24px;
+	}
+	.wallet-opt {
+		margin-bottom: 0px;
+	}
+
+	.wallets {
+		margin-top: 10px;
+	}
+
+	.wallet {
+		margin-top: 0px;
+		display: flex;
+		padding: 12px 16px;
+	}
+}
+@media (max-width: 420px) {
+	.wallets {
+		margin-top: 0px;
+	}
+	.wallet img {
+		width: 52px;
+		margin-right: 12px;
+	}
+	.wallet-container {
+		padding: 16px;
+	}
+}

@@ -1,0 +1,92 @@
+.mint-container {
+  border: 2px solid #40c6ff;
+  border-radius: 8px;
+  width: 80%;
+  margin: 40px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 40px 20px;
+}
+
+.file-div,
+.inputs-div {
+  flex: 1;
+}
+
+.file-div {
+  margin-right: 20px;
+}
+
+.inputs-div {
+  margin-left: 20px;
+}
+
+.inputs-div label {
+  color: white;
+}
+
+.mint-input {
+  display: block;
+  margin: 10px;
+  width: 100%;
+  border: none;
+
+  outline: none;
+  padding: 16px 12px;
+  border-radius: 4px;
+  background-color: #133b4c;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.mint-input::placeholder {
+  color: rgba(255, 255, 255, 0.734);
+}
+
+.mint-container button {
+  display: block;
+  border: 2px solid #41c6ff;
+  width: 80%;
+  cursor: pointer;
+  min-width: 200px;
+  margin: 20px auto 10px !important ;
+  padding: 12px 0px;
+  border-radius: 55px;
+  transition: all 0.25s ease-in;
+  background-color: #40c6ff;
+}
+
+.file-div p {
+  margin: 20px;
+  color: white;
+}
+
+.drag-zone {
+  border: none !important;
+  width: 90%;
+  min-width: fit-content !important;
+  height: 140px !important;
+  background-color: #40c6ff;
+}
+
+@media screen and (max-width: 650px) {
+  .mint-container {
+    display: block;
+  }
+
+  .file-div {
+    margin: 0;
+  }
+
+  .drag-zone {
+    margin: 20px auto;
+  }
+
+  .inputs-div {
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 900px) {
+}

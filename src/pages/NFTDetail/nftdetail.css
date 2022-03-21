@@ -1,0 +1,246 @@
+.home-btn {
+	margin: 40px 0px;
+	padding: 0px 12px;
+}
+.home-btn a {
+	color: #fff;
+	text-decoration: none;
+	display: inline-block;
+	background-color: #41c6ff;
+	padding: 12px 0px;
+	min-width: 170px;
+	border-radius: 29px;
+	text-align: center;
+	transition: all 0.25s ease-in;
+}
+.home-btn a:hover {
+	transform: translateY(-2px);
+	background-color: #41c6ffdc;
+}
+.nft-detail-container {
+	display: flex;
+	justify-content: space-between;
+	padding: 0px 16px 80px 16px;
+}
+.nft-img {
+	background: #ff6653;
+	flex-basis: 49%;
+	height: 800px;
+
+	border-radius: 29px;
+}
+.nft-img img {
+	width: 100%;
+	top: 222px;
+	max-width: 625px;
+	position: relative;
+	border-radius: 29px;
+}
+.nft-detail {
+	flex-basis: 49%;
+}
+.nft-titles {
+	display: flex;
+	justify-content: space-between;
+}
+.title {
+	margin-right: 24px;
+}
+
+.title h1 {
+	font-size: 37px;
+	font-weight: 600;
+}
+.title h2 {
+	font-size: 32px;
+	font-weight: 400;
+}
+.title-right {
+	display: flex;
+	flex: 1;
+	justify-content: space-between;
+	text-align: center;
+}
+.head {
+	background-color: #133b4c;
+	flex-basis: 49%;
+	padding: 8px;
+	color: #ffff;
+	border-radius: 18px;
+}
+.title-right span {
+	color: #fff;
+	display: block;
+	background-color: #0d2733;
+	padding: 16px 0px;
+	border-radius: 14px;
+	margin-top: 5px;
+	font-size: 18px;
+}
+
+.nft-price {
+	background-color: #133b4c;
+	border-radius: 29px;
+	padding: 16px;
+	margin-bottom: 22px;
+}
+.nft-price h1 {
+	color: #f37777;
+	font-size: 38px;
+	font-weight: 600;
+}
+.nft-price p {
+	color: #fff;
+	font-size: 24px;
+}
+.buy-btn a {
+	color: #fff;
+	text-decoration: none;
+	display: block;
+	background-color: #41c6ff;
+	text-align: center;
+	border-radius: 29px;
+	padding: 12px;
+	font-size: 18px;
+	transition: all 0.25s ease-in;
+}
+.buy-btn {
+	padding-top: 5px;
+}
+.buy-btn a:hover {
+	transform: translateY(-2px);
+	background-color: #41c6ffdc;
+}
+.nft-data {
+	background-color: #133b4c;
+	padding: 16px;
+	border-radius: 28px;
+	margin: 45px 0px;
+}
+.tags a {
+	color: #fff;
+	text-decoration: none;
+	display: inline-block;
+	padding: 10px 0px;
+	min-width: 120px;
+	text-align: center;
+	border-radius: 20px;
+	color: #f37777;
+	border: 1px solid #f37777;
+}
+.tags {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	padding-bottom: 16px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.49);
+}
+.active-tag {
+	background-color: #41c6ff;
+	color: #fff !important;
+	border: 1px solid #41c6ff !important;
+}
+
+.nft-reward {
+	display: flex;
+	margin: 16px 0px;
+}
+.rewards {
+	margin-left: 16px;
+}
+.rewards p {
+	color: #fff;
+}
+.reward-data {
+	display: flex;
+	margin-top: 16px;
+}
+.reward span {
+	display: block;
+	color: #ff6653;
+}
+.reward {
+	background: rgba(243, 119, 119, 0.5);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	width: 90px;
+	border-radius: 10px;
+	padding: 5px 8px;
+	margin-right: 8px;
+}
+
+.nft-stats {
+	background: rgba(65, 198, 255, 0.29);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	color: #fff;
+	padding: 12px;
+	border-radius: 10px;
+	margin-bottom: 14px;
+}
+.stat {
+	display: flex;
+	align-items: center;
+}
+.stat img {
+	margin-right: 16px;
+}
+.select-fields {
+	margin: 40px 0px;
+}
+
+select {
+	/* Reset */
+	appearance: none;
+	border: 0;
+	outline: 0;
+	font: inherit;
+	font-size: 16px;
+	/* Personalize */
+	width: 15em;
+	height: 2.8em;
+	padding: 0 2em 0 1em;
+	background: url("../../assets/img/select.svg") no-repeat right 0.8em center /
+		1.4em;
+	background-color: #f37777;
+	color: white;
+	border-radius: 2em;
+	box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
+	cursor: pointer;
+}
+option {
+	color: inherit;
+	background-color: #133b4c;
+}
+
+@media (max-width: 768px) {
+	.nft-detail-container {
+		flex-direction: column;
+	}
+	.nft-img img {
+		top: 4px;
+		max-width: 718px;
+	}
+	.nft-img {
+		height: 0px;
+		margin-bottom: 16px;
+	}
+	.tags li {
+		margin-bottom: 14px;
+	}
+	.nft-titles {
+		display: block;
+	}
+	.title {
+		margin-bottom: 16px;
+	}
+	.reward-data {
+		flex-wrap: wrap;
+		margin-top: 16px;
+	}
+	.reward {
+		margin-bottom: 8px;
+	}
+}
