@@ -127,13 +127,14 @@
   flex-wrap: wrap;
 }
 .card {
-  flex-basis: 32%;
-  background-color: #133b4c;
-  position: relative;
-  top: 44px;
-  padding: 12px;
-  border-radius: 24px;
-  margin-bottom: 60px;
+	flex-basis: 32%;
+	background-color: #133b4c;
+	position: relative;
+	top: 44px;
+	padding: 12px;
+	border-radius: 24px;
+	margin-bottom: 60px;
+	cursor: pointer;
 }
 .card-img {
   background-color: #f37777;
