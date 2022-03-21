@@ -8,6 +8,19 @@ function Mint() {
   const handleChange = (file) => {
     setFile(file);
   };
+
+	const mintNFT = async (event) => {
+    alert('bbww');
+		// event.preventDefault();
+
+		// const tokenID = await createNFT("");
+		// console.log('minted token ID : ', tokenID);
+		// if (tokenID) {
+		// 	setSampleNFTTokenID(tokenID);
+		// 	updateTokenIds();
+		// }
+	}
+
   return (
     <div>
       <div className="mint-container">
@@ -28,6 +41,7 @@ function Mint() {
               type="text"
               className="mint-input"
               placeholder="example: gaming art design"
+              value={}
             />
           </div>
           <div>
@@ -42,7 +56,7 @@ function Mint() {
             <label htmlFor="">Price</label>
             <input type="text" className="mint-input" placeholder="0 BNB" />
           </div>
-          <button>Create Item</button>
+          <button onClick={mintNFT}>Create Item</button>
         </div>
       </div>
     </div>
