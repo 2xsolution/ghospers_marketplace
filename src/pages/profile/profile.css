@@ -1,0 +1,53 @@
+.profile-flex {
+  display: flex;
+  width: 90%;
+  margin: 40px auto 30px;
+}
+
+.profile-nft-div {
+  flex: 3;
+}
+
+.profile-div {
+  flex: 2;
+  border-radius: 14px;
+  background-color: #133b4c;
+  text-align: center;
+  padding-top: 30px;
+  color: white;
+}
+
+.profile-div img {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+  border-radius: 14px;
+}
+
+.red-div {
+  border-radius: 14px;
+  width: 80%;
+  height: 300px;
+  margin: auto;
+  margin-bottom: 20px;
+  background-color: #f37777;
+}
+
+.profile-about {
+  margin: 40px auto;
+  width: 80%;
+}
+
+.profile-flex .sidebar {
+  flex: 2;
+  padding: 20px 60px;
+}
+
+.profile-nft-div .card {
+  width: 44% !important;
+  /* flex-basis: 48%; */
+}
+
+.profile-nft-div .card img {
+  height: 200px;
+}
