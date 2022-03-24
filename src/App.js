@@ -6,6 +6,7 @@ import Home from "./pages/Home/Home";
 import NFTdetail from "./pages/NFTDetail/NFTdetail";
 import "./App.css";
 import Mint from "./pages/mint/Mint";
+import Profile from "./pages/profile/Profile";
 function App() {
   const [showModal, setShowModal] = useState(false);
   return (
@@ -13,7 +14,7 @@ function App() {
       <Routes>
         <Route path="/" exact element={<Home setShowModal={setShowModal} />} />
         <Route
-          path="/trending"
+          path="/trending/:nftId"
           exact
           element={<NFTdetail setShowModal={setShowModal} />}
         />
@@ -26,6 +27,11 @@ function App() {
           path="/contact"
           exact
           element={<Contact setShowModal={setShowModal} />}
+        />
+        <Route
+          path="/profile"
+          exact
+          element={<Profile setShowModal={setShowModal} />}
         />
       </Routes>
       <ConnectWallet showModal={showModal} setShowModal={setShowModal} />
