@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./mint.css";
 import { FileUploader } from "react-drag-drop-files";
+import IPFSUtils from './IPFSUtils';
+
 
 function Mint() {
   const fileTypes = ["JPEG", "PNG", "GIF"];
@@ -10,8 +12,36 @@ function Mint() {
   };
 
 	const mintNFT = async (event) => {
-    alert('bbww');
-		// event.preventDefault();
+
+    IPFSUtils.uploadFileToIPFS([file]).then((lists) => {
+      if (lists.length > 0) {
+        const content_uri1 = {
+          name: 'Angel1',
+          symbol: 'angel1',
+          image: lists[0],
+          properties: {
+            files: [{ uri: "image.png", type: "image/png" }],
+            category: "image",
+          }
+        }
+
+        IPFSUtils.uploadTextToIPFS(content_uri1).then((path) => {
+          // mintNFT({ name: 'Angel', content_uri: path }, wallet).then(() => {
+          //   toast.success('Succeed', {
+          //     position: "bottom-left",
+          //     autoClose: 5000,
+          //     hideProgressBar: false,
+          //     closeOnClick: true,
+          //     pauseOnHover: true,
+          //     draggable: true,
+          //     progress: undefined,
+          //     type: toast.TYPE.SUCCESS,
+          //     theme: 'colored'
+          //   });
+          // });
+        })
+      }
+    });
 
 		// const tokenID = await createNFT("");
 		// console.log('minted token ID : ', tokenID);
@@ -41,7 +71,6 @@ function Mint() {
               type="text"
               className="mint-input"
               placeholder="example: gaming art design"
-              value={}
             />
           </div>
           <div>
