@@ -176,24 +176,38 @@ function Profile() {
                 );
               })}
 
-            <div className="pagination-wrap">
-              <div className="pagination">
-                <div className="icon">
-                  <a href="/">
-                    <img src={LeftIcon} alt="" />
-                  </a>
-                </div>
-                <div className="number">
-                  <span>{size > totalRecords ? totalRecords : size}</span>
-                  of {totalRecords && totalRecords}
-                </div>
-                <div className="icon">
-                  <a href="/">
-                    <img src={RightIcon} alt="" />
-                  </a>
+            {nftsArray && nftsArray.length > 0 ? (
+              <div className="pagination-wrap">
+                <div className="pagination">
+                  <div className="icon">
+                    <a href="/">
+                      <img src={LeftIcon} alt="" />
+                    </a>
+                  </div>
+                  <div className="number">
+                    <span>{size > totalRecords ? totalRecords : size}</span>
+                    of {totalRecords && totalRecords}
+                  </div>
+                  <div className="icon">
+                    <a href="/">
+                      <img src={RightIcon} alt="" />
+                    </a>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div
+                style={{
+                  width: "100%",
+                  marginTop: "20px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <h2>No Data Found!</h2>
+              </div>
+            )}
           </div>
         </div>
         <div className={sidebar ? "sidebar sidebar-active" : "sidebar"}>

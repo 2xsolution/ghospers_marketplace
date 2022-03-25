@@ -16,6 +16,9 @@ function Mint() {
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [tokenId, setTokenId] = useState("xyz");
+
+  const [ipfs, setIpfs] = useState("test");
   const [price, setPrice] = useState("");
   const [currency, setCurrency] = useState("ghsp");
   const [image, setImage] = useState("");
@@ -44,6 +47,8 @@ function Mint() {
     formData.append("currency", currency);
     formData.append("walletAddress", null);
     formData.append("type", selectedType);
+    formData.append("tokenId", tokenId);
+    formData.append("ipfs", ipfs);
     formData.append("level", level);
     formData.append("traits", selectedTraits);
 
@@ -130,7 +135,7 @@ function Mint() {
               <input
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                type="text"
+                type="number"
                 className="mint-input"
                 placeholder="0 BNB"
               />

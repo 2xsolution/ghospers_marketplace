@@ -174,6 +174,7 @@ const Home = ({ setShowModal }) => {
     setMinlevel(0);
     setMax(null);
     setMin(null);
+    setCurrency(null);
     setMaxlevel(100);
   };
 
