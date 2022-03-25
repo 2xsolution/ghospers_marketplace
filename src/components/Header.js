@@ -1,14 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import logo from "../assets/img/logo.6eaa2fdb.png";
 import "./header.css";
+
+import {
+	loadWeb3,
+	connectWallet,
+	getCurrentWallet,
+} from "../core/web3";
+
 const Header = ({ setShowModal }) => {
 	const [navActive, isnavActive] = useState(false);
+	const [curWallet, setCurWallet] = useState("");
+
+	const onConnectWallet = async () => {
+		if (curWallet != "") {
+			return;
+		}
+		await loadWeb3();
+		let res = await connectWallet();
+		setCurWallet(res.address);
+	}
+
 	const openModal = (e) => {
 		console.log("hwllo");
 		e.preventDefault();
-		setShowModal((prev) => !prev);
+		// setShowModal((prev) => !prev);
+
+		onConnectWallet();
 	};
+
+	const getWallet = async () => {
+		let res = await getCurrentWallet();
+		if (res.success) {
+			setCurWallet(res.account);
+		}
+	}
+
+	useEffect(() => {
+		getWallet();
+	});
+
 	return (
 		<header>
 			<div className="container">
@@ -42,7 +74,7 @@ const Header = ({ setShowModal }) => {
 					</ul>
 					<div className="nav-btn">
 						<a href="/" onClick={openModal}>
-							Connect Wallet
+							{curWallet == "" ? "Connect Wallet" : curWallet.slice(0, 5) + "..." + curWallet.slice(-4)}
 						</a>
 						<a href="/">Login</a>
 					</div>

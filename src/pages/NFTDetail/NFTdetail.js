@@ -8,6 +8,13 @@ import SwordIcon from "../../assets/img/sword.png";
 import "./nftdetail.css";
 import axios from "axios";
 import { BASEURL } from "../../utils/Utils";
+import {
+  buyNFTWithBNB,
+  buyNFTWithBUSD,
+  buyNFTWithGHSP,
+} from "../../core/web3";
+
+
 const NFTdetail = ({ setShowModal }) => {
   const [nftDetail, setNftDetail] = useState(null);
 
@@ -25,6 +32,21 @@ const NFTdetail = ({ setShowModal }) => {
         setNftDetail(response.data.data);
       })
       .catch((e) => console.log(e));
+  };
+  
+  const buyNFT = async (event) => {
+    event.preventDefault();
+
+    if (nftId) {
+      const saleTokenType = 2; // GHSP, BUSD, BNB
+      if (saleTokenType == 0) {
+        buyNFTWithGHSP(nftId);
+      } else if (saleTokenType == 1) {
+        buyNFTWithBUSD(nftId);
+      } else {
+        buyNFTWithBNB(nftId, 0.1);
+      }
+    }
   };
 
   return (
@@ -137,7 +159,7 @@ const NFTdetail = ({ setShowModal }) => {
                 <p>{nftDetail && nftDetail.price} USD</p>
               </div>
               <div className="buy-btn">
-                <a href="/">BUY NOW</a>
+                <a href="/" onClick={buyNFT}>BUY NOW</a>
               </div>
             </div>
           </div>

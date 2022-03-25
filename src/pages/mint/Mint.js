@@ -1,25 +1,17 @@
 import React, { useState } from "react";
 import "./mint.css";
 import { FileUploader } from "react-drag-drop-files";
+// import IPFSUtils from './IPFSUtils';
 import axios from "axios";
 import { BASEURL } from "../../utils/Utils";
+
+import { createNFT } from "../../core/web3";
+
 function Mint() {
   const fileTypes = ["JPEG", "PNG", "GIF"];
-  const handleChange = (e) => {
-    console.log(e);
-    setImage(e);
-  };
-
-  const mintNFT = async (event) => {
-    alert("bbww");
-    // event.preventDefault();
-
-    // const tokenID = await createNFT("");
-    // console.log('minted token ID : ', tokenID);
-    // if (tokenID) {
-    // 	setSampleNFTTokenID(tokenID);
-    // 	updateTokenIds();
-    // }
+  const [file, setFile] = useState(null);
+  const handleChange = (file) => {
+    setFile(file);
   };
 
   const [title, setTitle] = useState("");
@@ -53,14 +45,18 @@ function Mint() {
     formData.append("level", level);
     formData.append("traits", selectedTraits);
 
-    console.log(...formData);
+    createNFT("").then((tokenID) => {
+      console.log("minted token ID : ", tokenID);
 
-    axios
-      .post(BASEURL + "/nft/save", formData)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((e) => console.log(e));
+      console.log(...formData);
+
+      axios
+        .post(BASEURL + "/nft/save", formData)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((e) => console.log(e));
+    });
   };
 
   const validateFields = () => {
@@ -76,15 +72,24 @@ function Mint() {
     return true;
   };
 
+  const mintNFT = async (event) => {
+    // const tokenID = await createNFT("");
+    // console.log('minted token ID : ', tokenID);
+    // if (tokenID) {
+    // 	setSampleNFTTokenID(tokenID);
+    // 	updateTokenIds();
+    // }
+  };
+
   return (
     <div>
       <div className="mint-container">
         <div className="file-div">
           <p>PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</p>
           <FileUploader
-            multiple={false}
+            multiple={true}
             handleChange={handleChange}
-            name="nftImage"
+            name="file"
             classes="drag-zone"
             types={fileTypes}
           />
@@ -98,7 +103,6 @@ function Mint() {
               type="text"
               className="mint-input"
               placeholder="example: gaming art design"
-              // value={}
             />
           </div>
           <div>

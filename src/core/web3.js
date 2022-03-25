@@ -109,6 +109,7 @@ export const buyNFTWithBNB = async (tokenID, amount) => {
 
     try {
         let bnAmount = window.web3.utils.toWei("" + amount);
+        console.log('ssssssssssss', tokenID, bnAmount);
         let tx = await market_contract.methods.buyNFTWithBNB(tokenID, wallet.account).send({ from: wallet.account, value: bnAmount });
     } catch (error) {
         console.log('buyNFTWithBNB error', error);
