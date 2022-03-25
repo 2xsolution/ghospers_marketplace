@@ -80,6 +80,15 @@
   margin: 8px 4px;
 }
 
+.price-flex {
+  display: flex;
+  align-items: center;
+}
+.mint-container select {
+  width: 200px;
+  background-color: #40c6ff;
+}
+
 @media screen and (max-width: 650px) {
   .mint-container {
     display: block;

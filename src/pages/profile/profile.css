@@ -1,11 +1,12 @@
 .profile-flex {
   display: flex;
   width: 90%;
-  margin: 40px auto 30px;
+  margin: 30px auto 30px;
 }
 
 .profile-nft-div {
   flex: 3;
+  position: relative;
 }
 
 .profile-div {
@@ -15,6 +16,13 @@
   text-align: center;
   padding-top: 30px;
   color: white;
+}
+.profile-back-filter {
+  display: flex;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .profile-div img {
@@ -51,11 +59,33 @@
 .profile-nft-div .card img {
   height: 200px;
 }
+
+.card .custom-btn {
+  width: 120px !important;
+}
+
+.profile-content .custom-btn {
+  /* margin: 20px 40px 0; */
+  background-color: #41c6ff;
+}
+
+.back-btn {
+  width: 200px;
+}
+
 .profile-div .custom-btn {
   width: 80%;
   margin: 20px auto;
   text-transform: uppercase;
   background-color: #41c6ff;
+}
+
+.profile-filters {
+  margin-top: 30px;
+  margin-bottom: 0;
+}
+.profile-filters a {
+  width: 140px;
 }
 
 @media screen and (max-width: 1150px) {
@@ -98,5 +128,24 @@
   .profile-about {
     width: 80%;
     margin: 30px auto 20px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .profile-content .custom-btn {
+    width: 80%;
+    margin: auto;
+  }
+
+  .profile-div h2 {
+    margin-top: 20px;
+  }
+  .profile-filters {
+    width: 100%;
+    display: block;
+  }
+
+  .profile-content .filter-btn {
+    margin-left: auto;
   }
 }

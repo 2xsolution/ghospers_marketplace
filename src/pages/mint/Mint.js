@@ -8,15 +8,16 @@ import { BASEURL } from "../../utils/Utils";
 import { createNFT } from "../../core/web3";
 
 function Mint() {
-  const fileTypes = ["JPEG", "PNG", "GIF"];
-  const [file, setFile] = useState(null);
+  const fileTypes = ["JPEG", "PNG", "GIF", "JPG"];
+
   const handleChange = (file) => {
-    setFile(file);
+    setImage(file);
   };
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [currency, setCurrency] = useState("ghsp");
   const [image, setImage] = useState("");
   const [selectedType, setSelectedType] = useState(null);
   const [selectedTraits, setSelectedTraits] = useState([]);
@@ -40,6 +41,7 @@ function Mint() {
     formData.append("description", description);
     formData.append("price", price);
     formData.append("nftImage", image);
+    formData.append("currency", currency);
     formData.append("walletAddress", null);
     formData.append("type", selectedType);
     formData.append("level", level);
@@ -54,6 +56,14 @@ function Mint() {
         .post(BASEURL + "/nft/save", formData)
         .then((response) => {
           console.log(response);
+          setCurrency("ghsp");
+          setTitle("");
+          setDescription("");
+          setPrice("");
+          setSelectedTraits([]);
+          setSelectedType(null);
+          setImage("");
+          setLevel("");
         })
         .catch((e) => console.log(e));
     });
@@ -62,7 +72,6 @@ function Mint() {
   const validateFields = () => {
     if (
       !title ||
-      !description ||
       !price ||
       !level ||
       !selectedType ||
@@ -87,9 +96,9 @@ function Mint() {
         <div className="file-div">
           <p>PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</p>
           <FileUploader
-            multiple={true}
+            multiple={false}
             handleChange={handleChange}
-            name="file"
+            name="nftImage"
             classes="drag-zone"
             types={fileTypes}
           />
@@ -117,13 +126,25 @@ function Mint() {
           </div>
           <div>
             <label htmlFor="">Price</label>
-            <input
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              type="text"
-              className="mint-input"
-              placeholder="0 BNB"
-            />
+            <div className="price-flex">
+              <input
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                type="text"
+                className="mint-input"
+                placeholder="0 BNB"
+              />
+              <select
+                onChange={(e) => setCurrency(e.target.value)}
+                value={currency}
+              >
+                <option selected value="ghsp">
+                  GHSP
+                </option>
+                <option value="bnb">BNB</option>
+                <option value="busd">BUSD</option>
+              </select>
+            </div>
           </div>
           <div>
             <label htmlFor="">Level</label>
@@ -134,7 +155,7 @@ function Mint() {
               onChange={(e) => setLevel(e.target.value)}
               type="number"
               className="mint-input"
-              placeholder="0 BNB"
+              placeholder="Level"
             />
           </div>
           <div className="checkbox">

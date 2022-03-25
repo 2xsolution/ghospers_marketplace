@@ -31,6 +31,7 @@ function Profile() {
         min,
         max,
         walletAddress,
+        currency,
         minlevel,
         maxlevel,
         type: selectedType,
@@ -78,6 +79,8 @@ function Profile() {
   const [minlevel, setMinlevel] = useState(0);
   const [maxlevel, setMaxlevel] = useState(100);
   const [traits, setTraits] = useState(null);
+  const [currency, setCurrency] = useState(null);
+
   const [selectedType, setSelectedType] = useState(null);
   const [selectedTraits, setSelectedTraits] = useState([]);
   const [max, setMax] = useState(null);
@@ -90,193 +93,231 @@ function Profile() {
   }, []);
 
   return (
-    <div className="profile-flex">
-      <div className="profile-div">
-        <div className="red-div">
-          <img src={ProfileImg} alt="" />
-        </div>
-        <button className="custom-btn">Edit Profile</button>
-        <h2>Johny</h2>
-        <p>Loremipsumdolor</p>{" "}
-        <div className="profile-about">
-          <p>About me</p>
-          <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vero
-            quaerat id eos doloribus incidunt nemo similique, obcaecati repellat
-            nisi rerum maiores culpa quasi. Explicabo, facilis.
-          </p>
+    <div className="profile-content">
+      <div className="profile-back-filter">
+        <button
+          className="custom-btn back-btn"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Back to home
+        </button>
+        <div className="fitermob profile-filters">
+          <a href="/" className="filter-btn" onClick={openSidebar}>
+            Filters
+          </a>
         </div>
       </div>
-      <div className="profile-nft-div" style={{ marginLeft: "60px" }}>
-        <div className="nft-collections">
-          {nftsArray &&
-            nftsArray.map((elem, i) => {
-              return (
-                <div
-                  className="card"
-                  key={i}
-                  onClick={() => {
-                    onClickItem(i);
-                    navigate(`/trending/${elem._id}`);
-                  }}
-                >
-                  <div className="card-img">
-                    <img
-                      src={`${BASEURL}/uploads/${elem.imageUrl}`}
-                      alt="Card1"
-                    />
-                  </div>
-                  <div className="card-title">
-                    <h4>
-                      {elem.title}
-                      {Number(sampleNFTTokenID) == Number(i) ? (
-                        <span>&#10003;</span>
-                      ) : (
-                        ""
-                      )}{" "}
-                      {saleItems[i] && saleItems[i].onSale == true
-                        ? "OnSale"
-                        : ""}
-                    </h4>
-                    {/* <span>{elem.description}</span> */}
-                    <button className="custom-btn">SELL</button>
-                  </div>
-                  <div className="card-price">
-                    {/* <div>
+      <div className="profile-flex">
+        <div className="profile-div">
+          <div className="red-div">
+            <img src={ProfileImg} alt="" />
+          </div>
+          <button className="custom-btn">Edit Profile</button>
+          <h2>Johny</h2>
+          <p>Loremipsumdolor</p>{" "}
+          <div className="profile-about">
+            <p>About me</p>
+            <p>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vero
+              quaerat id eos doloribus incidunt nemo similique, obcaecati
+              repellat nisi rerum maiores culpa quasi. Explicabo, facilis.
+            </p>
+          </div>
+        </div>
+
+        <div className="profile-nft-div" style={{ marginLeft: "60px" }}>
+          <div className="nft-collections">
+            {nftsArray &&
+              nftsArray.map((elem, i) => {
+                return (
+                  <div
+                    className="card"
+                    key={i}
+                    onClick={() => {
+                      onClickItem(i);
+                      navigate(`/trending/${elem._id}`);
+                    }}
+                  >
+                    <div className="card-img">
+                      <img
+                        src={`${BASEURL}/uploads/${elem.imageUrl}`}
+                        alt="Card1"
+                      />
+                    </div>
+                    <div className="card-title">
+                      <h4>
+                        {elem.title}
+                        {Number(sampleNFTTokenID) == Number(i) ? (
+                          <span>&#10003;</span>
+                        ) : (
+                          ""
+                        )}{" "}
+                        {saleItems[i] && saleItems[i].onSale == true
+                          ? "OnSale"
+                          : ""}
+                      </h4>
+                      {/* <span>{elem.description}</span> */}
+                      <button className="custom-btn">SELL</button>
+                    </div>
+                    <div className="card-price">
+                      {/* <div>
                           <span>gTHC</span>
                           <p>21/219</p>
                         </div> */}
-                    <div>
-                      <span>Price</span>
-                      <p>900 THC</p>
-                      <small>${elem.price} USD</small>
+                      <div>
+                        <span>Price</span>
+                        <p>900 THC</p>
+                        <small>${elem.price} USD</small>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
 
-          <div className="pagination-wrap">
-            <div className="pagination">
-              <div className="icon">
-                <a href="/">
-                  <img src={LeftIcon} alt="" />
-                </a>
-              </div>
-              <div className="number">
-                <span>{size > totalRecords ? totalRecords : size}</span>
-                of {totalRecords && totalRecords}
-              </div>
-              <div className="icon">
-                <a href="/">
-                  <img src={RightIcon} alt="" />
-                </a>
+            <div className="pagination-wrap">
+              <div className="pagination">
+                <div className="icon">
+                  <a href="/">
+                    <img src={LeftIcon} alt="" />
+                  </a>
+                </div>
+                <div className="number">
+                  <span>{size > totalRecords ? totalRecords : size}</span>
+                  of {totalRecords && totalRecords}
+                </div>
+                <div className="icon">
+                  <a href="/">
+                    <img src={RightIcon} alt="" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className={sidebar ? "sidebar sidebar-active" : "sidebar"}>
-        <div className="filter">
-          <h4>FILTERS</h4>
-          <a href="/" onClick={clearAll}>
-            CLEAR ALL
-          </a>
-        </div>
-        <div className="hero">
-          <h4>GHOSPHERS</h4>
-          <p>No Ghosper selected</p>
-          <a onClick={loadNfts}>Choose Ghospers</a>
-        </div>
-        <div className="hero">
-          <h4>GHOSPHERS</h4>
-          <div className="checkbox">
-            {typeArray.map((t) => {
-              return (
-                <label key={t} className="checkbox-wrap">
-                  <input
-                    type="checkbox"
-                    checked={selectedType == t}
-                    onChange={() => {
-                      if (selectedType == t) {
-                        setSelectedType(null);
-                      } else setSelectedType(t);
-                    }}
-                  />
-                  <span className="checkmark"></span>
-                  {t}
-                </label>
-              );
-            })}
+        <div className={sidebar ? "sidebar sidebar-active" : "sidebar"}>
+          <div className="filter">
+            <h4>FILTERS</h4>
+            <a href="/" onClick={clearAll}>
+              CLEAR ALL
+            </a>
           </div>
-        </div>
-        <div className="hero">
-          <h4>PRICE</h4>
-          <div className="price">
-            <div className="price-inpt">
-              <input
-                type="text"
-                placeholder="Min"
-                onChange={(e) => setMin(e.target.value)}
-              />
-            </div>
-            <span></span>
-            <div className="price-inpt">
-              <input
-                type="text"
-                placeholder="Max"
-                onChange={(e) => setMax(e.target.value)}
-              />
-            </div>
+          <div className="hero">
+            <h4>GHOSPHERS</h4>
+            <p>No Ghosper selected</p>
+            <a onClick={loadNfts}>Choose Ghospers</a>
           </div>
-        </div>
-        <div className="hero">
-          <h4>LEVEL</h4>
-          <div className="levels">
-            <MultiRangeInput
-              min={0}
-              max={100}
-              onChange={({ min, max }) => {
-                setMinlevel(min);
-                setMaxlevel(max);
-                console.log(`min = ${min}, max = ${max}`);
-              }}
-            />
-          </div>
-        </div>
-        <div className="hero">
-          <h4>TRAITS</h4>
-          <div className="checkbox">
-            {traitsArray &&
-              traitsArray.map((trait) => {
+          <div className="hero">
+            <h4>GHOSPHERS</h4>
+            <div className="checkbox">
+              {typeArray.map((t) => {
                 return (
-                  <label className="checkbox-wrap">
+                  <label key={t} className="checkbox-wrap">
                     <input
                       type="checkbox"
-                      checked={selectedTraits && selectedTraits.includes(trait)}
+                      checked={selectedType == t}
                       onChange={() => {
-                        if (selectedTraits && selectedTraits.includes(trait)) {
-                          var remaningTraits =
-                            selectedTraits &&
-                            selectedTraits.filter((t) => t !== trait);
-                          setSelectedTraits(remaningTraits);
-                        } else {
-                          setSelectedTraits((prev) => [...prev, trait]);
-                        }
+                        if (selectedType == t) {
+                          setSelectedType(null);
+                        } else setSelectedType(t);
                       }}
                     />
                     <span className="checkmark"></span>
-                    {trait}
+                    {t}
                   </label>
                 );
               })}
+            </div>
           </div>
-        </div>
-        {/* <div className="hero skin">
+          <div className="hero">
+            <h4>PRICE</h4>
+            <div className="price">
+              <div className="price-inpt">
+                <input
+                  type="text"
+                  placeholder="Min"
+                  onChange={(e) => setMin(e.target.value)}
+                />
+              </div>
+              <span></span>
+              <div className="price-inpt">
+                <input
+                  type="text"
+                  placeholder="Max"
+                  onChange={(e) => setMax(e.target.value)}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="hero">
+            <h4>Currency</h4>
+            <div className="levels">
+              <select
+                onChange={(e) => setCurrency(e.target.value)}
+                value={currency}
+              >
+                <option selected value="ghsp">
+                  GHSP
+                </option>
+                <option value="bnb">BNB</option>
+                <option value="busd">BUSD</option>
+              </select>
+            </div>
+          </div>
+          <div className="hero">
+            <h4>LEVEL</h4>
+            <div className="levels">
+              <MultiRangeInput
+                min={0}
+                max={100}
+                onChange={({ min, max }) => {
+                  setMinlevel(min);
+                  setMaxlevel(max);
+                  console.log(`min = ${min}, max = ${max}`);
+                }}
+              />
+            </div>
+          </div>
+          <div className="hero">
+            <h4>TRAITS</h4>
+            <div className="checkbox">
+              {traitsArray &&
+                traitsArray.map((trait) => {
+                  return (
+                    <label className="checkbox-wrap">
+                      <input
+                        type="checkbox"
+                        checked={
+                          selectedTraits && selectedTraits.includes(trait)
+                        }
+                        onChange={() => {
+                          if (
+                            selectedTraits &&
+                            selectedTraits.includes(trait)
+                          ) {
+                            var remaningTraits =
+                              selectedTraits &&
+                              selectedTraits.filter((t) => t !== trait);
+                            setSelectedTraits(remaningTraits);
+                          } else {
+                            setSelectedTraits((prev) => [...prev, trait]);
+                          }
+                        }}
+                      />
+                      <span className="checkmark"></span>
+                      {trait}
+                    </label>
+                  );
+                })}
+            </div>
+          </div>
+          {/* <div className="hero skin">
 							<h4>SKINS</h4>
 							<p>No skin selected</p>
 							<a href="/">Choose Skin</a>
 						</div> */}
+        </div>
       </div>
     </div>
   );

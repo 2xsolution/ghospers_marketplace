@@ -78,6 +78,7 @@ const Home = ({ setShowModal }) => {
         page,
         size,
         minlevel,
+        currency,
         maxlevel,
         type: selectedType,
         traits:
@@ -108,6 +109,7 @@ const Home = ({ setShowModal }) => {
   const [selectedTraits, setSelectedTraits] = useState([]);
   const [max, setMax] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [currency, setCurrency] = useState(null);
   const buyNFT = async (event) => {
     event.preventDefault();
 
@@ -245,6 +247,21 @@ const Home = ({ setShowModal }) => {
               </div>
             </div>
             <div className="hero">
+              <h4>Currency</h4>
+              <div className="levels">
+                <select
+                  onChange={(e) => setCurrency(e.target.value)}
+                  value={currency}
+                >
+                  <option selected value="ghsp">
+                    GHSP
+                  </option>
+                  <option value="bnb">BNB</option>
+                  <option value="busd">BUSD</option>
+                </select>
+              </div>
+            </div>
+            <div className="hero">
               <h4>LEVEL</h4>
               <div className="levels">
                 <MultiRangeInput
@@ -258,6 +275,7 @@ const Home = ({ setShowModal }) => {
                 />
               </div>
             </div>
+
             <div className="hero">
               <h4>TRAITS</h4>
               <div className="checkbox">
