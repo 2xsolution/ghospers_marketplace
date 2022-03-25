@@ -1,8 +1,13 @@
 import React, { useState } from "react";
 import "./mint.css";
 import { FileUploader } from "react-drag-drop-files";
-import IPFSUtils from './IPFSUtils';
+// import IPFSUtils from './IPFSUtils';
+import axios from "axios";
+import { BASEURL } from "../../utils/Utils";
 
+import {
+  createNFT,
+} from "../../core/web3";
 
 function Mint() {
   const fileTypes = ["JPEG", "PNG", "GIF"];
@@ -11,45 +16,50 @@ function Mint() {
     setFile(file);
   };
 
-	const mintNFT = async (event) => {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [image, setImage] = useState("");
 
-    IPFSUtils.uploadFileToIPFS([file]).then((lists) => {
-      if (lists.length > 0) {
-        const content_uri1 = {
-          name: 'Angel1',
-          symbol: 'angel1',
-          image: lists[0],
-          properties: {
-            files: [{ uri: "image.png", type: "image/png" }],
-            category: "image",
-          }
-        }
+  const saveNft = async (e) => {
 
-        IPFSUtils.uploadTextToIPFS(content_uri1).then((path) => {
-          // mintNFT({ name: 'Angel', content_uri: path }, wallet).then(() => {
-          //   toast.success('Succeed', {
-          //     position: "bottom-left",
-          //     autoClose: 5000,
-          //     hideProgressBar: false,
-          //     closeOnClick: true,
-          //     pauseOnHover: true,
-          //     draggable: true,
-          //     progress: undefined,
-          //     type: toast.TYPE.SUCCESS,
-          //     theme: 'colored'
-          //   });
-          // });
+    createNFT("").then((tokenID) => {
+      console.log('minted token ID : ', tokenID);
+
+      var formData = new FormData();
+      formData.append("tokenID", tokenID);
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("price", price);
+      formData.append("nftImage", image);
+      formData.append("walletAddress", "abcd");
+      formData.append("type", "rare");
+      formData.append("level", 50);
+      formData.append("traits", "marksman");
+
+      console.log(...formData);
+
+      axios
+        .post(BASEURL + "/nft/save", formData)
+        .then((response) => {
+          console.log(response);
+
         })
-      }
-    });
+        .catch((e) => console.log(e));
+    })
 
-		// const tokenID = await createNFT("");
-		// console.log('minted token ID : ', tokenID);
-		// if (tokenID) {
-		// 	setSampleNFTTokenID(tokenID);
-		// 	updateTokenIds();
-		// }
-	}
+  };
+
+
+  const mintNFT = async (event) => {
+
+    // const tokenID = await createNFT("");
+    // console.log('minted token ID : ', tokenID);
+    // if (tokenID) {
+    // 	setSampleNFTTokenID(tokenID);
+    // 	updateTokenIds();
+    // }
+  }
 
   return (
     <div>
@@ -68,6 +78,8 @@ function Mint() {
           <div>
             <label htmlFor="">Title</label>
             <input
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
               type="text"
               className="mint-input"
               placeholder="example: gaming art design"
@@ -76,6 +88,8 @@ function Mint() {
           <div>
             <label htmlFor="">Description (Optional)</label>
             <input
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               type="text"
               className="mint-input"
               placeholder="example: gaming art design"
@@ -83,9 +97,15 @@ function Mint() {
           </div>
           <div>
             <label htmlFor="">Price</label>
-            <input type="text" className="mint-input" placeholder="0 BNB" />
+            <input
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              type="text"
+              className="mint-input"
+              placeholder="0 BNB"
+            />
           </div>
-          <button onClick={mintNFT}>Create Item</button>
+          <button onClick={saveNft}>Create Item</button>
         </div>
       </div>
     </div>

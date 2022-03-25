@@ -299,11 +299,11 @@ const Home = ({ setShowModal }) => {
           </div>
           <div style={{ marginLeft: "60px" }}>
             <div style={{ display: "flex", marginBottom: "20px" }}>
-              <div className="nav-btn">
+              {/* <div className="nav-btn">
                 <a href="/" onClick={buyNFT}>
                   Buy
                 </a>
-              </div>
+              </div> */}
               <div className="nav-btn">
                 <a href="/" onClick={sellNFT}>
                   Sell
