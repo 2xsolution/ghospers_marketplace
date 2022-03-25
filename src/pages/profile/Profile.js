@@ -95,6 +95,7 @@ function Profile() {
         <div className="red-div">
           <img src={ProfileImg} alt="" />
         </div>
+        <button className="custom-btn">Edit Profile</button>
         <h2>Johny</h2>
         <p>Loremipsumdolor</p>{" "}
         <div className="profile-about">
@@ -138,7 +139,7 @@ function Profile() {
                         : ""}
                     </h4>
                     {/* <span>{elem.description}</span> */}
-                    {/* <button className="custom-btn">BUY</button> */}
+                    <button className="custom-btn">SELL</button>
                   </div>
                   <div className="card-price">
                     {/* <div>

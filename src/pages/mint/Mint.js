@@ -26,6 +26,21 @@ function Mint() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
+  const [selectedType, setSelectedType] = useState(null);
+  const [selectedTraits, setSelectedTraits] = useState([]);
+  const [level, setLevel] = useState(null);
+  const [traitsArray, setTraitsArray] = useState([
+    "tank",
+    "marksman",
+    "assassin",
+  ]);
+
+  const [typeArray, setTypeArray] = useState([
+    "common",
+    "rare",
+    "epic",
+    "legendary",
+  ]);
 
   const saveNft = async (e) => {
     var formData = new FormData();
@@ -33,10 +48,10 @@ function Mint() {
     formData.append("description", description);
     formData.append("price", price);
     formData.append("nftImage", image);
-    formData.append("walletAddress", "abcd");
-    formData.append("type", "rare");
-    formData.append("level", 50);
-    formData.append("traits", "marksman");
+    formData.append("walletAddress", null);
+    formData.append("type", selectedType);
+    formData.append("level", level);
+    formData.append("traits", selectedTraits);
 
     console.log(...formData);
 
@@ -46,6 +61,19 @@ function Mint() {
         console.log(response);
       })
       .catch((e) => console.log(e));
+  };
+
+  const validateFields = () => {
+    if (
+      !title ||
+      !description ||
+      !price ||
+      !level ||
+      !selectedType ||
+      !selectedTraits.length > 0
+    )
+      return false;
+    return true;
   };
 
   return (
@@ -93,7 +121,76 @@ function Mint() {
               placeholder="0 BNB"
             />
           </div>
-          <button onClick={saveNft}>Create Item</button>
+          <div>
+            <label htmlFor="">Level</label>
+            <input
+              value={level}
+              max={100}
+              min={0}
+              onChange={(e) => setLevel(e.target.value)}
+              type="number"
+              className="mint-input"
+              placeholder="0 BNB"
+            />
+          </div>
+          <div className="checkbox">
+            <label htmlFor="">Type</label>
+            <div className="mint-types">
+              {typeArray.map((t) => {
+                return (
+                  <label key={t} className="checkbox-wrap mint-wrap">
+                    <input
+                      type="checkbox"
+                      checked={selectedType == t}
+                      onChange={() => {
+                        if (selectedType == t) {
+                          setSelectedType(null);
+                        } else setSelectedType(t);
+                      }}
+                    />
+                    <span className="checkmark"></span>
+                    {t}
+                  </label>
+                );
+              })}
+            </div>
+          </div>
+          <div className="checkbox">
+            <label htmlFor="">Traits</label>
+            <div className="mint-types">
+              {traitsArray &&
+                traitsArray.map((trait) => {
+                  return (
+                    <label className="checkbox-wrap  mint-wrap">
+                      <input
+                        type="checkbox"
+                        checked={
+                          selectedTraits && selectedTraits.includes(trait)
+                        }
+                        onChange={() => {
+                          if (
+                            selectedTraits &&
+                            selectedTraits.includes(trait)
+                          ) {
+                            var remaningTraits =
+                              selectedTraits &&
+                              selectedTraits.filter((t) => t !== trait);
+                            setSelectedTraits(remaningTraits);
+                          } else {
+                            setSelectedTraits((prev) => [...prev, trait]);
+                          }
+                        }}
+                      />
+                      <span className="checkmark"></span>
+                      {trait}
+                    </label>
+                  );
+                })}
+            </div>
+          </div>
+          <button onClick={saveNft} disabled={!validateFields()}>
+            Create Item
+          </button>
         </div>
       </div>
     </div>

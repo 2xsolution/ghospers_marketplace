@@ -39,3 +39,7 @@ ul {
 .custom-btn:hover {
   background-color: #41c6ff;
 }
+/* 
+button:disabled {
+  cursor: no-drop;
+} */
