@@ -14,7 +14,7 @@ function App() {
       <Routes>
         <Route path="/" exact element={<Home setShowModal={setShowModal} />} />
         <Route
-          path="/trending/:nftId"
+          path="/trending/:nftId/tokenid/:tokenId"
           exact
           element={<NFTdetail setShowModal={setShowModal} />}
         />

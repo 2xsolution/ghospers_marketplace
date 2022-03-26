@@ -9,6 +9,7 @@ import "./nftdetail.css";
 import axios from "axios";
 import { BASEURL } from "../../utils/Utils";
 import {
+  loadWeb3, connectWallet,
   buyNFTWithBNB,
   buyNFTWithBUSD,
   buyNFTWithGHSP,
@@ -17,8 +18,17 @@ import {
 
 const NFTdetail = ({ setShowModal }) => {
   const [nftDetail, setNftDetail] = useState(null);
+  
+  useEffect(() => {
+    const initWeb3 = async () => {
+      await loadWeb3();
+      await connectWallet();
+    }
 
-  const { nftId } = useParams();
+    initWeb3();
+  }, []);
+
+  const { nftId, tokenId } = useParams();
   useEffect(() => {
     console.log(nftId);
     loadNftById(nftId);
@@ -37,14 +47,14 @@ const NFTdetail = ({ setShowModal }) => {
   const buyNFT = async (event) => {
     event.preventDefault();
 
-    if (nftId) {
+    if (tokenId) {
       const saleTokenType = 2; // GHSP, BUSD, BNB
       if (saleTokenType == 0) {
-        buyNFTWithGHSP(nftId);
+        await buyNFTWithGHSP(tokenId);
       } else if (saleTokenType == 1) {
-        buyNFTWithBUSD(nftId);
+        await buyNFTWithBUSD(tokenId);
       } else {
-        buyNFTWithBNB(nftId, 0.1);
+        await buyNFTWithBNB(tokenId, 0.01);
       }
     }
   };

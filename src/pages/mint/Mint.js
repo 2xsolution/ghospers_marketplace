@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./mint.css";
 import { FileUploader } from "react-drag-drop-files";
-// import IPFSUtils from './IPFSUtils';
+import IPFSUtils from './IPFSUtils';
 import axios from "axios";
 import { BASEURL } from "../../utils/Utils";
 
-import { createNFT } from "../../core/web3";
+import { loadWeb3, connectWallet, createNFT } from "../../core/web3";
 
 function Mint() {
   const fileTypes = ["JPEG", "PNG", "GIF", "JPG"];
@@ -38,39 +38,71 @@ function Mint() {
     "legendary",
   ]);
 
+  
+  useEffect(() => {
+    const initWeb3 = async () => {
+      await loadWeb3();
+      await connectWallet();
+    }
+
+    initWeb3();
+  }, []);
+
+
   const saveNft = async (e) => {
-    var formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("price", price);
-    formData.append("nftImage", image);
-    formData.append("currency", currency);
-    formData.append("walletAddress", null);
-    formData.append("type", selectedType);
-    formData.append("tokenId", tokenId);
-    formData.append("ipfs", ipfs);
-    formData.append("level", level);
-    formData.append("traits", selectedTraits);
+    IPFSUtils.uploadFileToIPFS([image]).then((lists) => {
+      if (lists.length > 0) {
+        const content_uri1 = {
+          name: title,
+          symbol: title,
+          image: lists[0],
+          properties: {
+            files: [{ uri: "image.png", type: "image/png" }],
+            category: "image",
+          }
+        }
 
-    createNFT("").then((tokenID) => {
-      console.log("minted token ID : ", tokenID);
+        IPFSUtils.uploadTextToIPFS(content_uri1).then((path) => {
+          try {
+            createNFT(path).then((tokenId) => {
 
-      console.log(...formData);
+              console.log('********** minted token id ***********', tokenId);
 
-      axios
-        .post(BASEURL + "/nft/save", formData)
-        .then((response) => {
-          console.log(response);
-          setCurrency("ghsp");
-          setTitle("");
-          setDescription("");
-          setPrice("");
-          setSelectedTraits([]);
-          setSelectedType(null);
-          setImage("");
-          setLevel("");
+              var formData = new FormData();
+              formData.append("title", title);
+              formData.append("description", description);
+              formData.append("price", price);
+              formData.append("nftImage", image);
+              formData.append("currency", currency);
+              formData.append("walletAddress", null);
+              formData.append("type", selectedType);
+              formData.append("tokenId", tokenId);
+              formData.append("ipfs", ipfs);
+              formData.append("level", level);
+              formData.append("traits", selectedTraits);
+
+              console.log(...formData);
+
+              axios
+                .post(BASEURL + "/nft/save", formData)
+                .then((response) => {
+                  console.log(response);
+                  setCurrency("ghsp");
+                  setTitle("");
+                  setDescription("");
+                  setPrice("");
+                  setSelectedTraits([]);
+                  setSelectedType(null);
+                  setImage("");
+                  setLevel("");
+                })
+                .catch((e) => console.log(e));
+            });
+          } catch (error) {
+            alert('error');
+          }
         })
-        .catch((e) => console.log(e));
+      }
     });
   };
 

@@ -12,10 +12,6 @@ import { useNavigate } from "react-router-dom";
 import {
   loadWeb3,
   connectWallet,
-  createNFT,
-  buyNFTWithBNB,
-  buyNFTWithBUSD,
-  buyNFTWithGHSP,
   putTokenOnSale,
   getTokenIds,
   getSaleItems,
@@ -85,9 +81,9 @@ const Home = ({ setShowModal }) => {
           selectedTraits && selectedTraits.length > 0 ? selectedTraits : null,
       })
       .then((response) => {
-        console.log(response.data);
         setTotalRecords(response.data.data[1].totalRecords);
         setNftsArray(response.data.data[0]);
+        console.log('11111111111', response.data.data);
       })
       .catch((e) => console.log(e));
     setIsLoading(false);
@@ -110,30 +106,22 @@ const Home = ({ setShowModal }) => {
   const [max, setMax] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [currency, setCurrency] = useState(null);
-  const buyNFT = async (event) => {
-    event.preventDefault();
 
-    if (sampleNFTTokenID) {
-      const saleTokenType = 2; // GHSP, BUSD, BNB
-      if (saleTokenType == 0) {
-        buyNFTWithGHSP(sampleNFTTokenID);
-      } else if (saleTokenType == 1) {
-        buyNFTWithBUSD(sampleNFTTokenID);
-      } else {
-        buyNFTWithBNB(sampleNFTTokenID, 0.1);
-      }
+  const sellNFT = async (tokenID) => {
+    console.log("selling token ID : ", tokenID);
+
+    if (tokenID == 0) {
+      return;
     }
-  };
-
-  const sellNFT = async (event) => {
-    event.preventDefault();
-
-    console.log("selling token ID : ", sampleNFTTokenID);
 
     const saleTokenType = 2; // GHSP, BUSD, BNB
 
-    if (sampleNFTTokenID) {
-      putTokenOnSale(sampleNFTTokenID, 0.1, saleTokenType);
+    if (tokenID) {
+      if (await putTokenOnSale(tokenID, 0.1, saleTokenType) == true) {
+        alert('ok');
+      } else {
+        alert('false');
+      }
     }
   };
 
@@ -157,11 +145,16 @@ const Home = ({ setShowModal }) => {
   };
 
   useEffect(() => {
-    loadWeb3();
-    connectWallet();
+    const initWeb3 = async () => {
+      await loadWeb3();
+      await connectWallet();
+    }
+
+    initWeb3();
 
     // updateTokenIds();
   }, []);
+
   useEffect(() => {
     loadNfts();
     // updateTokenIds();
@@ -176,10 +169,6 @@ const Home = ({ setShowModal }) => {
     setMin(null);
     setCurrency(null);
     setMaxlevel(100);
-  };
-
-  const onClickItem = async (tokenID) => {
-    setSampleNFTTokenID(tokenID);
   };
 
   if (isLoading) return <Loader />;
@@ -323,11 +312,11 @@ const Home = ({ setShowModal }) => {
                   Buy
                 </a>
               </div> */}
-              <div className="nav-btn">
+              {/* <div className="nav-btn">
                 <a href="/" onClick={sellNFT}>
                   Sell
                 </a>
-              </div>
+              </div> */}
               <div className="nav-btn">
                 <a href="/mint" onClick={mintNFT}>
                   Mint
@@ -341,10 +330,10 @@ const Home = ({ setShowModal }) => {
                     <div
                       className="card"
                       key={i}
-                      onClick={() => {
-                        onClickItem(i);
-                        navigate(`/trending/${elem._id}`);
-                      }}
+                      // onClick={() => {
+                      //   // onClickItem(elem.tokenId ? elem.tokenID : -1);
+                      //   // navigate(`/trending/${elem._id}`);
+                      // }}
                     >
                       <div className="card-img">
                         <img
@@ -355,17 +344,14 @@ const Home = ({ setShowModal }) => {
                       <div className="card-title">
                         <h4>
                           {elem.title}
-                          {Number(sampleNFTTokenID) == Number(i) ? (
-                            <span>&#10003;</span>
-                          ) : (
-                            ""
-                          )}{" "}
+                          {" "}
                           {saleItems[i] && saleItems[i].onSale == true
                             ? "OnSale"
                             : ""}
                         </h4>
                         {/* <span>{elem.description}</span> */}
-                        <button className="custom-btn">BUY</button>
+                        <button className="custom-btn" onClick={() => navigate(`/trending/${elem._id}/tokenid/${elem.tokenId}`)}>BUY</button>
+                        <button className="custom-btn" onClick={() => sellNFT(elem.tokenId)}>SELL</button>
                       </div>
                       <div className="card-price">
                         {/* <div>

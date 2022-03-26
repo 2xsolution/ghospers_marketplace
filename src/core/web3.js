@@ -175,13 +175,20 @@ export const putTokenOnSale = async (tokenID, price, saleTokenType) => {
 
     try {
         await minter_contract.methods.setApprovalForAll(MARKETPLACE_ADDRESS, true).send({ from: wallet.account });
+    } catch (error) {
+        console.log('setApprovalForAll error', error);
+        return false;
+    }
 
+    try {
         let bnPrice = window.web3.utils.toWei("" + price);
         let tx = await market_contract.methods.putTokenOnSale(tokenID, bnPrice, saleTokenType).send({ from: wallet.account });
     } catch (error) {
         console.log('putTokenOnSale error', error);
         return false;
     }
+
+    console.log('putTokenOnSale ok');
 
     return true;
 }
@@ -205,11 +212,10 @@ export const createNFT = async (tokenURI) => {
         return 0;
     }
 
-    console.log('11111111111', wallet);
-
     try {
         let tokenID = 0;
-        tokenID = await minter_contract.methods.createNFT(tokenURI).send({ from: wallet.account });
+        let tx = await minter_contract.methods.createNFT(tokenURI).send({ from: wallet.account });
+        tokenID = tx.events.Transfer.returnValues.tokenId;
         return tokenID;
     } catch (error) {
         console.log('createNFT error', error);
