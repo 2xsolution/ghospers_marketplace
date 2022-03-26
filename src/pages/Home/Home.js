@@ -89,6 +89,18 @@ const Home = ({ setShowModal }) => {
     setIsLoading(false);
   };
 
+  const buyNft = async (e, nftId) => {
+    e.preventDefault();
+    axios
+      .put(`${BASEURL}/nft/${nftId}`, {
+        walletAddress,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => console.log(e));
+  };
+
   const [sampleNFTTokenID, setSampleNFTTokenID] = useState(null);
   const [tokenIds, setTokenIds] = useState([1, 2, 3, 5]);
   const [saleItems, setSaleItems] = useState([]);
@@ -106,7 +118,7 @@ const Home = ({ setShowModal }) => {
   const [max, setMax] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [currency, setCurrency] = useState(null);
-
+  const [walletAddress, setWalletAddress] = useState("xyz");
   const sellNFT = async (tokenID) => {
     console.log("selling token ID : ", tokenID);
 
@@ -352,10 +364,11 @@ const Home = ({ setShowModal }) => {
                         {/* <span>{elem.description}</span> */}
                         <button
                           className="custom-btn"
-                          onClick={() =>
-                            navigate(
-                              `/trending/${elem._id}/tokenid/${elem.tokenId}`
-                            )
+                          onClick={(e) =>
+                            // navigate(
+                            //   `/trending/${elem._id}/tokenid/${elem.tokenId}`
+                            // )
+                            buyNft(e, elem._id)
                           }
                         >
                           BUY

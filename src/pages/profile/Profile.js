@@ -86,12 +86,24 @@ function Profile() {
   const [selectedTraits, setSelectedTraits] = useState([]);
   const [max, setMax] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [walletAddress, setWalletAddress] = useState("abcd");
+  const [walletAddress, setWalletAddress] = useState("xyz");
   const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     loadNfts();
     // updateTokenIds();
   }, []);
+
+  const sellNft = async (e, nftId) => {
+    e.preventDefault();
+    axios
+      .put(`${BASEURL}/nft/sell/${nftId}`, {
+        walletAddress,
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((e) => console.log(e));
+  };
 
   return (
     <div className="profile-content">
@@ -162,7 +174,12 @@ function Profile() {
                           : ""}
                       </h4>
                       {/* <span>{elem.description}</span> */}
-                      <button className="custom-btn">SELL</button>
+                      <button
+                        className="custom-btn"
+                        onClick={(e) => sellNft(e, elem._id)}
+                      >
+                        SELL
+                      </button>
                     </div>
                     <div className="card-price">
                       {/* <div>
