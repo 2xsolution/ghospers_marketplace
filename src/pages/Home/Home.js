@@ -331,8 +331,9 @@ const Home = ({ setShowModal }) => {
                       className="card"
                       key={i}
                       onClick={() => {
-                        // onClickItem(elem.tokenId ? elem.tokenID : -1);
-                        navigate(`/trending/${elem._id}`);
+                        navigate(
+                          `/trending/${elem._id}/tokenid/${elem.tokenId}`
+                        );
                       }}
                     >
                       <div className="card-img">
