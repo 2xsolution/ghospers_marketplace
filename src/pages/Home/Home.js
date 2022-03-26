@@ -107,6 +107,8 @@ const Home = ({ setShowModal }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [currency, setCurrency] = useState(null);
 
+  const [walletAddress, setWalletAddress] = useState("");
+
   const sellNFT = async (tokenID) => {
     console.log("selling token ID : ", tokenID);
 
@@ -147,7 +149,8 @@ const Home = ({ setShowModal }) => {
   useEffect(() => {
     const initWeb3 = async () => {
       await loadWeb3();
-      await connectWallet();
+      let res = await connectWallet();
+      setWalletAddress(res.address);
     };
 
     initWeb3();
@@ -360,12 +363,15 @@ const Home = ({ setShowModal }) => {
                         >
                           BUY
                         </button>
-                        <button
-                          className="custom-btn"
-                          onClick={() => sellNFT(elem.tokenId)}
-                        >
-                          SELL
-                        </button>
+                        {
+                          elem.walletAddress == walletAddress && (
+                            <button
+                              className="custom-btn"
+                              onClick={() => sellNFT(elem.tokenId)}
+                            >
+                              SELL
+                            </button>)
+                        }
                       </div>
                       <div className="card-price">
                         {/* <div>
