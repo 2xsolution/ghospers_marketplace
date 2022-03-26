@@ -83,7 +83,7 @@ const Home = ({ setShowModal }) => {
       .then((response) => {
         setTotalRecords(response.data.data[1].totalRecords);
         setNftsArray(response.data.data[0]);
-        console.log('11111111111', response.data.data);
+        console.log("11111111111", response.data.data);
       })
       .catch((e) => console.log(e));
     setIsLoading(false);
@@ -117,10 +117,10 @@ const Home = ({ setShowModal }) => {
     const saleTokenType = 2; // GHSP, BUSD, BNB
 
     if (tokenID) {
-      if (await putTokenOnSale(tokenID, 0.1, saleTokenType) == true) {
-        alert('ok');
+      if ((await putTokenOnSale(tokenID, 0.1, saleTokenType)) == true) {
+        alert("ok");
       } else {
-        alert('false');
+        alert("false");
       }
     }
   };
@@ -148,7 +148,7 @@ const Home = ({ setShowModal }) => {
     const initWeb3 = async () => {
       await loadWeb3();
       await connectWallet();
-    }
+    };
 
     initWeb3();
 
@@ -270,9 +270,9 @@ const Home = ({ setShowModal }) => {
               <h4>TRAITS</h4>
               <div className="checkbox">
                 {traitsArray &&
-                  traitsArray.map((trait) => {
+                  traitsArray.map((trait, index) => {
                     return (
-                      <label className="checkbox-wrap">
+                      <label className="checkbox-wrap" key={index}>
                         <input
                           type="checkbox"
                           checked={
@@ -330,10 +330,10 @@ const Home = ({ setShowModal }) => {
                     <div
                       className="card"
                       key={i}
-                      // onClick={() => {
-                      //   // onClickItem(elem.tokenId ? elem.tokenID : -1);
-                      //   // navigate(`/trending/${elem._id}`);
-                      // }}
+                      onClick={() => {
+                        // onClickItem(elem.tokenId ? elem.tokenID : -1);
+                        navigate(`/trending/${elem._id}`);
+                      }}
                     >
                       <div className="card-img">
                         <img
@@ -343,15 +343,28 @@ const Home = ({ setShowModal }) => {
                       </div>
                       <div className="card-title">
                         <h4>
-                          {elem.title}
-                          {" "}
+                          {elem.title}{" "}
                           {saleItems[i] && saleItems[i].onSale == true
                             ? "OnSale"
                             : ""}
                         </h4>
                         {/* <span>{elem.description}</span> */}
-                        <button className="custom-btn" onClick={() => navigate(`/trending/${elem._id}/tokenid/${elem.tokenId}`)}>BUY</button>
-                        <button className="custom-btn" onClick={() => sellNFT(elem.tokenId)}>SELL</button>
+                        <button
+                          className="custom-btn"
+                          onClick={() =>
+                            navigate(
+                              `/trending/${elem._id}/tokenid/${elem.tokenId}`
+                            )
+                          }
+                        >
+                          BUY
+                        </button>
+                        <button
+                          className="custom-btn"
+                          onClick={() => sellNFT(elem.tokenId)}
+                        >
+                          SELL
+                        </button>
                       </div>
                       <div className="card-price">
                         {/* <div>
@@ -503,7 +516,7 @@ const Home = ({ setShowModal }) => {
                   </div>
                   <div className="number">
                     <span>
-                      {page * size > totalRecords ? totalRecords : size}
+                      {page * size > totalRecords ? totalRecords : size * page}
                     </span>
                     of {totalRecords && totalRecords}
                   </div>

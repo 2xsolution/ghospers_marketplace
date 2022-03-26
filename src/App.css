@@ -43,3 +43,7 @@ ul {
 button:disabled {
   cursor: no-drop;
 } */
+
+a {
+  cursor: pointer !important;
+}

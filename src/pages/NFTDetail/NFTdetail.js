@@ -9,26 +9,29 @@ import "./nftdetail.css";
 import axios from "axios";
 import { BASEURL } from "../../utils/Utils";
 import {
-  loadWeb3, connectWallet,
+  loadWeb3,
+  connectWallet,
   buyNFTWithBNB,
   buyNFTWithBUSD,
   buyNFTWithGHSP,
 } from "../../core/web3";
 
-
 const NFTdetail = ({ setShowModal }) => {
+  console.log(useParams());
   const [nftDetail, setNftDetail] = useState(null);
-  
+
   useEffect(() => {
     const initWeb3 = async () => {
       await loadWeb3();
       await connectWallet();
-    }
+    };
 
     initWeb3();
   }, []);
 
   const { nftId, tokenId } = useParams();
+  console.log(nftId);
+  console.log(tokenId);
   useEffect(() => {
     console.log(nftId);
     loadNftById(nftId);
@@ -43,7 +46,7 @@ const NFTdetail = ({ setShowModal }) => {
       })
       .catch((e) => console.log(e));
   };
-  
+
   const buyNFT = async (event) => {
     event.preventDefault();
 
@@ -169,7 +172,9 @@ const NFTdetail = ({ setShowModal }) => {
                 <p>{nftDetail && nftDetail.price} USD</p>
               </div>
               <div className="buy-btn">
-                <a href="/" onClick={buyNFT}>BUY NOW</a>
+                <a href="/" onClick={buyNFT}>
+                  BUY NOW
+                </a>
               </div>
             </div>
           </div>

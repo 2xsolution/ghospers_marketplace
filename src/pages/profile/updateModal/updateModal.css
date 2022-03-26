@@ -1,0 +1,33 @@
+.ReactModal__Overlay {
+  background: #41c6ff94 !important;
+}
+
+.ReactModal__Content {
+  background-color: #0d2733 !important;
+  border: none !important;
+  width: 60%;
+  margin: auto !important;
+  height: max-content;
+}
+
+.update-modal-content .inputs-div {
+  width: 94%;
+  margin: auto;
+}
+
+.update-modal-content h2 {
+  margin-bottom: 20px;
+}
+
+.update-modal-content button {
+  display: block;
+  border: 2px solid #41c6ff;
+  width: 80%;
+  cursor: pointer;
+  min-width: 200px;
+  margin: 30px auto 10px !important ;
+  padding: 12px 0px;
+  border-radius: 55px;
+  transition: all 0.25s ease-in;
+  background-color: #40c6ff;
+}

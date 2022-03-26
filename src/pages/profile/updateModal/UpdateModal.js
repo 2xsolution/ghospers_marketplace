@@ -1,6 +1,9 @@
-import React from "react";
+import axios from "axios";
+import React, { Component, useState } from "react";
 import ReactDOM from "react-dom";
 import Modal from "react-modal";
+import { BASEURL } from "../../../utils/Utils";
+import "./updateModal.css";
 
 const customStyles = {
   content: {
@@ -13,44 +16,116 @@ const customStyles = {
   },
 };
 
-function App() {
-  let subtitle;
-  const [modalIsOpen, setIsOpen] = React.useState(false);
+Modal.setAppElement("#root");
 
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    subtitle.style.color = "#f00";
-  }
-
+function UpdateModal({ setShowModal, showModal }) {
   function closeModal() {
-    setIsOpen(false);
+    setShowModal(false);
   }
+
+  const [name, setName] = useState("");
+  const [introduction, setIntroduction] = useState("");
+  const [facebook, setFacebook] = useState("");
+  const [instagram, setInstagram] = useState("");
+  const [walletAddress, setWalletAddress] = useState("xyz");
+
+  const validateFields = () => {
+    if (!name || !introduction || !facebook || !instagram || !walletAddress)
+      return false;
+    return true;
+  };
+
+  const updateProfile = async (e) => {
+    e.preventDefault();
+
+    if (!validateFields()) return;
+
+    axios
+      .put(BASEURL + "/user/update", {
+        name,
+        introduction,
+        facebook,
+        instagram,
+        walletAddress,
+      })
+      .then((response) => {
+        console.log(response);
+        setFacebook("");
+        setInstagram("");
+        setName("");
+        setIntroduction("");
+        closeModal();
+      })
+      .catch((e) => console.log(e));
+  };
 
   return (
     <div>
-      <button onClick={openModal}>Open Modal</button>
       <Modal
-        isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
+        isOpen={showModal}
+        // onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
-        style={customStyles}
+        // style={customStyles}
         contentLabel="Example Modal"
       >
-        <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
-        <button onClick={closeModal}>close</button>
-        <div>I am a modal</div>
-        <form>
-          <input />
-          <button>tab navigation</button>
-          <button>stays</button>
-          <button>inside</button>
-          <button>the modal</button>
-        </form>
+        <div className="update-modal-content">
+          <h2>Update Profile</h2>
+          <div className="inputs-div">
+            <div>
+              <label htmlFor="">Name</label>
+              <input
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                type="text"
+                className="mint-input"
+                placeholder="John Doe"
+              />
+            </div>
+          </div>
+
+          <div className="inputs-div">
+            <div>
+              <label htmlFor="">Introduction</label>
+              <input
+                value={introduction}
+                onChange={(e) => setIntroduction(e.target.value)}
+                type="text"
+                className="mint-input"
+                placeholder="Introduction"
+              />
+            </div>
+          </div>
+          <div className="inputs-div">
+            <div>
+              <label htmlFor="">Facebook Link</label>
+              <input
+                value={facebook}
+                onChange={(e) => setFacebook(e.target.value)}
+                type="text"
+                className="mint-input"
+                placeholder="facebook.com/username"
+              />
+            </div>
+          </div>
+          <div className="inputs-div">
+            <div>
+              <label htmlFor="">Instagram Link</label>
+              <input
+                value={instagram}
+                onChange={(e) => setInstagram(e.target.value)}
+                type="text"
+                className="mint-input"
+                placeholder="instagram.com/username"
+              />
+            </div>
+          </div>
+          <button disabled={!validateFields()} onClick={updateProfile}>
+            Update Profile
+          </button>
+        </div>
       </Modal>
     </div>
   );
 }
+
+export default UpdateModal;

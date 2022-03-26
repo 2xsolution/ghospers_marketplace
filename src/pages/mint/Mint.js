@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./mint.css";
 import { FileUploader } from "react-drag-drop-files";
-import IPFSUtils from './IPFSUtils';
+import IPFSUtils from "./IPFSUtils";
 import axios from "axios";
 import { BASEURL } from "../../utils/Utils";
 
 import { loadWeb3, connectWallet, createNFT } from "../../core/web3";
+import Header from "../../components/Header";
 
-function Mint() {
+function Mint({ setShowModal }) {
   const fileTypes = ["JPEG", "PNG", "GIF", "JPG"];
 
   const handleChange = (file) => {
@@ -38,16 +39,14 @@ function Mint() {
     "legendary",
   ]);
 
-  
   useEffect(() => {
     const initWeb3 = async () => {
       await loadWeb3();
       await connectWallet();
-    }
+    };
 
     initWeb3();
   }, []);
-
 
   const saveNft = async (e) => {
     IPFSUtils.uploadFileToIPFS([image]).then((lists) => {
@@ -59,14 +58,13 @@ function Mint() {
           properties: {
             files: [{ uri: "image.png", type: "image/png" }],
             category: "image",
-          }
-        }
+          },
+        };
 
         IPFSUtils.uploadTextToIPFS(content_uri1).then((path) => {
           try {
             createNFT(path).then((tokenId) => {
-
-              console.log('********** minted token id ***********', tokenId);
+              console.log("********** minted token id ***********", tokenId);
 
               var formData = new FormData();
               formData.append("title", title);
@@ -99,9 +97,9 @@ function Mint() {
                 .catch((e) => console.log(e));
             });
           } catch (error) {
-            alert('error');
+            alert("error");
           }
-        })
+        });
       }
     });
   };
@@ -129,6 +127,7 @@ function Mint() {
 
   return (
     <div>
+      <Header setShowModal={setShowModal} />
       <div className="mint-container">
         <div className="file-div">
           <p>PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</p>

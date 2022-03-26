@@ -7,6 +7,7 @@ import RightIcon from "../../assets/img/righticon.png";
 import { useNavigate } from "react-router-dom";
 import "./profile.css";
 import ProfileImg from "../../assets/img/card1.png";
+import UpdateModal from "./updateModal/UpdateModal";
 function Profile() {
   const navigate = useNavigate();
 
@@ -86,7 +87,7 @@ function Profile() {
   const [max, setMax] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [walletAddress, setWalletAddress] = useState("abcd");
-
+  const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     loadNfts();
     // updateTokenIds();
@@ -114,7 +115,9 @@ function Profile() {
           <div className="red-div">
             <img src={ProfileImg} alt="" />
           </div>
-          <button className="custom-btn">Edit Profile</button>
+          <button className="custom-btn" onClick={() => setShowModal(true)}>
+            Edit Profile
+          </button>
           <h2>Johny</h2>
           <p>Loremipsumdolor</p>{" "}
           <div className="profile-about">
@@ -297,9 +300,9 @@ function Profile() {
             <h4>TRAITS</h4>
             <div className="checkbox">
               {traitsArray &&
-                traitsArray.map((trait) => {
+                traitsArray.map((trait, index) => {
                   return (
-                    <label className="checkbox-wrap">
+                    <label className="checkbox-wrap" key={index}>
                       <input
                         type="checkbox"
                         checked={
@@ -333,6 +336,7 @@ function Profile() {
 						</div> */}
         </div>
       </div>
+      <UpdateModal showModal={showModal} setShowModal={setShowModal} />
     </div>
   );
 }
