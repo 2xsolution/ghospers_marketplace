@@ -209,20 +209,20 @@ export const getSaleItems = async (tokenIds) => {
 export const createNFT = async (tokenURI) => {
     const wallet = await getCurrentWallet();
     if (wallet.success == false) {
-        return 0;
+        return null;
     }
 
     try {
         let tokenID = 0;
         let tx = await minter_contract.methods.createNFT(tokenURI).send({ from: wallet.account });
         tokenID = tx.events.Transfer.returnValues.tokenId;
-        return tokenID;
+        return {tokenId: tokenID, wallet: wallet.account};
     } catch (error) {
         console.log('createNFT error', error);
-        return 0;
+        return null;
     }
 
-    return 0;
+    return null;
 }
 
 

@@ -5,7 +5,7 @@ import IPFSUtils from "./IPFSUtils";
 import axios from "axios";
 import { BASEURL } from "../../utils/Utils";
 
-import { loadWeb3, connectWallet, createNFT } from "../../core/web3";
+import { loadWeb3, connectWallet, createNFT, getCurrentWallet } from "../../core/web3";
 import Header from "../../components/Header";
 
 function Mint({ setShowModal }) {
@@ -63,8 +63,8 @@ function Mint({ setShowModal }) {
 
         IPFSUtils.uploadTextToIPFS(content_uri1).then((path) => {
           try {
-            createNFT(path).then((tokenId) => {
-              console.log("********** minted token id ***********", tokenId);
+            createNFT(path).then((res) => {
+              console.log("********** minted token id ***********", res.tokenId);
 
               var formData = new FormData();
               formData.append("title", title);
@@ -72,9 +72,9 @@ function Mint({ setShowModal }) {
               formData.append("price", price);
               formData.append("nftImage", image);
               formData.append("currency", currency);
-              formData.append("walletAddress", null);
+              formData.append("walletAddress", res.wallet);
               formData.append("type", selectedType);
-              formData.append("tokenId", tokenId);
+              formData.append("tokenId", res.tokenId);
               formData.append("ipfs", ipfs);
               formData.append("level", level);
               formData.append("traits", selectedTraits);
