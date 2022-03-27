@@ -84,13 +84,16 @@ const Home = ({ setShowModal }) => {
         setTotalRecords(response.data.data[1].totalRecords);
         setNftsArray(response.data.data[0]);
         console.log("11111111111", response.data.data);
+        setIsLoading(false);
       })
-      .catch((e) => console.log(e));
-    setIsLoading(false);
+      .catch((e) => {
+        console.log(e);
+        setIsLoading(false);
+      });
   };
 
   const buyNft = async (e, nftId) => {
-    e.preventDefault();
+    e.stopPropagation();
     axios
       .put(`${BASEURL}/nft/${nftId}`, {
         walletAddress,
@@ -369,7 +372,9 @@ const Home = ({ setShowModal }) => {
                             // navigate(
                             //   `/trending/${elem._id}/tokenid/${elem.tokenId}`
                             // )
-                            buyNft(e, elem._id)
+                            {
+                              buyNft(e, elem._id);
+                            }
                           }
                         >
                           BUY

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import "./profile.css";
 import ProfileImg from "../../assets/img/card1.png";
 import UpdateModal from "./updateModal/UpdateModal";
+import Loader from "../../components/loader/Loader";
 function Profile() {
   const navigate = useNavigate();
 
@@ -43,9 +44,12 @@ function Profile() {
         console.log(response.data);
         setTotalRecords(response.data.data[1].totalRecords);
         setNftsArray(response.data.data[0]);
+        setIsLoading(false);
       })
-      .catch((e) => console.log(e));
-    setIsLoading(false);
+      .catch((e) => {
+        console.log(e);
+        setIsLoading(false);
+      });
   };
 
   const [sidebar, setSidebar] = useState(false);
@@ -94,7 +98,7 @@ function Profile() {
   }, []);
 
   const sellNft = async (e, nftId) => {
-    e.preventDefault();
+    e.stopPropagation();
     axios
       .put(`${BASEURL}/nft/sell/${nftId}`, {
         walletAddress,
@@ -105,6 +109,10 @@ function Profile() {
       .catch((e) => console.log(e));
   };
 
+  if (isLoading) {
+    console.log("inside if loadig ");
+    return <Loader />;
+  }
   return (
     <div className="profile-content">
       <div className="profile-back-filter">
