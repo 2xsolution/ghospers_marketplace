@@ -144,6 +144,10 @@ const Home = ({ setShowModal }) => {
     // updateTokenIds();
   }, []);
 
+  const mintNFT = () => {
+    console.log("mint nft called");
+  };
+
   useEffect(() => {
     loadNfts();
     // updateTokenIds();
