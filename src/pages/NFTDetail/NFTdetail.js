@@ -19,11 +19,13 @@ import {
 const NFTdetail = ({ setShowModal }) => {
   console.log(useParams());
   const [nftDetail, setNftDetail] = useState(null);
+  const [walletAddress, setWalletAddress] = useState("");
 
   useEffect(() => {
     const initWeb3 = async () => {
       await loadWeb3();
-      await connectWallet();
+      let addr = await connectWallet();
+      setWalletAddress(addr.address);
     };
 
     initWeb3();
@@ -41,7 +43,7 @@ const NFTdetail = ({ setShowModal }) => {
     axios
       .get(`${BASEURL}/nft/${id}`)
       .then((response) => {
-        console.log(response.data.data);
+        console.log('detail data', response.data.data);
         setNftDetail(response.data.data);
       })
       .catch((e) => console.log(e));
@@ -176,6 +178,15 @@ const NFTdetail = ({ setShowModal }) => {
                   BUY NOW
                 </a>
               </div>
+              {
+                nftDetail && walletAddress == nftDetail.walletAddress && (
+                  <div className="buy-btn">
+                    <a href="/" onClick={buyNFT}>
+                      SELL
+                    </a>
+                  </div>
+                )
+              }
             </div>
           </div>
         </div>

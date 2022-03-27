@@ -122,33 +122,6 @@ const Home = ({ setShowModal }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [currency, setCurrency] = useState(null);
   const [walletAddress, setWalletAddress] = useState("xyz");
-  const sellNFT = async (tokenID) => {
-    console.log("selling token ID : ", tokenID);
-
-    if (tokenID == 0) {
-      return;
-    }
-
-    const saleTokenType = 2; // GHSP, BUSD, BNB
-
-    if (tokenID) {
-      if ((await putTokenOnSale(tokenID, 0.1, saleTokenType)) == true) {
-        alert("ok");
-      } else {
-        alert("false");
-      }
-    }
-  };
-
-  const mintNFT = async (event) => {
-    // event.preventDefault();
-    // const tokenID = await createNFT("");
-    // console.log('minted token ID : ', tokenID);
-    // if (tokenID) {
-    // 	setSampleNFTTokenID(tokenID);
-    // 	updateTokenIds();
-    // }
-  };
 
   const updateTokenIds = async () => {
     let res = await getTokenIds();
@@ -323,16 +296,6 @@ const Home = ({ setShowModal }) => {
           </div>
           <div style={{ marginLeft: "60px" }}>
             <div style={{ display: "flex", marginBottom: "20px" }}>
-              {/* <div className="nav-btn">
-                <a href="/" onClick={buyNFT}>
-                  Buy
-                </a>
-              </div> */}
-              {/* <div className="nav-btn">
-                <a href="/" onClick={sellNFT}>
-                  Sell
-                </a>
-              </div> */}
               <div className="nav-btn">
                 <a href="/mint" onClick={mintNFT}>
                   Mint
@@ -379,14 +342,6 @@ const Home = ({ setShowModal }) => {
                         >
                           BUY
                         </button>
-                        {elem.walletAddress == walletAddress && (
-                          <button
-                            className="custom-btn"
-                            onClick={() => sellNFT(elem.tokenId)}
-                          >
-                            SELL
-                          </button>
-                        )}
                       </div>
                       <div className="card-price">
                         {/* <div>
