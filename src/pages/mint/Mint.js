@@ -109,7 +109,7 @@ function Mint({ setShowModal }) {
             createNFT(path).then((res) => {
               console.log(
                 "********** minted token id ***********",
-                res.tokenId
+                res?.tokenId
               );
 
               var formData = new FormData();
