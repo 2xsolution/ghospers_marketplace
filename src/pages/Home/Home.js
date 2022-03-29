@@ -207,11 +207,11 @@ const Home = ({ setShowModal }) => {
                 CLEAR ALL
               </a>
             </div>
-            <div className="hero">
+            {/* <div className="hero">
               <h4>GHOSPHERS</h4>
               <p>No Ghosper selected</p>
               <a onClick={loadNfts}>Choose Ghospers</a>
-            </div>
+            </div> */}
             <div className="hero">
               <h4>GHOSPHERS</h4>
               <div className="checkbox">
