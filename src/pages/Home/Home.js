@@ -91,7 +91,7 @@ const Home = ({ setShowModal }) => {
   const [saleItems, setSaleItems] = useState([]);
   const [nftsArray, setNftsArray] = useState(null);
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(5);
+  const [size, setSize] = useState(6);
   const [totalRecords, setTotalRecords] = useState(null);
   //   filters
   const [min, setMin] = useState(null);
@@ -174,7 +174,19 @@ const Home = ({ setShowModal }) => {
   useEffect(() => {
     loadNfts();
     // updateTokenIds();
-  }, [page]);
+  }, [
+    min,
+    max,
+    page,
+    size,
+    minlevel,
+    selectedProperties,
+    currency,
+    selectedType,
+    maxlevel,
+    selectedTraits,
+    selectedProperties,
+  ]);
 
   const clearAll = (e) => {
     e.preventDefault();
@@ -187,7 +199,6 @@ const Home = ({ setShowModal }) => {
     setMaxlevel(100);
   };
 
-  if (isLoading) return <Loader />;
   return (
     <>
       <Header setShowModal={setShowModal} />
@@ -267,18 +278,6 @@ const Home = ({ setShowModal }) => {
                 </select>
               </div>
             </div>
-            {properties &&
-              properties.map((data) => {
-                return (
-                  <div className="hero">
-                    <Accordian
-                      setSingleSelectedProperty={setSingleSelectedProperty}
-                      title={data.type}
-                      content={data.values}
-                    />
-                  </div>
-                );
-              })}
             <div className="hero">
               <h4>LEVEL</h4>
               <div className="levels">
@@ -293,7 +292,6 @@ const Home = ({ setShowModal }) => {
                 />
               </div>
             </div>
-
             <div className="hero">
               <h4>TRAITS</h4>
               <div className="checkbox">
@@ -327,13 +325,26 @@ const Home = ({ setShowModal }) => {
                   })}
               </div>
             </div>
+            {properties &&
+              properties.map((data) => {
+                return (
+                  <div className="hero">
+                    <Accordian
+                      setSingleSelectedProperty={setSingleSelectedProperty}
+                      title={data.type}
+                      content={data.values}
+                    />
+                  </div>
+                );
+              })}
+
             {/* <div className="hero skin">
 							<h4>SKINS</h4>
 							<p>No skin selected</p>
 							<a href="/">Choose Skin</a>
 						</div> */}
           </div>
-          <div style={{ marginLeft: "60px" }}>
+          <div style={{ marginLeft: "60px", width: "100%" }}>
             <div style={{ display: "flex", marginBottom: "20px" }}>
               <div className="nav-btn">
                 <a href="/mint" onClick={mintNFT}>
@@ -342,215 +353,119 @@ const Home = ({ setShowModal }) => {
               </div>
             </div>
             <div className="nft-collections">
-              {nftsArray &&
-                nftsArray.map((elem, i) => {
-                  return (
-                    <div
-                      className="card"
-                      key={i}
-                      onClick={() => {
-                        navigate(
-                          `/trending/${elem._id}/tokenid/${elem.tokenId}`
-                        );
-                      }}
-                    >
-                      <div className="card-img">
-                        <img
-                          src={`${BASEURL}/uploads/${elem.imageUrl}`}
-                          alt="Card1"
-                        />
-                      </div>
-                      <div className="card-title">
-                        <h4>
-                          {elem.title}{" "}
-                          {saleItems[i] && saleItems[i].onSale == true
-                            ? "OnSale"
-                            : ""}
-                        </h4>
-                        {/* <span>{elem.description}</span> */}
-                        <button
-                          className="custom-btn"
-                          onClick={(e) =>
-                            // navigate(
-                            //   `/trending/${elem._id}/tokenid/${elem.tokenId}`
-                            // )
-                            {
-                              buyNft(e, elem._id);
-                            }
-                          }
+              {isLoading ? (
+                <Loader />
+              ) : (
+                <>
+                  {nftsArray && nftsArray.length > 0 ? (
+                    nftsArray.map((elem, i) => {
+                      return (
+                        <div
+                          className="card"
+                          key={i}
+                          onClick={() => {
+                            navigate(
+                              `/trending/${elem._id}/tokenid/${elem.tokenId}`
+                            );
+                          }}
                         >
-                          BUY
-                        </button>
-                      </div>
-                      <div className="card-price">
-                        {/* <div>
+                          <div className="card-img">
+                            <img
+                              src={`${BASEURL}/uploads/${elem.imageUrl}`}
+                              alt="Card1"
+                            />
+                          </div>
+                          <div className="card-title">
+                            <h4>
+                              {elem.title}{" "}
+                              {saleItems[i] && saleItems[i].onSale == true
+                                ? "OnSale"
+                                : ""}
+                            </h4>
+                            {/* <span>{elem.description}</span> */}
+                            <button
+                              className="custom-btn"
+                              onClick={(e) =>
+                                // navigate(
+                                //   `/trending/${elem._id}/tokenid/${elem.tokenId}`
+                                // )
+                                {
+                                  buyNft(e, elem._id);
+                                }
+                              }
+                            >
+                              BUY
+                            </button>
+                          </div>
+                          <div className="card-price">
+                            {/* <div>
                           <span>gTHC</span>
                           <p>21/219</p>
                         </div> */}
-                        <div>
-                          <span>Price</span>
-                          <p>900 {elem.currency?.toUpperCase()}</p>
-                          <small>${elem.price} USD</small>
+                            <div>
+                              <span>Price</span>
+                              <p>900 {elem.currency?.toUpperCase()}</p>
+                              <small>${elem.price} USD</small>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })
+                  ) : (
+                    <div
+                      style={{
+                        width: "100%",
+                        marginTop: "20px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <h2>No Data Found!</h2>
+                    </div>
+                  )}
+
+                  {nftsArray && nftsArray.length > 0 && !isLoading && (
+                    <div className="pagination-wrap">
+                      <div className="pagination">
+                        <div
+                          className="icon"
+                          onClick={() => {
+                            if (page != 1) {
+                              setPage(page - 1);
+                            }
+                          }}
+                        >
+                          <a>
+                            <img src={LeftIcon} alt="" />
+                          </a>
+                        </div>
+                        <div className="number">
+                          <span>
+                            {page * size > totalRecords
+                              ? totalRecords
+                              : size * page}
+                          </span>
+                          of {totalRecords && totalRecords}
+                        </div>
+                        <div
+                          className="icon"
+                          onClick={() => {
+                            if (page * size < totalRecords) {
+                              console.log("inside");
+                              setPage(page + 1);
+                            }
+                          }}
+                        >
+                          <a>
+                            <img src={RightIcon} alt="" />
+                          </a>
                         </div>
                       </div>
                     </div>
-                  );
-                })}
-              {/* <div className="card">
-								<div className="card-img">
-									<img src={Card1} alt="Card1" />
-								</div>
-								<div className="card-title">
-									<h4>CULIEN</h4>
-									<span>The Baby</span>
-								</div>
-								<div className="card-price">
-									<div>
-										<span>gTHC</span>
-										<p>21/219</p>
-									</div>
-									<div>
-										<span>Price</span>
-										<p>900 THC</p>
-										<small>$19 USD</small>
-									</div>
-								</div>
-							</div>
-							<div className="card">
-								<div className="card-img bg-blue">
-									<img src={Card2} alt="Card2" />
-								</div>
-								<div className="card-title">
-									<h4>Lorem ipsum sit</h4>
-									<span>The Baby</span>
-								</div>
-								<div className="card-price">
-									<div>
-										<span>gTHC</span>
-										<p>21/219</p>
-									</div>
-									<div>
-										<span>Price</span>
-										<p>900 THC</p>
-										<small>$19 USD</small>
-									</div>
-								</div>
-							</div>
-							<div className="card">
-								<div className="card-img bg-red">
-									<img src={Card1} alt="Card3" />
-								</div>
-								<div className="card-title">
-									<h4>Lorem ipsum sit</h4>
-									<span>The Baby</span>
-								</div>
-								<div className="card-price">
-									<div>
-										<span>gTHC</span>
-										<p>21/219</p>
-									</div>
-									<div>
-										<span>Price</span>
-										<p>900 THC</p>
-										<small>$19 USD</small>
-									</div>
-								</div>
-							</div>
-							<div className="card">
-								<div className="card-img bg-blue">
-									<img src={Card2} alt="Card3" />
-								</div>
-								<div className="card-title">
-									<h4>Lorem ipsum sit</h4>
-									<span>The Baby</span>
-								</div>
-								<div className="card-price">
-									<div>
-										<span>gTHC</span>
-										<p>21/219</p>
-									</div>
-									<div>
-										<span>Price</span>
-										<p>900 THC</p>
-										<small>$19 USD</small>
-									</div>
-								</div>
-							</div>
-							<div className="card">
-								<div className="card-img bg-red">
-									<img src={Card1} alt="Card3" />
-								</div>
-								<div className="card-title">
-									<h4>Lorem ipsum sit</h4>
-									<span>The Baby</span>
-								</div>
-								<div className="card-price">
-									<div>
-										<span>gTHC</span>
-										<p>21/219</p>
-									</div>
-									<div>
-										<span>Price</span>
-										<p>900 THC</p>
-										<small>$19 USD</small>
-									</div>
-								</div>
-							</div>
-							<div className="card">
-								<div className="card-img bg-blue">
-									<img src={Card2} alt="Card3" />
-								</div>
-								<div className="card-title">
-									<h4>Lorem ipsum sit</h4>
-									<span>The Baby</span>
-								</div>
-								<div className="card-price">
-									<div>
-										<span>gTHC</span>
-										<p>21/219</p>
-									</div>
-									<div>
-										<span>Price</span>
-										<p>900 THC</p>
-										<small>$19 USD</small>
-									</div>
-								</div>
-							</div> */}
-              <div className="pagination-wrap">
-                <div className="pagination">
-                  <div
-                    className="icon"
-                    onClick={() => {
-                      if (page != 1) {
-                        setPage(page - 1);
-                      }
-                    }}
-                  >
-                    <a>
-                      <img src={LeftIcon} alt="" />
-                    </a>
-                  </div>
-                  <div className="number">
-                    <span>
-                      {page * size > totalRecords ? totalRecords : size * page}
-                    </span>
-                    of {totalRecords && totalRecords}
-                  </div>
-                  <div
-                    className="icon"
-                    onClick={() => {
-                      if (page * size < totalRecords) {
-                        console.log("inside");
-                        setPage(page + 1);
-                      }
-                    }}
-                  >
-                    <a>
-                      <img src={RightIcon} alt="" />
-                    </a>
-                  </div>
-                </div>
-              </div>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>

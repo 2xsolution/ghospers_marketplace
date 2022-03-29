@@ -77,7 +77,7 @@ function Profile() {
   const [saleItems, setSaleItems] = useState([]);
   const [nftsArray, setNftsArray] = useState(null);
   const [page, setPage] = useState(1);
-  const [size, setSize] = useState(5);
+  const [size, setSize] = useState(6);
   const [totalRecords, setTotalRecords] = useState(null);
   //   filters
   const [min, setMin] = useState(null);
@@ -109,10 +109,6 @@ function Profile() {
       .catch((e) => console.log(e));
   };
 
-  if (isLoading) {
-    console.log("inside if loadig ");
-    return <Loader />;
-  }
   return (
     <div className="profile-content">
       <div className="profile-back-filter">
@@ -150,9 +146,15 @@ function Profile() {
           </div>
         </div>
 
-        <div className="profile-nft-div" style={{ marginLeft: "60px" }}>
+        <div
+          className="profile-nft-div"
+          style={{ marginLeft: "60px", width: "100%" }}
+        >
           <div className="nft-collections">
-            {nftsArray &&
+            {isLoading ? (
+              <Loader />
+            ) : (
+              nftsArray &&
               nftsArray.map((elem, i) => {
                 return (
                   <div
@@ -202,9 +204,10 @@ function Profile() {
                     </div>
                   </div>
                 );
-              })}
+              })
+            )}
 
-            {nftsArray && nftsArray.length > 0 ? (
+            {nftsArray && nftsArray.length > 0 && !isLoading ? (
               <div className="pagination-wrap">
                 <div className="pagination">
                   <div className="icon">

@@ -20,7 +20,7 @@ const NFTdetail = ({ setShowModal }) => {
   console.log(useParams());
   const [nftDetail, setNftDetail] = useState(null);
   const [walletAddress, setWalletAddress] = useState("");
-
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   useEffect(() => {
     const initWeb3 = async () => {
       await loadWeb3();
@@ -87,41 +87,38 @@ const NFTdetail = ({ setShowModal }) => {
                 </div>
                 <div className="title-right">
                   <div className="head">
-                    <p>HERD</p>
-                    <span>Rarity</span>
+                    <p>Rarity</p>
+                    <span>{nftDetail?.type}</span>
                   </div>
                 </div>
               </div>
               <p className="view-owner"> View Owner</p>
-              {/* <div className="select-fields">
-                <select>
-                  <option selected="" value="0">
-                    View Owner
-                  </option>
-                  <option value="1">No Wrapper</option>
-                  <option value="2">No JS</option>
-                  <option value="3">Nice!</option>
-                </select>
-              </div> */}
+
               <div className="nft-data">
                 <ul className="tags">
                   <li>
-                    <a href="/" className="active-tag">
+                    <p
+                      onClick={() => setSelectedTabIndex(0)}
+                      className={
+                        selectedTabIndex === 0 ? "active-tag" : "inactive-tag"
+                      }
+                    >
                       P2E Info
-                    </a>
+                    </p>
                   </li>
                   <li>
-                    <a href="/">Stats</a>
-                  </li>
-                  <li>
-                    <a href="/">Fury</a>
-                  </li>
-                  <li>
-                    <a href="/">Passive</a>
+                    <p
+                      onClick={() => setSelectedTabIndex(1)}
+                      className={
+                        selectedTabIndex === 1 ? "active-tag" : "inactive-tag"
+                      }
+                    >
+                      Traits
+                    </p>
                   </li>
                 </ul>
 
-                <div className="nft-reward">
+                {/* <div className="nft-reward">
                   <div className="icon">
                     <img src={coinIcon} alt="coinIcon" />
                   </div>
@@ -142,28 +139,45 @@ const NFTdetail = ({ setShowModal }) => {
                       </div>
                     </div>
                   </div>
-                </div>
-                <div className="nft-stats">
-                  <div className="stat">
-                    <img src={Icon} alt="icon" />
-                    <p>Win Bonus</p>
+                </div> */}
+                {selectedTabIndex === 1 ? (
+                  <div className="detail-card-flex">
+                    {nftDetail &&
+                      nftDetail.properties.map((property) => {
+                        return (
+                          <div className="detail-card">
+                            <p className="type">{property.type}</p>
+                            <p className="value">{property.value}</p>
+                            <p className="percentage">48% have this trait</p>
+                          </div>
+                        );
+                      })}
                   </div>
-                  <p>6.695</p>
-                </div>
-                <div className="nft-stats">
-                  <div className="stat">
-                    <img src={SwordIcon} alt="icon" />
-                    <p>gTHC Battles</p>
-                  </div>
-                  <p>70/394</p>
-                </div>
-                <div className="nft-stats">
-                  <div className="stat">
-                    <img src={SwordIcon} alt="icon" />
-                    <p>Daily gTHC Battles</p>
-                  </div>
-                  <p>10</p>
-                </div>
+                ) : (
+                  <>
+                    <div className="nft-stats">
+                      <div className="stat">
+                        {/* <img src={Icon} alt="icon" /> */}
+                        <p>Win Bonus</p>
+                      </div>
+                      <p>6.695</p>
+                    </div>
+                    <div className="nft-stats">
+                      <div className="stat">
+                        {/* <img src={SwordIcon} alt="icon" /> */}
+                        <p>GHSP Battles</p>
+                      </div>
+                      <p>#/Infinite</p>
+                    </div>
+                    <div className="nft-stats">
+                      <div className="stat">
+                        {/* <img src={SwordIcon} alt="icon" /> */}
+                        <p>Daily GHSP Battles</p>
+                      </div>
+                      <p>#/Infinite</p>
+                    </div>
+                  </>
+                )}
               </div>
               <div className="nft-price">
                 <h1>1,800 {nftDetail?.currency?.toUpperCase()}</h1>
