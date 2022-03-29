@@ -13,6 +13,7 @@ import {
 } from "../../core/web3";
 import Header from "../../components/Header";
 import AddPropertyModal from "./addPropertyModal.js/AddPropertyModal";
+import { NotificationManager } from "react-notifications";
 
 function Mint({ setShowModal }) {
   const fileTypes = ["JPEG", "PNG", "GIF", "JPG"];
@@ -92,6 +93,7 @@ function Mint({ setShowModal }) {
   // };
 
   const saveNft = async (e) => {
+    NotificationManager.info("Please wait for a minutes.");
     IPFSUtils.uploadFileToIPFS([image]).then((lists) => {
       if (lists.length > 0) {
         const content_uri1 = {
@@ -111,40 +113,46 @@ function Mint({ setShowModal }) {
                 "********** minted token id ***********",
                 res?.tokenId
               );
+              if (res && res.tokenId) {
+                var formData = new FormData();
+                formData.append("title", title);
+                formData.append("description", description);
+                formData.append("price", price);
+                formData.append("nftImage", image);
+                formData.append("currency", currency);
+                formData.append("walletAddress", res.wallet);
+                formData.append("type", selectedType);
+                formData.append("tokenId", res.tokenId);
+                formData.append("ipfs", ipfs);
+                formData.append("properties", JSON.stringify(properties));
+                formData.append("level", level);
+                formData.append("traits", selectedTraits);
 
-              var formData = new FormData();
-              formData.append("title", title);
-              formData.append("description", description);
-              formData.append("price", price);
-              formData.append("nftImage", image);
-              formData.append("currency", currency);
-              formData.append("walletAddress", res.wallet);
-              formData.append("type", selectedType);
-              formData.append("tokenId", res.tokenId);
-              formData.append("ipfs", ipfs);
-              formData.append("properties", JSON.stringify(properties));
-              formData.append("level", level);
-              formData.append("traits", selectedTraits);
+                console.log(...formData);
 
-              console.log(...formData);
-
-              axios
-                .post(BASEURL + "/nft/save", formData)
-                .then((response) => {
-                  console.log(response);
-                  setCurrency("ghsp");
-                  setTitle("");
-                  setDescription("");
-                  setPrice("");
-                  setSelectedTraits([]);
-                  setSelectedType(null);
-                  setImage("");
-                  setLevel("");
-                })
-                .catch((e) => console.log(e));
+                axios
+                  .post(BASEURL + "/nft/save", formData)
+                  .then((response) => {
+                    console.log(response);
+                    setCurrency("ghsp");
+                    setTitle("");
+                    setDescription("");
+                    setPrice("");
+                    setSelectedTraits([]);
+                    setSelectedType(null);
+                    setImage("");
+                    setLevel("");
+                  })
+                  .catch((e) => {
+                    NotificationManager.error("Error Writing to DB");
+                    console.log(e);
+                  });
+              } else {
+                NotificationManager.error("Not Created Token ID from contract");
+              }
             });
           } catch (error) {
-            alert("error");
+            NotificationManager.error("Transaction Error");
           }
         });
       }
@@ -252,9 +260,9 @@ function Mint({ setShowModal }) {
                   <label key={t} className="checkbox-wrap mint-wrap">
                     <input
                       type="checkbox"
-                      checked={selectedType===t}
+                      checked={selectedType === t}
                       onChange={() => {
-                        if (selectedType===t) {
+                        if (selectedType === t) {
                           setSelectedType(null);
                         } else setSelectedType(t);
                       }}
