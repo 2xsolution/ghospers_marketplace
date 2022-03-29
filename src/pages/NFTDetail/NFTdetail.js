@@ -43,7 +43,7 @@ const NFTdetail = ({ setShowModal }) => {
     axios
       .get(`${BASEURL}/nft/${id}`)
       .then((response) => {
-        console.log('detail data', response.data.data);
+        console.log("detail data", response.data.data);
         setNftDetail(response.data.data);
       })
       .catch((e) => console.log(e));
@@ -88,11 +88,7 @@ const NFTdetail = ({ setShowModal }) => {
                 <div className="title-right">
                   <div className="head">
                     <p>HERD</p>
-                    <span>Epic</span>
-                  </div>
-                  <div className="head">
-                    <p>SKIN</p>
-                    <span>Normal</span>
+                    <span>Rarity</span>
                   </div>
                 </div>
               </div>
@@ -170,7 +166,7 @@ const NFTdetail = ({ setShowModal }) => {
                 </div>
               </div>
               <div className="nft-price">
-                <h1>1,800 THC</h1>
+                <h1>1,800 {nftDetail?.currency?.toUpperCase()}</h1>
                 <p>{nftDetail && nftDetail.price} USD</p>
               </div>
               <div className="buy-btn">
@@ -178,15 +174,13 @@ const NFTdetail = ({ setShowModal }) => {
                   BUY NOW
                 </a>
               </div>
-              {
-                nftDetail && walletAddress == nftDetail.walletAddress && (
-                  <div className="buy-btn">
-                    <a href="/" onClick={buyNFT}>
-                      SELL
-                    </a>
-                  </div>
-                )
-              }
+              {nftDetail && walletAddress == nftDetail.walletAddress && (
+                <div className="buy-btn">
+                  <a href="/" onClick={buyNFT}>
+                    SELL
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         </div>

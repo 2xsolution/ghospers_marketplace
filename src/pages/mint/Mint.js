@@ -5,8 +5,14 @@ import IPFSUtils from "./IPFSUtils";
 import axios from "axios";
 import { BASEURL } from "../../utils/Utils";
 
-import { loadWeb3, connectWallet, createNFT, getCurrentWallet } from "../../core/web3";
+import {
+  loadWeb3,
+  connectWallet,
+  createNFT,
+  getCurrentWallet,
+} from "../../core/web3";
 import Header from "../../components/Header";
+import AddPropertyModal from "./addPropertyModal.js/AddPropertyModal";
 
 function Mint({ setShowModal }) {
   const fileTypes = ["JPEG", "PNG", "GIF", "JPG"];
@@ -18,6 +24,7 @@ function Mint({ setShowModal }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tokenId, setTokenId] = useState("xyz");
+  const [showPropertyModal, setShowPropertyModal] = useState(false);
 
   const [ipfs, setIpfs] = useState("test");
   const [price, setPrice] = useState("");
@@ -26,6 +33,7 @@ function Mint({ setShowModal }) {
   const [selectedType, setSelectedType] = useState(null);
   const [selectedTraits, setSelectedTraits] = useState([]);
   const [level, setLevel] = useState(null);
+  const [properties, setProperties] = useState(null);
   const [traitsArray, setTraitsArray] = useState([
     "tank",
     "marksman",
@@ -48,6 +56,41 @@ function Mint({ setShowModal }) {
     initWeb3();
   }, []);
 
+  // PRINCE CODE
+  // const saveNft = async (e) => {
+  //   console.log(properties);
+  //   var formData = new FormData();
+  //   formData.append("title", title);
+  //   formData.append("description", description);
+  //   formData.append("price", price);
+  //   formData.append("nftImage", image);
+  //   formData.append("currency", currency);
+  //   formData.append("walletAddress", "TEST");
+  //   formData.append("type", selectedType);
+  //   formData.append("tokenId", "TEST");
+  //   formData.append("ipfs", ipfs);
+  //   formData.append("properties", JSON.stringify(properties));
+  //   formData.append("level", level);
+  //   formData.append("traits", selectedTraits);
+
+  //   console.log(...formData);
+
+  //   axios
+  //     .post(BASEURL + "/nft/save", formData)
+  //     .then((response) => {
+  //       console.log(response);
+  //       setCurrency("ghsp");
+  //       setTitle("");
+  //       setDescription("");
+  //       setPrice("");
+  //       setSelectedTraits([]);
+  //       setSelectedType(null);
+  //       setImage("");
+  //       setLevel("");
+  //     })
+  //     .catch((e) => console.log(e));
+  // };
+
   const saveNft = async (e) => {
     IPFSUtils.uploadFileToIPFS([image]).then((lists) => {
       if (lists.length > 0) {
@@ -64,7 +107,10 @@ function Mint({ setShowModal }) {
         IPFSUtils.uploadTextToIPFS(content_uri1).then((path) => {
           try {
             createNFT(path).then((res) => {
-              console.log("********** minted token id ***********", res.tokenId);
+              console.log(
+                "********** minted token id ***********",
+                res.tokenId
+              );
 
               var formData = new FormData();
               formData.append("title", title);
@@ -76,6 +122,7 @@ function Mint({ setShowModal }) {
               formData.append("type", selectedType);
               formData.append("tokenId", res.tokenId);
               formData.append("ipfs", ipfs);
+              formData.append("properties", JSON.stringify(properties));
               formData.append("level", level);
               formData.append("traits", selectedTraits);
 
@@ -186,7 +233,7 @@ function Mint({ setShowModal }) {
             <label htmlFor="">Level</label>
             <input
               value={level}
-              max={100}
+              max={20}
               min={0}
               onChange={(e) => setLevel(e.target.value)}
               type="number"
@@ -194,6 +241,9 @@ function Mint({ setShowModal }) {
               placeholder="Level"
             />
           </div>
+          <button onClick={() => setShowPropertyModal(true)}>
+            Add Properties
+          </button>
           <div className="checkbox">
             <label htmlFor="">Type</label>
             <div className="mint-types">
@@ -253,6 +303,11 @@ function Mint({ setShowModal }) {
             Create Item
           </button>
         </div>
+        <AddPropertyModal
+          setProperties={setProperties}
+          showModal={showPropertyModal}
+          setShowModal={setShowPropertyModal}
+        />
       </div>
     </div>
   );

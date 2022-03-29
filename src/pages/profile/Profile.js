@@ -196,7 +196,7 @@ function Profile() {
                         </div> */}
                       <div>
                         <span>Price</span>
-                        <p>900 THC</p>
+                        <p>900 {elem.currency?.toUpperCase()}</p>
                         <small>${elem.price} USD</small>
                       </div>
                     </div>

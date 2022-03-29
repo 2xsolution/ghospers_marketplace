@@ -60,7 +60,7 @@
 .title-right {
   display: flex;
   flex: 1;
-  justify-content: space-between;
+  justify-content: flex-end;
   text-align: center;
 }
 .head {
