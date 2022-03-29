@@ -336,7 +336,7 @@ const Home = ({ setShowModal }) => {
           <div style={{ marginLeft: "60px" }}>
             <div style={{ display: "flex", marginBottom: "20px" }}>
               <div className="nav-btn">
-                <a href="/mint" onClick={mintNFT}>
+                <a href="/mint">
                   Mint
                 </a>
               </div>
