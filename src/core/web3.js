@@ -1,16 +1,16 @@
 
 import Web3 from 'web3';
 
-const busdAbi = require('./abi/busd.json');
-const ghospAbi = require('./abi/ghosp.json');
+// const busdAbi = require('./abi/busd.json');
+// const ghospAbi = require('./abi/ghosp.json');
 const marketAbi = require('./abi/marketplace.json');
 const minterAbi = require('./abi/minter.json');
 
 
 const MINTER_ADDRESS = "0xfA9bB2B3119A7b9d40235F9e92052AB6Fd6DaD12"
 const MARKETPLACE_ADDRESS = "0xC4d193F224Ec31c7BDc959D2D1b9Eb9d16E97A78"
-const GHOSP_ADDRESS = "0x91c70ba82a8ed676c5a09ce1cd94cc18923e8371"
-const BUSD_ADDRESS = "0x8301f2213c0eed49a7e28ae4c3e91722919b8b47"   // Faucet Token
+// const GHOSP_ADDRESS = "0x91c70ba82a8ed676c5a09ce1cd94cc18923e8371"
+// const BUSD_ADDRESS = "0x8301f2213c0eed49a7e28ae4c3e91722919b8b47"   // Faucet Token
 let market_contract = null;
 let minter_contract = null;
 //let ghosp_contract = null;
