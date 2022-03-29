@@ -25,32 +25,32 @@ function Profile() {
     "assassin",
   ]);
 
-  // const loadNfts = async (e) => {
-  //   setIsLoading(true);
+  const loadNfts = async (e) => {
+    setIsLoading(true);
 
-  //   axios
-  //     .post(BASEURL + "/nft/all/", {
-  //       min,
-  //       max,
-  //       walletAddress,
-  //       currency,
-  //       minlevel,
-  //       maxlevel,
-  //       type: selectedType,
-  //       traits:
-  //         selectedTraits && selectedTraits.length > 0 ? selectedTraits : null,
-  //     })
-  //     .then((response) => {
-  //       console.log(response.data);
-  //       setTotalRecords(response.data.data[1].totalRecords);
-  //       setNftsArray(response.data.data[0]);
-  //       setIsLoading(false);
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //       setIsLoading(false);
-  //     });
-  // };
+    axios
+      .post(BASEURL + "/nft/all/", {
+        min,
+        max,
+        walletAddress,
+        currency,
+        minlevel,
+        maxlevel,
+        type: selectedType,
+        traits:
+          selectedTraits && selectedTraits.length > 0 ? selectedTraits : null,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setTotalRecords(response.data.data[1].totalRecords);
+        setNftsArray(response.data.data[0]);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setIsLoading(false);
+      });
+  };
 
   const [sidebar, setSidebar] = useState(false);
   const openSidebar = (e) => {
@@ -95,49 +95,8 @@ function Profile() {
   useEffect(() => {
     loadNfts();
     // updateTokenIds();
-  }, [
-    min,
-    max,
-    page,
-    size,
-    minlevel,
-    selectedProperties,
-    currency,
-    selectedType,
-    maxlevel,
-    selectedTraits,
-    selectedProperties,
-  ]);
-  const loadNfts = async (e) => {
-    console.log(selectedProperties);
+  }, []);
 
-    setIsLoading(true);
-
-    axios
-      .post(BASEURL + "/nft/all/", {
-        min,
-        max,
-        page,
-        size,
-        minlevel,
-        currency,
-        properties: selectedProperties,
-        maxlevel,
-        type: selectedType,
-        traits:
-          selectedTraits && selectedTraits.length > 0 ? selectedTraits : null,
-      })
-      .then((response) => {
-        setTotalRecords(response.data.data[1].totalRecords);
-        setNftsArray(response.data.data[0]);
-
-        setIsLoading(false);
-      })
-      .catch((e) => {
-        console.log(e);
-        setIsLoading(false);
-      });
-  };
   const sellNft = async (e, nftId) => {
     e.stopPropagation();
     axios
@@ -239,7 +198,7 @@ function Profile() {
                         </div> */}
                       <div>
                         <span>Price</span>
-                        <p>{elem.price}&nbsp;{elem.currency?.toUpperCase()}</p>
+                        <p>900 {elem.currency?.toUpperCase()}</p>
                         <small>${elem.price} USD</small>
                       </div>
                     </div>
@@ -289,11 +248,11 @@ function Profile() {
               CLEAR ALL
             </a>
           </div>
-          {/* <div className="hero">
+          <div className="hero">
             <h4>GHOSPHERS</h4>
             <p>No Ghosper selected</p>
             <a onClick={loadNfts}>Choose Ghospers</a>
-          </div> */}
+          </div>
           <div className="hero">
             <h4>GHOSPHERS</h4>
             <div className="checkbox">
