@@ -54,9 +54,9 @@ const NFTdetail = ({ setShowModal }) => {
 
     if (tokenId) {
       const saleTokenType = 2; // GHSP, BUSD, BNB
-      if (saleTokenType == 0) {
+      if (saleTokenType===0) {
         await buyNFTWithGHSP(tokenId);
-      } else if (saleTokenType == 1) {
+      } else if (saleTokenType===1) {
         await buyNFTWithBUSD(tokenId);
       } else {
         await buyNFTWithBNB(tokenId, 0.01);
@@ -174,7 +174,7 @@ const NFTdetail = ({ setShowModal }) => {
                   BUY NOW
                 </a>
               </div>
-              {nftDetail && walletAddress == nftDetail.walletAddress && (
+              {nftDetail && walletAddress===nftDetail.walletAddress && (
                 <div className="buy-btn">
                   <a href="/" onClick={buyNFT}>
                     SELL

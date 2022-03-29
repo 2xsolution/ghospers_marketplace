@@ -12,7 +12,7 @@ function Accordian({ title, content, setSingleSelectedProperty }) {
 
   const onChange = (e) => {
     setsearchInput(e.target.value);
-    if (e.target.value == "") {
+    if (e.target.value==="") {
       setResultsArray(contentArray);
     } else {
       var resultArray = contentArray.filter((text) =>
@@ -73,7 +73,7 @@ function Accordian({ title, content, setSingleSelectedProperty }) {
                             if (alreadyPresent(data)) {
                               var remainingValues =
                                 selectedProperties.values.filter(
-                                  (x) => x != data
+                                  (x) => x !== data
                                 );
                               setSelectedProperties({
                                 type: title,

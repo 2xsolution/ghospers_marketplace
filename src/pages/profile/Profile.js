@@ -172,12 +172,12 @@ function Profile() {
                     <div className="card-title">
                       <h4>
                         {elem.title}
-                        {Number(sampleNFTTokenID) == Number(i) ? (
+                        {Number(sampleNFTTokenID)===Number(i) ? (
                           <span>&#10003;</span>
                         ) : (
                           ""
                         )}{" "}
-                        {saleItems[i] && saleItems[i].onSale == true
+                        {saleItems[i] && saleItems[i].onSale===true
                           ? "OnSale"
                           : ""}
                       </h4>
@@ -258,9 +258,9 @@ function Profile() {
                   <label key={t} className="checkbox-wrap">
                     <input
                       type="checkbox"
-                      checked={selectedType == t}
+                      checked={selectedType===t}
                       onChange={() => {
-                        if (selectedType == t) {
+                        if (selectedType===t) {
                           setSelectedType(null);
                         } else setSelectedType(t);
                       }}
@@ -340,7 +340,7 @@ function Profile() {
                           ) {
                             var remaningTraits =
                               selectedTraits &&
-                              selectedTraits.filter((t) => t !== trait);
+                              selectedTraits.filter((t) => t !=== trait);
                             setSelectedTraits(remaningTraits);
                           } else {
                             setSelectedTraits((prev) => [...prev, trait]);

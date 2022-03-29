@@ -103,7 +103,7 @@ export const getCurrentWallet = async () => {
 export const buyNFTWithBNB = async (tokenID, amount) => {
 
     const wallet = await getCurrentWallet();
-    if (wallet.success == false) {
+    if (wallet.success===false) {
         return false;
     }
 
@@ -121,7 +121,7 @@ export const buyNFTWithBNB = async (tokenID, amount) => {
 
 export const buyNFTWithGHSP = async (tokenID) => {
     const wallet = await getCurrentWallet();
-    if (wallet.success == false) {
+    if (wallet.success===false) {
         return false;
     }
 
@@ -137,7 +137,7 @@ export const buyNFTWithGHSP = async (tokenID) => {
 
 export const buyNFTWithBUSD = async (tokenID) => {
     const wallet = await getCurrentWallet();
-    if (wallet.success == false) {
+    if (wallet.success===false) {
         return false;
     }
 
@@ -153,7 +153,7 @@ export const buyNFTWithBUSD = async (tokenID) => {
 
 export const removeTokenFromSale = async (tokenID) => {
     const wallet = await getCurrentWallet();
-    if (wallet.success == false) {
+    if (wallet.success===false) {
         return false;
     }
 
@@ -169,7 +169,7 @@ export const removeTokenFromSale = async (tokenID) => {
 
 export const putTokenOnSale = async (tokenID, price, saleTokenType) => {
     const wallet = await getCurrentWallet();
-    if (wallet.success == false) {
+    if (wallet.success===false) {
         return false;
     }
 
@@ -208,7 +208,7 @@ export const getSaleItems = async (tokenIds) => {
 
 export const createNFT = async (tokenURI) => {
     const wallet = await getCurrentWallet();
-    if (wallet.success == false) {
+    if (wallet.success===false) {
         return null;
     }
 
@@ -228,7 +228,7 @@ export const createNFT = async (tokenURI) => {
 
 export const getCreator = async (tokenID) => {
     const wallet = await getCurrentWallet();
-    if (wallet.success == false) {
+    if (wallet.success===false) {
         return false;
     }
 
@@ -244,7 +244,7 @@ export const getCreator = async (tokenID) => {
 
 export const getTokenIds = async () => {
     const wallet = await getCurrentWallet();
-    if (wallet.success == false) {
+    if (wallet.success===false) {
         return [];
     }
 

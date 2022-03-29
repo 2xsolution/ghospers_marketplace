@@ -252,9 +252,9 @@ function Mint({ setShowModal }) {
                   <label key={t} className="checkbox-wrap mint-wrap">
                     <input
                       type="checkbox"
-                      checked={selectedType == t}
+                      checked={selectedType===t}
                       onChange={() => {
-                        if (selectedType == t) {
+                        if (selectedType===t) {
                           setSelectedType(null);
                         } else setSelectedType(t);
                       }}
@@ -285,7 +285,7 @@ function Mint({ setShowModal }) {
                           ) {
                             var remaningTraits =
                               selectedTraits &&
-                              selectedTraits.filter((t) => t !== trait);
+                              selectedTraits.filter((t) => t !=== trait);
                             setSelectedTraits(remaningTraits);
                           } else {
                             setSelectedTraits((prev) => [...prev, trait]);

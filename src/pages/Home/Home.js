@@ -118,7 +118,7 @@ const Home = ({ setShowModal }) => {
       var index = selectedProperties.findIndex(
         (x) => x.type === singleSelectedProperty.type
       );
-      if (index !== -1) {
+      if (index !=== -1) {
         setSelectedProperties((prev) =>
           Object.values({
             ...prev,
@@ -218,9 +218,9 @@ const Home = ({ setShowModal }) => {
                     <label key={t} className="checkbox-wrap">
                       <input
                         type="checkbox"
-                        checked={selectedType == t}
+                        checked={selectedType===t}
                         onChange={() => {
-                          if (selectedType == t) {
+                          if (selectedType===t) {
                             setSelectedType(null);
                           } else setSelectedType(t);
                         }}
@@ -313,7 +313,7 @@ const Home = ({ setShowModal }) => {
                             ) {
                               var remaningTraits =
                                 selectedTraits &&
-                                selectedTraits.filter((t) => t !== trait);
+                                selectedTraits.filter((t) => t !=== trait);
                               setSelectedTraits(remaningTraits);
                             } else {
                               setSelectedTraits((prev) => [...prev, trait]);
@@ -363,7 +363,7 @@ const Home = ({ setShowModal }) => {
                       <div className="card-title">
                         <h4>
                           {elem.title}{" "}
-                          {saleItems[i] && saleItems[i].onSale == true
+                          {saleItems[i] && saleItems[i].onSale===true
                             ? "OnSale"
                             : ""}
                         </h4>
@@ -521,7 +521,7 @@ const Home = ({ setShowModal }) => {
                   <div
                     className="icon"
                     onClick={() => {
-                      if (page != 1) {
+                      if (page !== 1) {
                         setPage(page - 1);
                       }
                     }}

@@ -27,7 +27,7 @@ function AddPropertyModal({ setShowModal, showModal, setProperties }) {
   };
 
   const removeRow = (index) => {
-    if (rows.length != 1) {
+    if (rows.length !== 1) {
       var rowsTemp = [...rows];
       rowsTemp.splice(index, 1);
       setRows(rowsTemp);

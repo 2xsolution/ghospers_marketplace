@@ -10,7 +10,7 @@ const Header = ({ setShowModal }) => {
   const [curWallet, setCurWallet] = useState("");
 
   const onConnectWallet = async () => {
-    if (curWallet != "") {
+    if (curWallet !== "") {
       return;
     }
     await loadWeb3();
@@ -70,7 +70,7 @@ const Header = ({ setShowModal }) => {
           </ul>
           <div className="nav-btn">
             <a href="/" onClick={openModal}>
-              {curWallet == ""
+              {curWallet===""
                 ? "Connect Wallet"
                 : curWallet.slice(0, 5) + "..." + curWallet.slice(-4)}
             </a>
