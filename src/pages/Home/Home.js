@@ -8,7 +8,7 @@ import RightIcon from "../../assets/img/righticon.png";
 import axios from "axios";
 import "./home.css";
 import { useNavigate } from "react-router-dom";
-
+import { Data } from "../../components/accordian/AccordianData";
 import {
   loadWeb3,
   connectWallet,
@@ -18,6 +18,7 @@ import {
 } from "../../core/web3";
 import { BASEURL } from "../../utils/Utils";
 import Loader from "../../components/loader/Loader";
+import Accordian from "../../components/accordian/Accordian";
 
 const Home = ({ setShowModal }) => {
   const [sidebar, setSidebar] = useState(false);
@@ -43,30 +44,10 @@ const Home = ({ setShowModal }) => {
   ]);
 
   const loadNfts = async (e) => {
-    // e.preventDefault();
-    setIsLoading(true);
-    // var query = "?";
-    // if (min) {
-    //   query = `${query}min=${min}&`;
-    // }
-    // if (max) {
-    //   query = `${query}max=${max}&`;
-    // }
-    // if (minlevel) {
-    //   query = `${query}minlevel=${minlevel}&`;
-    // }
-    // if (maxlevel) {
-    //   query = `${query}maxlevel=${maxlevel}&`;
-    // }
-    // if (selectedType) {
-    //   query = `${query}type=${selectedType}&`;
-    // }
-    // console.log(selectedTraits);
-    // if (selectedTraits && selectedTraits.length > 0) {
-    //   query = `${query}traits=${selectedTraits}&`;
-    // }
+    console.log(selectedProperties);
 
-    // console.log(query);
+    setIsLoading(true);
+
     axios
       .post(BASEURL + "/nft/all/", {
         min,
@@ -75,6 +56,7 @@ const Home = ({ setShowModal }) => {
         size,
         minlevel,
         currency,
+        properties: selectedProperties,
         maxlevel,
         type: selectedType,
         traits:
@@ -83,14 +65,17 @@ const Home = ({ setShowModal }) => {
       .then((response) => {
         setTotalRecords(response.data.data[1].totalRecords);
         setNftsArray(response.data.data[0]);
-        console.log("11111111111", response.data.data);
+
+        setIsLoading(false);
       })
-      .catch((e) => console.log(e));
-    setIsLoading(false);
+      .catch((e) => {
+        console.log(e);
+        setIsLoading(false);
+      });
   };
 
   const buyNft = async (e, nftId) => {
-    e.preventDefault();
+    e.stopPropagation();
     axios
       .put(`${BASEURL}/nft/${nftId}`, {
         walletAddress,
@@ -119,6 +104,36 @@ const Home = ({ setShowModal }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [currency, setCurrency] = useState(null);
   const [walletAddress, setWalletAddress] = useState("xyz");
+  const [properties, setProperties] = useState(null);
+  const [selectedProperties, setSelectedProperties] = useState([]);
+  const [singleSelectedProperty, setSingleSelectedProperty] = useState(null);
+
+  useEffect(() => {
+    console.log(singleSelectedProperty);
+    if (
+      singleSelectedProperty &&
+      singleSelectedProperty.values &&
+      singleSelectedProperty.type
+    ) {
+      var index = selectedProperties.findIndex(
+        (x) => x.type === singleSelectedProperty.type
+      );
+      if (index !== -1) {
+        setSelectedProperties((prev) =>
+          Object.values({
+            ...prev,
+            [index]: {
+              ...prev[index],
+              values: [...singleSelectedProperty.values],
+            },
+          })
+        );
+      } else {
+        setSelectedProperties((prev) => [...prev, singleSelectedProperty]);
+      }
+      console.log(selectedProperties);
+    }
+  }, [singleSelectedProperty]);
 
   const updateTokenIds = async () => {
     let res = await getTokenIds();
@@ -129,17 +144,32 @@ const Home = ({ setShowModal }) => {
     setSaleItems(res);
   };
 
+  const loadProperties = () => {
+    axios
+      .get(BASEURL + "/property/all")
+      .then((response) => {
+        console.log(response.data.data);
+        setProperties(response.data.data);
+      })
+      .catch((e) => console.log(e));
+  };
+
   useEffect(() => {
     const initWeb3 = async () => {
       await loadWeb3();
       let res = await connectWallet();
       setWalletAddress(res.address);
     };
+    loadProperties();
 
     initWeb3();
 
     // updateTokenIds();
   }, []);
+
+  const mintNFT = () => {
+    console.log("mint nft called");
+  };
 
   useEffect(() => {
     loadNfts();
@@ -188,9 +218,9 @@ const Home = ({ setShowModal }) => {
                     <label key={t} className="checkbox-wrap">
                       <input
                         type="checkbox"
-                        checked={selectedType == t}
+                        checked={selectedType===t}
                         onChange={() => {
-                          if (selectedType == t) {
+                          if (selectedType===t) {
                             setSelectedType(null);
                           } else setSelectedType(t);
                         }}
@@ -237,6 +267,18 @@ const Home = ({ setShowModal }) => {
                 </select>
               </div>
             </div>
+            {properties &&
+              properties.map((data) => {
+                return (
+                  <div className="hero">
+                    <Accordian
+                      setSingleSelectedProperty={setSingleSelectedProperty}
+                      title={data.type}
+                      content={data.values}
+                    />
+                  </div>
+                );
+              })}
             <div className="hero">
               <h4>LEVEL</h4>
               <div className="levels">
@@ -321,7 +363,7 @@ const Home = ({ setShowModal }) => {
                       <div className="card-title">
                         <h4>
                           {elem.title}{" "}
-                          {saleItems[i] && saleItems[i].onSale == true
+                          {saleItems[i] && saleItems[i].onSale===true
                             ? "OnSale"
                             : ""}
                         </h4>
@@ -332,7 +374,9 @@ const Home = ({ setShowModal }) => {
                             // navigate(
                             //   `/trending/${elem._id}/tokenid/${elem.tokenId}`
                             // )
-                            buyNft(e, elem._id)
+                            {
+                              buyNft(e, elem._id);
+                            }
                           }
                         >
                           BUY
@@ -345,7 +389,7 @@ const Home = ({ setShowModal }) => {
                         </div> */}
                         <div>
                           <span>Price</span>
-                          <p>900 THC</p>
+                          <p>900 {elem.currency?.toUpperCase()}</p>
                           <small>${elem.price} USD</small>
                         </div>
                       </div>
@@ -477,7 +521,7 @@ const Home = ({ setShowModal }) => {
                   <div
                     className="icon"
                     onClick={() => {
-                      if (page != 1) {
+                      if (page !== 1) {
                         setPage(page - 1);
                       }
                     }}

@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import "./profile.css";
 import ProfileImg from "../../assets/img/card1.png";
 import UpdateModal from "./updateModal/UpdateModal";
+import Loader from "../../components/loader/Loader";
 function Profile() {
   const navigate = useNavigate();
 
@@ -43,9 +44,12 @@ function Profile() {
         console.log(response.data);
         setTotalRecords(response.data.data[1].totalRecords);
         setNftsArray(response.data.data[0]);
+        setIsLoading(false);
       })
-      .catch((e) => console.log(e));
-    setIsLoading(false);
+      .catch((e) => {
+        console.log(e);
+        setIsLoading(false);
+      });
   };
 
   const [sidebar, setSidebar] = useState(false);
@@ -94,7 +98,7 @@ function Profile() {
   }, []);
 
   const sellNft = async (e, nftId) => {
-    e.preventDefault();
+    e.stopPropagation();
     axios
       .put(`${BASEURL}/nft/sell/${nftId}`, {
         walletAddress,
@@ -105,6 +109,10 @@ function Profile() {
       .catch((e) => console.log(e));
   };
 
+  if (isLoading) {
+    console.log("inside if loadig ");
+    return <Loader />;
+  }
   return (
     <div className="profile-content">
       <div className="profile-back-filter">
@@ -164,12 +172,12 @@ function Profile() {
                     <div className="card-title">
                       <h4>
                         {elem.title}
-                        {Number(sampleNFTTokenID) == Number(i) ? (
+                        {Number(sampleNFTTokenID)===Number(i) ? (
                           <span>&#10003;</span>
                         ) : (
                           ""
                         )}{" "}
-                        {saleItems[i] && saleItems[i].onSale == true
+                        {saleItems[i] && saleItems[i].onSale===true
                           ? "OnSale"
                           : ""}
                       </h4>
@@ -188,7 +196,7 @@ function Profile() {
                         </div> */}
                       <div>
                         <span>Price</span>
-                        <p>900 THC</p>
+                        <p>900 {elem.currency?.toUpperCase()}</p>
                         <small>${elem.price} USD</small>
                       </div>
                     </div>
@@ -250,9 +258,9 @@ function Profile() {
                   <label key={t} className="checkbox-wrap">
                     <input
                       type="checkbox"
-                      checked={selectedType == t}
+                      checked={selectedType===t}
                       onChange={() => {
-                        if (selectedType == t) {
+                        if (selectedType===t) {
                           setSelectedType(null);
                         } else setSelectedType(t);
                       }}
