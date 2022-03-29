@@ -1,20 +1,20 @@
 import axios from "axios";
-import React, { Component, useState } from "react";
-import ReactDOM from "react-dom";
+import React, { useState } from "react";
+// import ReactDOM from "react-dom";
 import Modal from "react-modal";
 import { BASEURL } from "../../../utils/Utils";
 import "./updateModal.css";
 
-const customStyles = {
-  content: {
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    marginRight: "-50%",
-    transform: "translate(-50%, -50%)",
-  },
-};
+// const customStyles = {
+//   content: {
+//     top: "50%",
+//     left: "50%",
+//     right: "auto",
+//     bottom: "auto",
+//     marginRight: "-50%",
+//     transform: "translate(-50%, -50%)",
+//   },
+// };
 
 Modal.setAppElement("#root");
 
@@ -27,7 +27,7 @@ function UpdateModal({ setShowModal, showModal }) {
   const [introduction, setIntroduction] = useState("");
   const [facebook, setFacebook] = useState("");
   const [instagram, setInstagram] = useState("");
-  const [walletAddress, setWalletAddress] = useState("xyz");
+  const [walletAddress] = useState("xyz");
 
   const validateFields = () => {
     if (!name || !introduction || !facebook || !instagram || !walletAddress)

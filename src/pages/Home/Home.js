@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import MultiRangeInput from "../../components/MultiRangeInput";
-import Card1 from "../../assets/img/card1.png";
-import Card2 from "../../assets/img/card2.png";
+// import Card1 from "../../assets/img/card1.png";
+// import Card2 from "../../assets/img/card2.png";
 import LeftIcon from "../../assets/img/lefticon.png";
 import RightIcon from "../../assets/img/righticon.png";
 import axios from "axios";
 import "./home.css";
 import { useNavigate } from "react-router-dom";
-import { Data } from "../../components/accordian/AccordianData";
+// import { Data } from "../../components/accordian/AccordianData";
 import {
   loadWeb3,
   connectWallet,
-  putTokenOnSale,
+  // putTokenOnSale,
   getTokenIds,
   getSaleItems,
 } from "../../core/web3";
@@ -30,18 +30,9 @@ const Home = ({ setShowModal }) => {
 
   const navigate = useNavigate();
 
-  const [typeArray, setTypeArray] = useState([
-    "common",
-    "rare",
-    "epic",
-    "legendary",
-  ]);
+  const [typeArray] = useState(["common", "rare", "epic", "legendary"]);
 
-  const [traitsArray, setTraitsArray] = useState([
-    "tank",
-    "marksman",
-    "assassin",
-  ]);
+  const [traitsArray] = useState(["tank", "marksman", "assassin"]);
 
   const loadNfts = async (e) => {
     console.log(selectedProperties);
@@ -86,8 +77,8 @@ const Home = ({ setShowModal }) => {
       .catch((e) => console.log(e));
   };
 
-  const [sampleNFTTokenID, setSampleNFTTokenID] = useState(null);
-  const [tokenIds, setTokenIds] = useState([1, 2, 3, 5]);
+  // const [sampleNFTTokenID, setSampleNFTTokenID] = useState(null);
+  const [setTokenIds] = useState([1, 2, 3, 5]);
   const [saleItems, setSaleItems] = useState([]);
   const [nftsArray, setNftsArray] = useState(null);
   const [page, setPage] = useState(1);
@@ -97,7 +88,7 @@ const Home = ({ setShowModal }) => {
   const [min, setMin] = useState(null);
   const [minlevel, setMinlevel] = useState(0);
   const [maxlevel, setMaxlevel] = useState(100);
-  const [traits, setTraits] = useState(null);
+  // const [traits, setTraits] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
   const [selectedTraits, setSelectedTraits] = useState([]);
   const [max, setMax] = useState(null);
@@ -229,9 +220,9 @@ const Home = ({ setShowModal }) => {
                     <label key={t} className="checkbox-wrap">
                       <input
                         type="checkbox"
-                        checked={selectedType == t}
+                        checked={selectedType === t}
                         onChange={() => {
-                          if (selectedType == t) {
+                          if (selectedType === t) {
                             setSelectedType(null);
                           } else setSelectedType(t);
                         }}
@@ -347,9 +338,7 @@ const Home = ({ setShowModal }) => {
           <div style={{ marginLeft: "60px", width: "100%" }}>
             <div style={{ display: "flex", marginBottom: "20px" }}>
               <div className="nav-btn">
-                <a href="/mint" onClick={mintNFT}>
-                  Mint
-                </a>
+                <a href="/mint">Mint</a>
               </div>
             </div>
             <div className="nft-collections">
