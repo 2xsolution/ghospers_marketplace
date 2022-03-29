@@ -118,7 +118,7 @@ const Home = ({ setShowModal }) => {
       var index = selectedProperties.findIndex(
         (x) => x.type === singleSelectedProperty.type
       );
-      if (index !=== -1) {
+      if (index !== -1) {
         setSelectedProperties((prev) =>
           Object.values({
             ...prev,
@@ -313,7 +313,7 @@ const Home = ({ setShowModal }) => {
                             ) {
                               var remaningTraits =
                                 selectedTraits &&
-                                selectedTraits.filter((t) => t !=== trait);
+                                selectedTraits.filter((t) => t !== trait);
                               setSelectedTraits(remaningTraits);
                             } else {
                               setSelectedTraits((prev) => [...prev, trait]);

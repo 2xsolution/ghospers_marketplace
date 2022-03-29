@@ -285,7 +285,7 @@ function Mint({ setShowModal }) {
                           ) {
                             var remaningTraits =
                               selectedTraits &&
-                              selectedTraits.filter((t) => t !=== trait);
+                              selectedTraits.filter((t) => t !== trait);
                             setSelectedTraits(remaningTraits);
                           } else {
                             setSelectedTraits((prev) => [...prev, trait]);
