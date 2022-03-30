@@ -3,7 +3,7 @@ import "./mint.css";
 import { FileUploader } from "react-drag-drop-files";
 import IPFSUtils from "./IPFSUtils";
 import axios from "axios";
-import { BASEURL } from "../../utils/Utils";
+import { BASEURL, Error, Success } from "../../utils/Utils";
 
 import {
   loadWeb3,
@@ -13,6 +13,7 @@ import {
 } from "../../core/web3";
 import Header from "../../components/Header";
 import AddPropertyModal from "./addPropertyModal.js/AddPropertyModal";
+import LoaderModal from "./LoaderModal";
 
 function Mint({ setShowModal }) {
   const fileTypes = ["JPEG", "PNG", "GIF", "JPG"];
@@ -25,15 +26,15 @@ function Mint({ setShowModal }) {
   const [description, setDescription] = useState("");
   const [tokenId, setTokenId] = useState("xyz");
   const [showPropertyModal, setShowPropertyModal] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [ipfs, setIpfs] = useState("test");
   const [price, setPrice] = useState("");
   const [currency, setCurrency] = useState("ghsp");
   const [image, setImage] = useState("");
-  const [selectedType, setSelectedType] = useState(null);
+  const [selectedType, setSelectedType] = useState("");
   const [selectedTraits, setSelectedTraits] = useState([]);
-  const [level, setLevel] = useState(null);
-  const [properties, setProperties] = useState(null);
+  const [level, setLevel] = useState("");
+  const [properties, setProperties] = useState("");
   const [traitsArray, setTraitsArray] = useState([
     "tank",
     "marksman",
@@ -57,99 +58,111 @@ function Mint({ setShowModal }) {
   }, []);
 
   // PRINCE CODE
-  // const saveNft = async (e) => {
-  //   console.log(properties);
-  //   var formData = new FormData();
-  //   formData.append("title", title);
-  //   formData.append("description", description);
-  //   formData.append("price", price);
-  //   formData.append("nftImage", image);
-  //   formData.append("currency", currency);
-  //   formData.append("walletAddress", "TEST");
-  //   formData.append("type", selectedType);
-  //   formData.append("tokenId", "TEST");
-  //   formData.append("ipfs", ipfs);
-  //   formData.append("properties", JSON.stringify(properties));
-  //   formData.append("level", level);
-  //   formData.append("traits", selectedTraits);
-
-  //   console.log(...formData);
-
-  //   axios
-  //     .post(BASEURL + "/nft/save", formData)
-  //     .then((response) => {
-  //       console.log(response);
-  //       setCurrency("ghsp");
-  //       setTitle("");
-  //       setDescription("");
-  //       setPrice("");
-  //       setSelectedTraits([]);
-  //       setSelectedType(null);
-  //       setImage("");
-  //       setLevel("");
-  //     })
-  //     .catch((e) => console.log(e));
-  // };
-
   const saveNft = async (e) => {
-    IPFSUtils.uploadFileToIPFS([image]).then((lists) => {
-      if (lists.length > 0) {
-        const content_uri1 = {
-          name: title,
-          symbol: title,
-          image: lists[0],
-          properties: {
-            files: [{ uri: "image.png", type: "image/png" }],
-            category: "image",
-          },
-        };
+    console.log(properties);
+    setIsLoading(true);
+    var formData = new FormData();
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("nftImage", image);
+    formData.append("currency", currency);
+    formData.append("walletAddress", "TEST");
+    formData.append("type", selectedType);
+    formData.append("tokenId", "TEST");
+    formData.append("ipfs", ipfs);
+    formData.append("properties", JSON.stringify(properties));
+    formData.append("level", level);
+    formData.append("traits", selectedTraits);
 
-        IPFSUtils.uploadTextToIPFS(content_uri1).then((path) => {
-          try {
-            createNFT(path).then((res) => {
-              console.log(
-                "********** minted token id ***********",
-                res.tokenId
-              );
+    console.log(...formData);
 
-              var formData = new FormData();
-              formData.append("title", title);
-              formData.append("description", description);
-              formData.append("price", price);
-              formData.append("nftImage", image);
-              formData.append("currency", currency);
-              formData.append("walletAddress", res.wallet);
-              formData.append("type", selectedType);
-              formData.append("tokenId", res.tokenId);
-              formData.append("ipfs", ipfs);
-              formData.append("properties", JSON.stringify(properties));
-              formData.append("level", level);
-              formData.append("traits", selectedTraits);
+    axios
+      .post(BASEURL + "/nft/save", formData)
+      .then((response) => {
+        console.log(response);
+        Success("Nft Added Successfully");
 
-              console.log(...formData);
-
-              axios
-                .post(BASEURL + "/nft/save", formData)
-                .then((response) => {
-                  console.log(response);
-                  setCurrency("ghsp");
-                  setTitle("");
-                  setDescription("");
-                  setPrice("");
-                  setSelectedTraits([]);
-                  setSelectedType(null);
-                  setImage("");
-                  setLevel("");
-                })
-                .catch((e) => console.log(e));
-            });
-          } catch (error) {
-            alert("error");
-          }
-        });
-      }
-    });
+        setCurrency("ghsp");
+        setTitle("");
+        setDescription("");
+        setPrice("");
+        setSelectedTraits([]);
+        setSelectedType(null);
+        setImage("");
+        setLevel("");
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setIsLoading(false);
+        Error("Something went wrong");
+      });
   };
+
+  // const saveNft = async (e) => {
+  //   console.log(level);
+
+  //   IPFSUtils.uploadFileToIPFS([image]).then((lists) => {
+  //     if (lists.length > 0) {
+  //       const content_uri1 = {
+  //         name: title,
+  //         symbol: title,
+  //         image: lists[0],
+  //         properties: {
+  //           files: [{ uri: "image.png", type: "image/png" }],
+  //           category: "image",
+  //         },
+  //       };
+
+  //       IPFSUtils.uploadTextToIPFS(content_uri1).then((path) => {
+  //         try {
+  //           createNFT(path).then((res) => {
+  //             console.log(
+  //               "********** minted token id ***********",
+  //               res.tokenId
+  //             );
+
+  //             var formData = new FormData();
+  //             formData.append("title", title);
+  //             formData.append("description", description);
+  //             formData.append("price", price);
+  //             formData.append("nftImage", image);
+  //             formData.append("currency", currency);
+  //             formData.append("walletAddress", res.wallet);
+  //             formData.append("type", selectedType);
+  //             formData.append("tokenId", res.tokenId);
+  //             formData.append("ipfs", ipfs);
+  //             formData.append("properties", JSON.stringify(properties));
+  //             formData.append("level", level);
+  //             formData.append("traits", selectedTraits);
+
+  //             axios
+  //               .post(BASEURL + "/nft/save", formData)
+  //               .then((response) => {
+  //                 Success("Nft Added Successfully");
+  //                 console.log(response);
+  //                 setCurrency("ghsp");
+  //                 setTitle("");
+  //                 setDescription("");
+  //                 setPrice("");
+  //                 setSelectedTraits([]);
+  //                 setSelectedType(null);
+  //                 setImage("");
+  //                 setLevel("");
+  //               })
+  //               .catch((e) => {
+  //                 Error("Something went wrong");
+  //                 console.log(e);
+  //               });
+  //           });
+  //         } catch (error) {
+  //           alert("error");
+  //         }
+  //       });
+  //     }
+  //   });
+  // };
 
   const validateFields = () => {
     if (
@@ -176,6 +189,7 @@ function Mint({ setShowModal }) {
     <div>
       <Header setShowModal={setShowModal} />
       <div className="mint-container">
+        {isLoading && <LoaderModal />}
         <div className="file-div">
           <p>PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</p>
           <FileUploader
@@ -185,6 +199,17 @@ function Mint({ setShowModal }) {
             classes="drag-zone"
             types={fileTypes}
           />
+
+          {image && (
+            <>
+              <p className="preview-text">Image Preview</p>
+              <img
+                className="preview-img"
+                src={URL.createObjectURL(image)}
+                alt=""
+              />
+            </>
+          )}
         </div>
         <div className="inputs-div">
           <div>
@@ -212,8 +237,16 @@ function Mint({ setShowModal }) {
             <div className="price-flex">
               <input
                 value={price}
-                onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => {
+                  if (e.target.value < 0) {
+                    setPrice(0);
+                  } else if (e.target.value > 100000000) {
+                    setPrice(100000000);
+                  } else setPrice(e.target.value);
+                }}
                 type="number"
+                min={0}
+                max="10"
                 className="mint-input"
                 placeholder="0 BNB"
               />
@@ -233,9 +266,15 @@ function Mint({ setShowModal }) {
             <label htmlFor="">Level</label>
             <input
               value={level}
-              max={20}
-              min={0}
-              onChange={(e) => setLevel(e.target.value)}
+              max="20"
+              min="0"
+              onChange={(e) => {
+                if (e.target.value < 0) {
+                  setLevel(0);
+                } else if (e.target.value > 20) {
+                  setLevel(20);
+                } else setLevel(e.target.value);
+              }}
               type="number"
               className="mint-input"
               placeholder="Level"
@@ -252,9 +291,9 @@ function Mint({ setShowModal }) {
                   <label key={t} className="checkbox-wrap mint-wrap">
                     <input
                       type="checkbox"
-                      checked={selectedType===t}
+                      checked={selectedType === t}
                       onChange={() => {
-                        if (selectedType===t) {
+                        if (selectedType === t) {
                           setSelectedType(null);
                         } else setSelectedType(t);
                       }}

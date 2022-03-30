@@ -12,7 +12,7 @@ function Accordian({ title, content, setSingleSelectedProperty }) {
 
   const onChange = (e) => {
     setsearchInput(e.target.value);
-    if (e.target.value==="") {
+    if (e.target.value === "") {
       setResultsArray(contentArray);
     } else {
       var resultArray = contentArray.filter((text) =>
@@ -33,7 +33,10 @@ function Accordian({ title, content, setSingleSelectedProperty }) {
 
   return (
     <div className="accordian-div">
-      <div className="accordian-header">
+      <div
+        className="accordian-header"
+        onClick={() => setShowContent((prev) => !prev)}
+      >
         <h4>{title}</h4>
         {showContent ? (
           <i

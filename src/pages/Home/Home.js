@@ -239,17 +239,33 @@ const Home = ({ setShowModal }) => {
               <div className="price">
                 <div className="price-inpt">
                   <input
-                    type="text"
+                    type="number"
+                    max="100000000"
+                    min="0"
                     placeholder="Min"
-                    onChange={(e) => setMin(e.target.value)}
+                    onChange={(e) => {
+                      if (e.target.value < 0) {
+                        setMin(0);
+                      } else if (e.target.value > 100000000) {
+                        setMin(100000000);
+                      } else setMin(e.target.value);
+                    }}
                   />
                 </div>
                 <span></span>
                 <div className="price-inpt">
                   <input
-                    type="text"
+                    type="number"
+                    max="100000000"
+                    min="0"
                     placeholder="Max"
-                    onChange={(e) => setMax(e.target.value)}
+                    onChange={(e) => {
+                      if (e.target.value < 0) {
+                        setMax(0);
+                      } else if (e.target.value > 100000000) {
+                        setMax(100000000);
+                      } else setMax(e.target.value);
+                    }}
                   />
                 </div>
               </div>
@@ -274,7 +290,7 @@ const Home = ({ setShowModal }) => {
               <div className="levels">
                 <MultiRangeInput
                   min={0}
-                  max={100}
+                  max={20}
                   onChange={({ min, max }) => {
                     setMinlevel(min);
                     setMaxlevel(max);
