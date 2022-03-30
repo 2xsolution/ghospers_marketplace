@@ -7,6 +7,7 @@ import LeftIcon from "../../assets/img/lefticon.png";
 import RightIcon from "../../assets/img/righticon.png";
 import axios from "axios";
 import "./home.css";
+
 import { useNavigate } from "react-router-dom";
 // import { Data } from "../../components/accordian/AccordianData";
 import {
@@ -438,6 +439,7 @@ const Home = ({ setShowModal }) => {
                           onClick={() => {
                             if (page != 1) {
                               setPage(page - 1);
+                              window.scrollTo(0, 0);
                             }
                           }}
                         >
@@ -457,7 +459,8 @@ const Home = ({ setShowModal }) => {
                           className="icon"
                           onClick={() => {
                             if (page * size < totalRecords) {
-                              console.log("inside");
+                              window.scrollTo(0, 0);
+
                               setPage(page + 1);
                             }
                           }}
