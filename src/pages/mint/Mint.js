@@ -205,6 +205,7 @@ function Mint({ setShowModal }) {
             <label htmlFor="">Price</label>
             <div className="price-flex">
               <input
+                onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
                 value={price}
                 onChange={(e) => {
                   if (e.target.value < 0) {
@@ -237,6 +238,7 @@ function Mint({ setShowModal }) {
               value={level}
               max="20"
               min="0"
+              onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
               onChange={(e) => {
                 if (e.target.value < 0) {
                   setLevel(0);

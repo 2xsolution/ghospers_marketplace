@@ -172,7 +172,6 @@ const Home = ({ setShowModal }) => {
     page,
     size,
     minlevel,
-    selectedProperties,
     currency,
     selectedType,
     maxlevel,
@@ -243,6 +242,7 @@ const Home = ({ setShowModal }) => {
                     type="number"
                     max="100000000"
                     min="0"
+                    onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
                     placeholder="Min"
                     onChange={(e) => {
                       if (e.target.value < 0) {
@@ -256,10 +256,11 @@ const Home = ({ setShowModal }) => {
                 <span></span>
                 <div className="price-inpt">
                   <input
-                    type="number"
                     max="100000000"
                     min="0"
                     placeholder="Max"
+                    type="number"
+                    onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
                     onChange={(e) => {
                       if (e.target.value < 0) {
                         setMax(0);
@@ -278,9 +279,8 @@ const Home = ({ setShowModal }) => {
                   onChange={(e) => setCurrency(e.target.value)}
                   value={currency}
                 >
-                  <option selected value="ghsp">
-                    GHSP
-                  </option>
+                  <option selected>Select Currency</option>
+                  <option value="ghsp">GHSP</option>
                   <option value="bnb">BNB</option>
                   <option value="busd">BUSD</option>
                 </select>

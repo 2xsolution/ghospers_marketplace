@@ -70,11 +70,11 @@ const Header = ({ setShowModal }) => {
           </ul>
           <div className="nav-btn">
             <a href="/" onClick={openModal}>
-              {curWallet===""
+              {curWallet === ""
                 ? "Connect Wallet"
                 : curWallet.slice(0, 5) + "..." + curWallet.slice(-4)}
             </a>
-            <a href="/">Login</a>
+            <a href="/profile">Profile</a>
           </div>
         </div>
         <div className="hamburger" onClick={() => isnavActive(!navActive)}>

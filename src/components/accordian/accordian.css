@@ -35,6 +35,10 @@
   text-transform: capitalize;
 }
 
+.accordian-content .checkbox label {
+  text-transform: capitalize;
+}
+
 .accordian-div .checkbox {
   padding: 0;
   min-height: 60px;

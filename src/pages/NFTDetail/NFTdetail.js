@@ -166,7 +166,16 @@ const NFTdetail = ({ setShowModal }) => {
                         {/* <img src={Icon} alt="icon" /> */}
                         <p>Win Bonus</p>
                       </div>
-                      <p>6.695</p>
+                      <p>
+                        {nftDetail &&
+                          (nftDetail.type == "common"
+                            ? "0.25"
+                            : nftDetail.type == "rare"
+                            ? "0.5"
+                            : nftDetail.type == "epic"
+                            ? "0.75"
+                            : "1.0")}
+                      </p>
                     </div>
                     <div className="nft-stats">
                       <div className="stat">
@@ -186,7 +195,10 @@ const NFTdetail = ({ setShowModal }) => {
                 )}
               </div>
               <div className="nft-price">
-                <h1>1,800 {nftDetail?.currency?.toUpperCase()}</h1>
+                <h1>
+                  {nftDetail && nftDetail.price}{" "}
+                  {nftDetail?.currency?.toUpperCase()}
+                </h1>
                 <p>{nftDetail && nftDetail.price} USD</p>
               </div>
               <div className="buy-btn">

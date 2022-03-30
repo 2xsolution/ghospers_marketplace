@@ -35,7 +35,8 @@ function AddPropertyModal({ setShowModal, showModal, setProperties }) {
   };
 
   const AddRows = () => {
-    setProperties(rows);
+    var rowsTemp = rows.filter((r) => r.type != "" && r.value != "");
+    setProperties(rowsTemp);
     setShowModal(false);
   };
 

@@ -9,6 +9,7 @@ import "./profile.css";
 import ProfileImg from "../../assets/img/card1.png";
 import UpdateModal from "./updateModal/UpdateModal";
 import Loader from "../../components/loader/Loader";
+import Accordian from "../../components/accordian/Accordian";
 function Profile() {
   const navigate = useNavigate();
 
@@ -92,10 +93,39 @@ function Profile() {
   const [isLoading, setIsLoading] = useState(false);
   const [walletAddress, setWalletAddress] = useState("xyz");
   const [showModal, setShowModal] = useState(false);
+  const [properties, setProperties] = useState(null);
+  const [selectedProperties, setSelectedProperties] = useState([]);
+  const [singleSelectedProperty, setSingleSelectedProperty] = useState(null);
+
   useEffect(() => {
     loadNfts();
     // updateTokenIds();
+  }, [
+    min,
+    max,
+    page,
+    size,
+    minlevel,
+    currency,
+    selectedType,
+    maxlevel,
+    selectedTraits,
+    selectedProperties,
+  ]);
+
+  useEffect(() => {
+    loadProperties();
   }, []);
+
+  const loadProperties = () => {
+    axios
+      .get(BASEURL + "/property/all")
+      .then((response) => {
+        console.log(response.data.data);
+        setProperties(response.data.data);
+      })
+      .catch((e) => console.log(e));
+  };
 
   const sellNft = async (e, nftId) => {
     e.stopPropagation();
@@ -174,12 +204,12 @@ function Profile() {
                     <div className="card-title">
                       <h4>
                         {elem.title}
-                        {Number(sampleNFTTokenID)===Number(i) ? (
+                        {Number(sampleNFTTokenID) === Number(i) ? (
                           <span>&#10003;</span>
                         ) : (
                           ""
                         )}{" "}
-                        {saleItems[i] && saleItems[i].onSale===true
+                        {saleItems[i] && saleItems[i].onSale === true
                           ? "OnSale"
                           : ""}
                       </h4>
@@ -261,9 +291,9 @@ function Profile() {
                   <label key={t} className="checkbox-wrap">
                     <input
                       type="checkbox"
-                      checked={selectedType===t}
+                      checked={selectedType === t}
                       onChange={() => {
-                        if (selectedType===t) {
+                        if (selectedType === t) {
                           setSelectedType(null);
                         } else setSelectedType(t);
                       }}
@@ -280,17 +310,31 @@ function Profile() {
             <div className="price">
               <div className="price-inpt">
                 <input
-                  type="text"
+                  type="number"
+                  onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                  onChange={(e) => {
+                    if (e.target.value < 0) {
+                      setMin(0);
+                    } else if (e.target.value > 100000000) {
+                      setMin(100000000);
+                    } else setMin(e.target.value);
+                  }}
                   placeholder="Min"
-                  onChange={(e) => setMin(e.target.value)}
                 />
               </div>
               <span></span>
               <div className="price-inpt">
                 <input
-                  type="text"
                   placeholder="Max"
-                  onChange={(e) => setMax(e.target.value)}
+                  type="number"
+                  onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                  onChange={(e) => {
+                    if (e.target.value < 0) {
+                      setMax(0);
+                    } else if (e.target.value > 100000000) {
+                      setMax(100000000);
+                    } else setMax(e.target.value);
+                  }}
                 />
               </div>
             </div>
@@ -302,9 +346,8 @@ function Profile() {
                 onChange={(e) => setCurrency(e.target.value)}
                 value={currency}
               >
-                <option selected value="ghsp">
-                  GHSP
-                </option>
+                <option selected>Select Currency</option>
+                <option value="ghsp">GHSP</option>
                 <option value="bnb">BNB</option>
                 <option value="busd">BUSD</option>
               </select>
@@ -315,7 +358,7 @@ function Profile() {
             <div className="levels">
               <MultiRangeInput
                 min={0}
-                max={100}
+                max={20}
                 onChange={({ min, max }) => {
                   setMinlevel(min);
                   setMaxlevel(max);
@@ -357,6 +400,18 @@ function Profile() {
                 })}
             </div>
           </div>
+          {properties &&
+            properties.map((data) => {
+              return (
+                <div className="hero">
+                  <Accordian
+                    setSingleSelectedProperty={setSingleSelectedProperty}
+                    title={data.type}
+                    content={data.values}
+                  />
+                </div>
+              );
+            })}
           {/* <div className="hero skin">
 							<h4>SKINS</h4>
 							<p>No skin selected</p>

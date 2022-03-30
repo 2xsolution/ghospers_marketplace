@@ -25,13 +25,14 @@
 .nft-img {
   background: #ff6653;
   flex-basis: 49%;
-  height: 800px;
+  height: 600px;
 
   border-radius: 29px;
 }
 .nft-img img {
   width: 100%;
-  /* top: 222px; */
+  height: 100%;
+  object-fit: cover;
   top: 12px;
   max-width: 625px;
   position: relative;
@@ -256,7 +257,7 @@ option {
   width: 200px;
   text-align: center;
   border-radius: 8px;
-  margin: 45px 10px;
+  margin: 10px;
   border: 1px solid #41c6ff;
 }
 
@@ -284,6 +285,7 @@ option {
   }
   .nft-img img {
     top: 4px;
+    max-height: 400px;
     max-width: 718px;
   }
   .nft-img {
