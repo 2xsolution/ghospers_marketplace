@@ -13,7 +13,11 @@ import {
 } from "../../core/web3";
 import Header from "../../components/Header";
 import AddPropertyModal from "./addPropertyModal.js/AddPropertyModal";
+<<<<<<< HEAD
 import LoaderModal from "./LoaderModal";
+=======
+import { NotificationManager } from "react-notifications";
+>>>>>>> 28d19eff5a61558394b5a9f883f97de34e44fd9c
 
 function Mint({ setShowModal }) {
   const fileTypes = ["JPEG", "PNG", "GIF", "JPG"];
@@ -83,6 +87,7 @@ function Mint({ setShowModal }) {
         console.log(response);
         Success("Nft Added Successfully");
 
+<<<<<<< HEAD
         setCurrency("ghsp");
         setTitle("");
         setDescription("");
@@ -163,6 +168,74 @@ function Mint({ setShowModal }) {
   //     }
   //   });
   // };
+=======
+  const saveNft = async (e) => {
+    NotificationManager.info("Please wait for a minutes.");
+    IPFSUtils.uploadFileToIPFS([image]).then((lists) => {
+      if (lists.length > 0) {
+        const content_uri1 = {
+          name: title,
+          symbol: title,
+          image: lists[0],
+          properties: {
+            files: [{ uri: "image.png", type: "image/png" }],
+            category: "image",
+          },
+        };
+
+        IPFSUtils.uploadTextToIPFS(content_uri1).then((path) => {
+          try {
+            createNFT(path).then((res) => {
+              console.log(
+                "********** minted token id ***********",
+                res?.tokenId
+              );
+              if (res && res.tokenId) {
+                var formData = new FormData();
+                formData.append("title", title);
+                formData.append("description", description);
+                formData.append("price", price);
+                formData.append("nftImage", image);
+                formData.append("currency", currency);
+                formData.append("walletAddress", res.wallet);
+                formData.append("type", selectedType);
+                formData.append("tokenId", res.tokenId);
+                formData.append("ipfs", ipfs);
+                formData.append("properties", JSON.stringify(properties));
+                formData.append("level", level);
+                formData.append("traits", selectedTraits);
+
+                console.log(...formData);
+
+                axios
+                  .post(BASEURL + "/nft/save", formData)
+                  .then((response) => {
+                    console.log(response);
+                    setCurrency("ghsp");
+                    setTitle("");
+                    setDescription("");
+                    setPrice("");
+                    setSelectedTraits([]);
+                    setSelectedType(null);
+                    setImage("");
+                    setLevel("");
+                  })
+                  .catch((e) => {
+                    NotificationManager.error("Error Writing to DB");
+                    console.log(e);
+                  });
+              } else {
+                NotificationManager.error("Not Created Token ID from contract");
+              }
+            });
+          } catch (error) {
+            NotificationManager.error("Transaction Error");
+          }
+        });
+      }
+    });
+  };
+>>>>>>> 28d19eff5a61558394b5a9f883f97de34e44fd9c
 
   const validateFields = () => {
     if (

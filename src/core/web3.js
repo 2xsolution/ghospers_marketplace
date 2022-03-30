@@ -1,4 +1,5 @@
 
+import { NotificationManager } from 'react-notifications';
 import Web3 from 'web3';
 
 // const busdAbi = require('./abi/busd.json');
@@ -16,6 +17,16 @@ let minter_contract = null;
 //let ghosp_contract = null;
 //let busd_contract = null;
 
+const NETWORK_ID = 97;
+
+const checkConnectedNetwork = (chainId) => {
+    if (chainId != NETWORK_ID) {
+        NotificationManager.error("Please select BSC network");
+        return false;
+    }
+
+    return true;
+}
 
 export const loadWeb3 = async () => {
     if (window.ethereum) {
@@ -37,12 +48,21 @@ export const loadWeb3 = async () => {
 //    busd_contract = new window.web3.eth.Contract(busdAbi, BUSD_ADDRESS);
 
     window.ethereum.on('chainChanged', function (chainId) {
-
+        checkConnectedNetwork(chainId);
     });
 };
 
 
 export const connectWallet = async () => {
+    const chainId = await getConnectedNetworkId();
+    if (checkConnectedNetwork(chainId) == false) {
+        return  {
+            address: "",
+            status: "Network connection error",
+            res: 3,
+        };
+    }
+
     if (window.ethereum) {
         try {
             const addressArray = await window.ethereum.request({
@@ -79,6 +99,13 @@ export const connectWallet = async () => {
     }
 };
 
+export const getConnectedNetworkId = async () => {
+    if (window.web3 && window.web3.eth) {
+        return await window.web3.eth.getChainId();
+    }
+
+    return 0;
+}
 
 export const getCurrentWallet = async () => {
     const web3 = window.web3;
@@ -109,7 +136,6 @@ export const buyNFTWithBNB = async (tokenID, amount) => {
 
     try {
         let bnAmount = window.web3.utils.toWei("" + amount);
-        console.log('ssssssssssss', tokenID, bnAmount);
         await market_contract.methods.buyNFTWithBNB(tokenID, wallet.account).send({ from: wallet.account, value: bnAmount });
     } catch (error) {
         console.log('buyNFTWithBNB error', error);
