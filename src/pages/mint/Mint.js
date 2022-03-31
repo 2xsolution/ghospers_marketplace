@@ -33,14 +33,14 @@ function Mint({ setShowModal }) {
   const [currency, setCurrency] = useState("ghsp");
   const [image, setImage] = useState("");
   const [selectedType, setSelectedType] = useState("");
-  const [selectedTraits, setSelectedTraits] = useState([]);
+  // const [selectedTraits, setSelectedTraits] = useState([]);
   const [level, setLevel] = useState("");
   const [properties, setProperties] = useState("");
-  const [traitsArray, setTraitsArray] = useState([
-    "tank",
-    "marksman",
-    "assassin",
-  ]);
+  // const [traitsArray, setTraitsArray] = useState([
+  //   "tank",
+  //   "marksman",
+  //   "assassin",
+  // ]);
 
   const [typeArray, setTypeArray] = useState([
     "common",
@@ -93,7 +93,7 @@ function Mint({ setShowModal }) {
                 formData.append("ipfs", ipfs);
                 formData.append("properties", JSON.stringify(properties));
                 formData.append("level", level);
-                formData.append("traits", selectedTraits);
+                // formData.append("traits", selectedTraits);
 
                 console.log(...formData);
 
@@ -105,7 +105,7 @@ function Mint({ setShowModal }) {
                     setTitle("");
                     setDescription("");
                     setPrice("");
-                    setSelectedTraits([]);
+                    // setSelectedTraits([]);
                     setSelectedType(null);
                     setImage("");
                     setLevel("");
@@ -134,14 +134,7 @@ function Mint({ setShowModal }) {
   };
 
   const validateFields = () => {
-    if (
-      !title ||
-      !price ||
-      !level ||
-      !selectedType ||
-      !selectedTraits.length > 0
-    )
-      return false;
+    if (!title || !price || !level) return false;
     return true;
   };
 
@@ -276,7 +269,7 @@ function Mint({ setShowModal }) {
               })}
             </div>
           </div>
-          <div className="checkbox">
+          {/* <div className="checkbox">
             <label htmlFor="">Traits</label>
             <div className="mint-types">
               {traitsArray &&
@@ -308,7 +301,7 @@ function Mint({ setShowModal }) {
                   );
                 })}
             </div>
-          </div>
+          </div> */}
           <button onClick={saveNft} disabled={!validateFields()}>
             Create Item
           </button>

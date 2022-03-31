@@ -3,6 +3,9 @@ import React, { useState } from "react";
 // import ReactDOM from "react-dom";
 import Modal from "react-modal";
 import { BASEURL } from "../../../utils/Utils";
+import { FileUploader } from "react-drag-drop-files";
+import { NotificationManager } from "react-notifications";
+
 import "./updateModal.css";
 
 // const customStyles = {
@@ -18,16 +21,23 @@ import "./updateModal.css";
 
 Modal.setAppElement("#root");
 
-function UpdateModal({ setShowModal, showModal }) {
+function UpdateModal({ setShowModal, showModal, walletAddress }) {
   function closeModal() {
     setShowModal(false);
   }
+
+  const fileTypes = ["JPEG", "PNG", "GIF", "JPG"];
+
+  const handleChange = (file) => {
+    setImage(file);
+  };
+  const [image, setImage] = useState("");
 
   const [name, setName] = useState("");
   const [introduction, setIntroduction] = useState("");
   const [facebook, setFacebook] = useState("");
   const [instagram, setInstagram] = useState("");
-  const [walletAddress] = useState("xyz");
+  // const [walletAddress] = useState("xyz");
 
   const validateFields = () => {
     if (!name || !introduction || !facebook || !instagram || !walletAddress)
@@ -39,24 +49,31 @@ function UpdateModal({ setShowModal, showModal }) {
     e.preventDefault();
 
     if (!validateFields()) return;
+    var formData = new FormData();
+    formData.append("name", name);
+    formData.append("introduction", introduction);
+    formData.append("facebook", facebook);
+    formData.append("profileImage", image);
+    formData.append("instagram", instagram);
+    formData.append("walletAddress", walletAddress);
 
     axios
-      .put(BASEURL + "/user/update", {
-        name,
-        introduction,
-        facebook,
-        instagram,
-        walletAddress,
-      })
+      .put(BASEURL + "/user/update", formData)
       .then((response) => {
         console.log(response);
         setFacebook("");
         setInstagram("");
         setName("");
+        setImage("");
         setIntroduction("");
+        NotificationManager.success("Profile Updated Successfully");
+
         closeModal();
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        NotificationManager.error("Something went wrong!");
+        console.log(e);
+      });
   };
 
   return (
@@ -116,6 +133,16 @@ function UpdateModal({ setShowModal, showModal }) {
                 type="text"
                 className="mint-input"
                 placeholder="instagram.com/username"
+              />
+            </div>
+            <div className="file-div">
+              <label htmlFor="">PNG, JPEG, JPG</label>
+              <FileUploader
+                multiple={false}
+                handleChange={handleChange}
+                name="profileImage"
+                classes="drag-zone"
+                types={fileTypes}
               />
             </div>
           </div>

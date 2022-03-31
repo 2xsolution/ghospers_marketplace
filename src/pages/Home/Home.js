@@ -51,8 +51,7 @@ const Home = ({ setShowModal }) => {
         properties: selectedProperties,
         maxlevel,
         type: selectedType,
-        traits:
-          selectedTraits && selectedTraits.length > 0 ? selectedTraits : null,
+        // traits:    selectedTraits && selectedTraits.length > 0 ? selectedTraits : null,
       })
       .then((response) => {
         setTotalRecords(response.data.data[1].totalRecords);
@@ -91,7 +90,7 @@ const Home = ({ setShowModal }) => {
   const [maxlevel, setMaxlevel] = useState(100);
   // const [traits, setTraits] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
-  const [selectedTraits, setSelectedTraits] = useState([]);
+  // const [selectedTraits, setSelectedTraits] = useState([]);
   const [max, setMax] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [currency, setCurrency] = useState(null);
@@ -175,13 +174,13 @@ const Home = ({ setShowModal }) => {
     currency,
     selectedType,
     maxlevel,
-    selectedTraits,
+    // selectedTraits,
     selectedProperties,
   ]);
 
   const clearAll = (e) => {
     e.preventDefault();
-    setSelectedTraits([]);
+    // setSelectedTraits([]);
     setSelectedType(null);
     setMinlevel(0);
     setMax(null);
@@ -300,7 +299,7 @@ const Home = ({ setShowModal }) => {
                 />
               </div>
             </div>
-            <div className="hero">
+            {/* <div className="hero">
               <h4>TRAITS</h4>
               <div className="checkbox">
                 {traitsArray &&
@@ -332,7 +331,7 @@ const Home = ({ setShowModal }) => {
                     );
                   })}
               </div>
-            </div>
+            </div> */}
             {properties &&
               properties.map((data) => {
                 return (
@@ -410,8 +409,10 @@ const Home = ({ setShowModal }) => {
                         </div> */}
                             <div>
                               <span>Price</span>
-                              <p>900 {elem.currency?.toUpperCase()}</p>
-                              <small>${elem.price} USD</small>
+                              {/* <p>900 {elem.currency?.toUpperCase()}</p> */}
+                              <p>
+                                ${elem.price} {elem.currency?.toUpperCase()}
+                              </p>
                             </div>
                           </div>
                         </div>

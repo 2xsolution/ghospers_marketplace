@@ -20,11 +20,11 @@ function Profile() {
     "legendary",
   ]);
 
-  const [traitsArray, setTraitsArray] = useState([
-    "tank",
-    "marksman",
-    "assassin",
-  ]);
+  // const [traitsArray, setTraitsArray] = useState([
+  //   "tank",
+  //   "marksman",
+  //   "assassin",
+  // ]);
 
   const loadNfts = async (e) => {
     setIsLoading(true);
@@ -38,8 +38,7 @@ function Profile() {
         minlevel,
         maxlevel,
         type: selectedType,
-        traits:
-          selectedTraits && selectedTraits.length > 0 ? selectedTraits : null,
+        // traits:   selectedTraits && selectedTraits.length > 0 ? selectedTraits : null,
       })
       .then((response) => {
         console.log(response.data);
@@ -65,7 +64,7 @@ function Profile() {
 
   const clearAll = (e) => {
     e.preventDefault();
-    setSelectedTraits([]);
+    // setSelectedTraits([]);
     setSelectedType(null);
     setMinlevel(0);
     setMax(null);
@@ -84,15 +83,16 @@ function Profile() {
   const [min, setMin] = useState(null);
   const [minlevel, setMinlevel] = useState(0);
   const [maxlevel, setMaxlevel] = useState(100);
-  const [traits, setTraits] = useState(null);
+  // const [traits, setTraits] = useState(null);
   const [currency, setCurrency] = useState(null);
 
   const [selectedType, setSelectedType] = useState(null);
-  const [selectedTraits, setSelectedTraits] = useState([]);
+  // const [selectedTraits, setSelectedTraits] = useState([]);
   const [max, setMax] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [walletAddress, setWalletAddress] = useState("xyz");
   const [showModal, setShowModal] = useState(false);
+  const [userDetails, setUserDetails] = useState(null);
   const [properties, setProperties] = useState(null);
   const [selectedProperties, setSelectedProperties] = useState([]);
   const [singleSelectedProperty, setSingleSelectedProperty] = useState(null);
@@ -109,14 +109,53 @@ function Profile() {
     currency,
     selectedType,
     maxlevel,
-    selectedTraits,
+    // selectedTraits,
     selectedProperties,
   ]);
 
   useEffect(() => {
+    console.log(singleSelectedProperty);
+    if (
+      singleSelectedProperty &&
+      singleSelectedProperty.values &&
+      singleSelectedProperty.type
+    ) {
+      var index = selectedProperties.findIndex(
+        (x) => x.type === singleSelectedProperty.type
+      );
+      if (index !== -1) {
+        setSelectedProperties((prev) =>
+          Object.values({
+            ...prev,
+            [index]: {
+              ...prev[index],
+              values: [...singleSelectedProperty.values],
+            },
+          })
+        );
+      } else {
+        setSelectedProperties((prev) => [...prev, singleSelectedProperty]);
+      }
+      console.log(selectedProperties);
+    }
+  }, [singleSelectedProperty]);
+
+  useEffect(() => {
     loadProperties();
+    loadUserDetails();
   }, []);
 
+  const loadUserDetails = () => {
+    axios
+      .post(BASEURL + "/user/get-user", {
+        walletAddress,
+      })
+      .then((response) => {
+        console.log(response.data.data);
+        setUserDetails(response.data.data);
+      })
+      .catch((e) => console.log(e));
+  };
   const loadProperties = () => {
     axios
       .get(BASEURL + "/property/all")
@@ -159,7 +198,10 @@ function Profile() {
       <div className="profile-flex">
         <div className="profile-div">
           <div className="red-div">
-            <img src={ProfileImg} alt="" />
+            <img
+              src={userDetails && `${BASEURL}/uploads/${userDetails.imageUrl}`}
+              alt=""
+            />
           </div>
           <button className="custom-btn" onClick={() => setShowModal(true)}>
             Edit Profile
@@ -367,7 +409,7 @@ function Profile() {
               />
             </div>
           </div>
-          <div className="hero">
+          {/* <div className="hero">
             <h4>TRAITS</h4>
             <div className="checkbox">
               {traitsArray &&
@@ -399,7 +441,7 @@ function Profile() {
                   );
                 })}
             </div>
-          </div>
+          </div> */}
           {properties &&
             properties.map((data) => {
               return (
@@ -419,7 +461,11 @@ function Profile() {
 						</div> */}
         </div>
       </div>
-      <UpdateModal showModal={showModal} setShowModal={setShowModal} />
+      <UpdateModal
+        walletAddress={walletAddress}
+        showModal={showModal}
+        setShowModal={setShowModal}
+      />
     </div>
   );
 }
