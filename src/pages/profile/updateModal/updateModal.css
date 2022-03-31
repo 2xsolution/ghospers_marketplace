@@ -7,6 +7,7 @@
   border: none !important;
   width: 60%;
   margin: auto !important;
+  z-index: 1000000000 !important;
   height: max-content;
 }
 
@@ -30,4 +31,19 @@
   border-radius: 55px;
   transition: all 0.25s ease-in;
   background-color: #40c6ff;
+}
+
+.update-modal-content .drag-zone {
+  width: 100% !important;
+  margin: auto;
+  margin-top: 10px;
+  height: 80px !important;
+}
+
+.update-modal-content .file-div {
+  width: 100% !important;
+}
+
+.update-modal-content {
+  z-index: 1000000 !important;
 }

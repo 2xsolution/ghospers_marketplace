@@ -190,7 +190,7 @@ const NFTdetail = ({ setShowModal }) => {
                         <p>Daily GHSP Battles</p>
                       </div>
                       <p>
-                      {nftDetail &&
+                        {nftDetail &&
                           (nftDetail.type == "common"
                             ? "5"
                             : nftDetail.type == "rare"
@@ -208,7 +208,7 @@ const NFTdetail = ({ setShowModal }) => {
                   {nftDetail && nftDetail.price}{" "}
                   {nftDetail?.currency?.toUpperCase()}
                 </h1>
-                <p>{nftDetail && nftDetail.price} USD</p>
+                {/* <p>{nftDetail && nftDetail.price} USD</p> */}
               </div>
               <div className="buy-btn">
                 <a href="/" onClick={buyNFT}>
