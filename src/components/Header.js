@@ -54,7 +54,7 @@ const Header = ({ setShowModal }) => {
             </li>
             <li>
               <NavLink to="/" activeclassname="active">
-                Market Place
+                Marketplace
               </NavLink>
             </li>
             <li>

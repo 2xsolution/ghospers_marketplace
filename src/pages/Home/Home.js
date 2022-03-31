@@ -208,12 +208,12 @@ const Home = ({ setShowModal }) => {
               </a>
             </div>
             {/* <div className="hero">
-              <h4>GHOSPHERS</h4>
+              <h4>GHOSPERS</h4>
               <p>No Ghosper selected</p>
               <a onClick={loadNfts}>Choose Ghospers</a>
             </div> */}
             <div className="hero">
-              <h4>GHOSPHERS</h4>
+              <h4>GHOSPERS</h4>
               <div className="checkbox">
                 {typeArray.map((t) => {
                   return (

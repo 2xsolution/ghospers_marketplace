@@ -189,7 +189,16 @@ const NFTdetail = ({ setShowModal }) => {
                         {/* <img src={SwordIcon} alt="icon" /> */}
                         <p>Daily GHSP Battles</p>
                       </div>
-                      <p>#/Infinite</p>
+                      <p>
+                      {nftDetail &&
+                          (nftDetail.type == "common"
+                            ? "5"
+                            : nftDetail.type == "rare"
+                            ? "10"
+                            : nftDetail.type == "epic"
+                            ? "15"
+                            : "20")}
+                      </p>
                     </div>
                   </>
                 )}
