@@ -41,7 +41,7 @@ function UpdateModal({ setShowModal, showModal }) {
     if (!validateFields()) return;
 
     axios
-      .put(BASEURL + "/user/update", {
+      .put(BASEURL + "/user/save", {
         name,
         introduction,
         facebook,

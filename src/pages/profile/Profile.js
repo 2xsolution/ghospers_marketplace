@@ -10,6 +10,7 @@ import ProfileImg from "../../assets/img/card1.png";
 import UpdateModal from "./updateModal/UpdateModal";
 import Loader from "../../components/loader/Loader";
 import Accordian from "../../components/accordian/Accordian";
+import Header from "../../components/Header";
 function Profile() {
   const navigate = useNavigate();
 
@@ -140,6 +141,8 @@ function Profile() {
   };
 
   return (
+    <div>
+    <Header setShowModal={setShowModal} />
     <div className="profile-content">
       <div className="profile-back-filter">
         <button
@@ -420,6 +423,7 @@ function Profile() {
         </div>
       </div>
       <UpdateModal showModal={showModal} setShowModal={setShowModal} />
+    </div>
     </div>
   );
 }
