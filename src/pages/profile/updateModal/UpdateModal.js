@@ -21,10 +21,17 @@ import "./updateModal.css";
 
 Modal.setAppElement("#root");
 
-function UpdateModal({ setShowModal, showModal, walletAddress }) {
+function UpdateModal({
+  setShowModal,
+  showModal,
+  walletAddress,
+  userDetails,
+  setUserDetails,
+}) {
   function closeModal() {
     setShowModal(false);
   }
+  console.log(userDetails);
 
   const fileTypes = ["JPEG", "PNG", "GIF", "JPG"];
 
@@ -33,10 +40,10 @@ function UpdateModal({ setShowModal, showModal, walletAddress }) {
   };
   const [image, setImage] = useState("");
 
-  const [name, setName] = useState("");
-  const [introduction, setIntroduction] = useState("");
-  const [facebook, setFacebook] = useState("");
-  const [instagram, setInstagram] = useState("");
+  const [name, setName] = useState(userDetails?.name);
+  const [introduction, setIntroduction] = useState(userDetails?.introduction);
+  const [facebook, setFacebook] = useState(userDetails?.facebook);
+  const [instagram, setInstagram] = useState(userDetails?.instagram);
   // const [walletAddress] = useState("xyz");
 
   const validateFields = () => {
@@ -58,9 +65,11 @@ function UpdateModal({ setShowModal, showModal, walletAddress }) {
     formData.append("walletAddress", walletAddress);
 
     axios
-      .put(BASEURL + "/user/save", formData)
+      .put(BASEURL + "/user/update", formData)
       .then((response) => {
-        console.log(response);
+        console.log(response.data.data);
+        setUserDetails(response.data.data);
+        // setUserDetails
         setFacebook("");
         setInstagram("");
         setName("");

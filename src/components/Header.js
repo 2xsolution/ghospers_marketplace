@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import logo from "../assets/img/logo.6eaa2fdb.png";
 import "./header.css";
+import { NotificationManager } from "react-notifications";
 
 import { loadWeb3, connectWallet, getCurrentWallet } from "../core/web3";
+import axios from "axios";
+import { BASEURL } from "../utils/Utils";
 
-const Header = ({ setShowModal }) => {
+const Header = ({ setShowModal, setWalletAddress }) => {
   const [navActive, isnavActive] = useState(false);
   const [curWallet, setCurWallet] = useState("");
 
@@ -16,7 +19,33 @@ const Header = ({ setShowModal }) => {
     await loadWeb3();
     let res = await connectWallet();
     setCurWallet(res.address);
+    console.log(res.address);
+    // setWalletAddress(res.address);
+    // setWalletAddress("xyz");
   };
+
+  const saveUser = (e) => {
+    axios
+      .post(BASEURL + "/user/save", {
+        // walletAddress: curWallet,
+        walletAddress: "xyz",
+      })
+      .then((response) => {
+        console.log(response);
+        NotificationManager.success("User Created Successfully");
+      })
+      .catch((e) => {
+        if (e.response.status !== 400) {
+          NotificationManager.error(e.response.data.error);
+        }
+      });
+  };
+
+  useEffect(() => {
+    // if (curWallet) {
+    saveUser();
+    // }
+  }, [curWallet]);
 
   const openModal = (e) => {
     console.log("hwllo");
