@@ -60,7 +60,7 @@ function Mint({ setShowModal }) {
 
   const saveNft = async (e) => {
     setIsLoading(true);
-    NotificationManager.info("Please wait for a minutes.");
+    // NotificationManager.info("Please wait for a minutes.");
     IPFSUtils.uploadFileToIPFS([image]).then((lists) => {
       if (lists.length > 0) {
         const content_uri1 = {
