@@ -21,12 +21,6 @@ function Profile() {
     "legendary",
   ]);
 
-  // const [traitsArray, setTraitsArray] = useState([
-  //   "tank",
-  //   "marksman",
-  //   "assassin",
-  // ]);
-
   const loadNfts = async (e) => {
     setIsLoading(true);
 
@@ -39,7 +33,6 @@ function Profile() {
         minlevel,
         maxlevel,
         type: selectedType,
-        // traits:   selectedTraits && selectedTraits.length > 0 ? selectedTraits : null,
       })
       .then((response) => {
         console.log(response.data);
@@ -65,7 +58,6 @@ function Profile() {
 
   const clearAll = (e) => {
     e.preventDefault();
-    // setSelectedTraits([]);
     setSelectedType(null);
     setMinlevel(0);
     setMax(null);
@@ -84,11 +76,9 @@ function Profile() {
   const [min, setMin] = useState(null);
   const [minlevel, setMinlevel] = useState(0);
   const [maxlevel, setMaxlevel] = useState(100);
-  // const [traits, setTraits] = useState(null);
   const [currency, setCurrency] = useState(null);
 
   const [selectedType, setSelectedType] = useState(null);
-  // const [selectedTraits, setSelectedTraits] = useState([]);
   const [max, setMax] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [walletAddress, setWalletAddress] = useState("abcd");
@@ -111,7 +101,6 @@ function Profile() {
     selectedType,
     maxlevel,
     walletAddress,
-    // selectedTraits,
     selectedProperties,
   ]);
 
@@ -452,39 +441,6 @@ function Profile() {
                   />
                 </div>
               </div>
-              {/* <div className="hero">
-    <h4>TRAITS</h4>
-    <div className="checkbox">
-      {traitsArray &&
-        traitsArray.map((trait, index) => {
-          return (
-            <label className="checkbox-wrap" key={index}>
-              <input
-                type="checkbox"
-                checked={
-                  selectedTraits && selectedTraits.includes(trait)
-                }
-                onChange={() => {
-                  if (
-                    selectedTraits &&
-                    selectedTraits.includes(trait)
-                  ) {
-                    var remaningTraits =
-                      selectedTraits &&
-                      selectedTraits.filter((t) => t !== trait);
-                    setSelectedTraits(remaningTraits);
-                  } else {
-                    setSelectedTraits((prev) => [...prev, trait]);
-                  }
-                }}
-              />
-              <span className="checkmark"></span>
-              {trait}
-            </label>
-          );
-        })}
-    </div>
-  </div> */}
               {properties &&
                 properties.map((data) => {
                   return (

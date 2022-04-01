@@ -33,14 +33,8 @@ function Mint({ setShowModal }) {
   const [currency, setCurrency] = useState("ghsp");
   const [image, setImage] = useState("");
   const [selectedType, setSelectedType] = useState("");
-  // const [selectedTraits, setSelectedTraits] = useState([]);
   const [level, setLevel] = useState("");
   const [properties, setProperties] = useState("");
-  // const [traitsArray, setTraitsArray] = useState([
-  //   "tank",
-  //   "marksman",
-  //   "assassin",
-  // ]);
 
   const [typeArray, setTypeArray] = useState([
     "common",
@@ -93,7 +87,6 @@ function Mint({ setShowModal }) {
                 formData.append("ipfs", ipfs);
                 formData.append("properties", JSON.stringify(properties));
                 formData.append("level", level);
-                // formData.append("traits", selectedTraits);
 
                 console.log(...formData);
 
@@ -105,7 +98,6 @@ function Mint({ setShowModal }) {
                     setTitle("");
                     setDescription("");
                     setPrice("");
-                    // setSelectedTraits([]);
                     setSelectedType(null);
                     setImage("");
                     setLevel("");
@@ -271,39 +263,6 @@ function Mint({ setShowModal }) {
               })}
             </div>
           </div>
-          {/* <div className="checkbox">
-            <label htmlFor="">Traits</label>
-            <div className="mint-types">
-              {traitsArray &&
-                traitsArray.map((trait) => {
-                  return (
-                    <label className="checkbox-wrap  mint-wrap">
-                      <input
-                        type="checkbox"
-                        checked={
-                          selectedTraits && selectedTraits.includes(trait)
-                        }
-                        onChange={() => {
-                          if (
-                            selectedTraits &&
-                            selectedTraits.includes(trait)
-                          ) {
-                            var remaningTraits =
-                              selectedTraits &&
-                              selectedTraits.filter((t) => t !== trait);
-                            setSelectedTraits(remaningTraits);
-                          } else {
-                            setSelectedTraits((prev) => [...prev, trait]);
-                          }
-                        }}
-                      />
-                      <span className="checkmark"></span>
-                      {trait}
-                    </label>
-                  );
-                })}
-            </div>
-          </div> */}
           <button onClick={saveNft} disabled={!validateFields()}>
             Create Item
           </button>
