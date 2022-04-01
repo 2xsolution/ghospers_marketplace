@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import logo from "../assets/img/logo.6eaa2fdb.png";
 import "./header.css";
+import { NotificationManager } from "react-notifications";
 
 import { loadWeb3, connectWallet, getCurrentWallet } from "../core/web3";
+import axios from "axios";
+import { BASEURL } from "../utils/Utils";
 
 const Header = ({ setShowModal }) => {
   const [navActive, isnavActive] = useState(false);
@@ -17,6 +20,28 @@ const Header = ({ setShowModal }) => {
     let res = await connectWallet();
     setCurWallet(res.address);
   };
+
+  const saveUser = (e) => {
+    axios
+      .post(BASEURL + "/user/save", {
+        // walletAddress: curWallet,
+        walletAddress: "xyz",
+      })
+      .then((response) => {
+        console.log(response);
+        NotificationManager.success("User Created Successfully");
+      })
+      .catch((e) => {
+        console.log(e);
+        NotificationManager.error(e.response.data.error);
+      });
+  };
+
+  useEffect(() => {
+    // if (curWallet) {
+    saveUser();
+    // }
+  }, [curWallet]);
 
   const openModal = (e) => {
     console.log("hwllo");
