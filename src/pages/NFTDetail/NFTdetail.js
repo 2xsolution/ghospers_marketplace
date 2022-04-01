@@ -76,7 +76,7 @@ const NFTdetail = ({ setShowModal }) => {
             <div className="nft-detail-container">
               <div className="nft-img">
                 <img
-                  src={nftDetail && `${BASEURL}/uploads/${nftDetail.imageUrl}`}
+                  src={nftDetail && `${nftDetail.imageUrl}`}
                   alt="nft_image"
                 />
               </div>

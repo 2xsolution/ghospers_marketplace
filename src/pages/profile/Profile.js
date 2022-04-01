@@ -207,7 +207,7 @@ function Profile() {
                   <img
                     src={
                       userDetails &&
-                      `${BASEURL}/uploads/${userDetails.imageUrl}`
+                      `${userDetails.imageUrl}`
                     }
                     alt=""
                   />
@@ -278,7 +278,7 @@ function Profile() {
                       >
                         <div className="card-img">
                           <img
-                            src={`${BASEURL}/uploads/${elem.imageUrl}`}
+                            src={`${elem.imageUrl}`}
                             alt="Card1"
                           />
                         </div>
