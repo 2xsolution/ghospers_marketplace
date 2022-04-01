@@ -8,7 +8,7 @@ import { loadWeb3, connectWallet, getCurrentWallet } from "../core/web3";
 import axios from "axios";
 import { BASEURL } from "../utils/Utils";
 
-const Header = ({ setShowModal }) => {
+const Header = ({ setShowModal, setWalletAddress }) => {
   const [navActive, isnavActive] = useState(false);
   const [curWallet, setCurWallet] = useState("");
 
@@ -19,6 +19,9 @@ const Header = ({ setShowModal }) => {
     await loadWeb3();
     let res = await connectWallet();
     setCurWallet(res.address);
+    console.log(res.address);
+    // setWalletAddress(res.address);
+    // setWalletAddress("xyz");
   };
 
   const saveUser = (e) => {
@@ -32,8 +35,9 @@ const Header = ({ setShowModal }) => {
         NotificationManager.success("User Created Successfully");
       })
       .catch((e) => {
-        console.log(e);
-        NotificationManager.error(e.response.data.error);
+        if (e.response.status !== 400) {
+          NotificationManager.error(e.response.data.error);
+        }
       });
   };
 

@@ -91,7 +91,7 @@ function Profile() {
   // const [selectedTraits, setSelectedTraits] = useState([]);
   const [max, setMax] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [walletAddress, setWalletAddress] = useState("xyz");
+  const [walletAddress, setWalletAddress] = useState("abcd");
   const [showModal, setShowModal] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
   const [properties, setProperties] = useState(null);
@@ -110,6 +110,7 @@ function Profile() {
     currency,
     selectedType,
     maxlevel,
+    walletAddress,
     // selectedTraits,
     selectedProperties,
   ]);
@@ -144,7 +145,7 @@ function Profile() {
   useEffect(() => {
     loadProperties();
     loadUserDetails();
-  }, []);
+  }, [walletAddress]);
 
   const loadUserDetails = () => {
     axios
@@ -180,9 +181,8 @@ function Profile() {
   };
 
   return (
-    <>
-      <Header />
-
+    <div>
+      <Header setShowModal={setShowModal} setWalletAddress={setWalletAddress} />
       <div className="profile-content">
         <div className="profile-back-filter">
           <button
@@ -199,277 +199,327 @@ function Profile() {
             </a>
           </div>
         </div>
-        <div className="profile-flex">
-          <div className="profile-div">
-            <div className="red-div">
-              <img
-                src={
-                  userDetails && `${BASEURL}/uploads/${userDetails.imageUrl}`
-                }
-                alt=""
-              />
-            </div>
-            <button className="custom-btn" onClick={() => setShowModal(true)}>
-              Edit Profile
-            </button>
-            <h2>{userDetails && userDetails.name}</h2>
-            <p>{userDetails && userDetails.walletAddress}</p>{" "}
-            <div className="profile-about">
-              <p>About me</p>
-              <p>{userDetails && userDetails.introduction}</p>
-            </div>
-          </div>
-
-          <div
-            className="profile-nft-div"
-            style={{ marginLeft: "60px", width: "100%" }}
-          >
-            <div className="nft-collections">
-              {isLoading ? (
-                <Loader />
-              ) : (
-                nftsArray &&
-                nftsArray.map((elem, i) => {
-                  return (
-                    <div
-                      className="card"
-                      key={i}
-                      onClick={() => {
-                        onClickItem(i);
-                        navigate(`/trending/${elem._id}`);
-                      }}
+        {walletAddress ? (
+          <div className="profile-flex">
+            {userDetails && userDetails.facebook ? (
+              <div className="profile-div">
+                <div className="red-div">
+                  <img
+                    src={
+                      userDetails &&
+                      `${BASEURL}/uploads/${userDetails.imageUrl}`
+                    }
+                    alt=""
+                  />
+                </div>
+                <button
+                  className="custom-btn"
+                  onClick={() => setShowModal(true)}
+                >
+                  Edit Profile
+                </button>
+                <h2>{userDetails && userDetails.name}</h2>
+                <p>{userDetails && userDetails.walletAddress}</p>{" "}
+                <div className="profile-about">
+                  <p>About me</p>
+                  <p>{userDetails && userDetails.introduction}</p>
+                  <div className="profile-social">
+                    <a
+                      target="_blank"
+                      href={userDetails && userDetails.facebook}
                     >
-                      <div className="card-img">
-                        <img
-                          src={`${BASEURL}/uploads/${elem.imageUrl}`}
-                          alt="Card1"
-                        />
+                      <div className="white-round-div">
+                        <i className="fa-brands fa-facebook-f"></i>
                       </div>
-                      <div className="card-title">
-                        <h4>
-                          {elem.title}
-                          {Number(sampleNFTTokenID) === Number(i) ? (
-                            <span>&#10003;</span>
-                          ) : (
-                            ""
-                          )}{" "}
-                          {saleItems[i] && saleItems[i].onSale === true
-                            ? "OnSale"
-                            : ""}
-                        </h4>
-                        {/* <span>{elem.description}</span> */}
-                        <button
-                          className="custom-btn"
-                          onClick={(e) => sellNft(e, elem._id)}
-                        >
-                          SELL
-                        </button>
+                    </a>
+                    <a
+                      target="_blank"
+                      href={userDetails && userDetails.instagram}
+                    >
+                      <div className="white-round-div">
+                        <i className="fa-brands fa-instagram"></i>
                       </div>
-                      <div className="card-price">
-                        {/* <div>
-                          <span>gTHC</span>
-                          <p>21/219</p>
-                        </div> */}
-                        <div>
-                          <span>Price</span>
-                          <p>900 {elem.currency?.toUpperCase()}</p>
-                          <small>${elem.price} USD</small>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="overlay-blue">
+                <div>
+                  <h3>Profile is not updated</h3>
+                  <button
+                    className="custom-btn"
+                    onClick={() => setShowModal(true)}
+                  >
+                    Edit Profile
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div
+              className="profile-nft-div"
+              style={{ marginLeft: "60px", width: "100%" }}
+            >
+              <div className="nft-collections">
+                {isLoading ? (
+                  <Loader />
+                ) : (
+                  nftsArray &&
+                  nftsArray.map((elem, i) => {
+                    return (
+                      <div
+                        className="card"
+                        key={i}
+                        onClick={() => {
+                          onClickItem(i);
+                          navigate(`/trending/${elem._id}`);
+                        }}
+                      >
+                        <div className="card-img">
+                          <img
+                            src={`${BASEURL}/uploads/${elem.imageUrl}`}
+                            alt="Card1"
+                          />
+                        </div>
+                        <div className="card-title">
+                          <h4>
+                            {elem.title}
+                            {Number(sampleNFTTokenID) === Number(i) ? (
+                              <span>&#10003;</span>
+                            ) : (
+                              ""
+                            )}{" "}
+                            {saleItems[i] && saleItems[i].onSale === true
+                              ? "OnSale"
+                              : ""}
+                          </h4>
+                          {/* <span>{elem.description}</span> */}
+                          <button
+                            className="custom-btn"
+                            onClick={(e) => sellNft(e, elem._id)}
+                          >
+                            SELL
+                          </button>
+                        </div>
+                        <div className="card-price">
+                          {/* <div>
+                  <span>gTHC</span>
+                  <p>21/219</p>
+                </div> */}
+                          <div>
+                            <span>Price</span>
+                            <p>900 {elem.currency?.toUpperCase()}</p>
+                            <small>${elem.price} USD</small>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  );
-                })
-              )}
+                    );
+                  })
+                )}
 
-              {nftsArray && nftsArray.length > 0 && !isLoading ? (
-                <div className="pagination-wrap">
-                  <div className="pagination">
-                    <div className="icon">
-                      <a href="/">
-                        <img src={LeftIcon} alt="" />
-                      </a>
-                    </div>
-                    <div className="number">
-                      <span>{size > totalRecords ? totalRecords : size}</span>
-                      of {totalRecords && totalRecords}
-                    </div>
-                    <div className="icon">
-                      <a href="/">
-                        <img src={RightIcon} alt="" />
-                      </a>
+                {nftsArray && nftsArray.length > 0 && !isLoading ? (
+                  <div className="pagination-wrap">
+                    <div className="pagination">
+                      <div className="icon">
+                        <a href="/">
+                          <img src={LeftIcon} alt="" />
+                        </a>
+                      </div>
+                      <div className="number">
+                        <span>{size > totalRecords ? totalRecords : size}</span>
+                        of {totalRecords && totalRecords}
+                      </div>
+                      <div className="icon">
+                        <a href="/">
+                          <img src={RightIcon} alt="" />
+                        </a>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ) : (
-                <div
-                  style={{
-                    width: "100%",
-                    marginTop: "20px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <h2>No Data Found!</h2>
-                </div>
-              )}
-            </div>
-          </div>
-          <div className={sidebar ? "sidebar sidebar-active" : "sidebar"}>
-            <div className="filter">
-              <h4>FILTERS</h4>
-              <a href="/" onClick={clearAll}>
-                CLEAR ALL
-              </a>
-            </div>
-            <div className="hero">
-              <h4>GHOSPERS</h4>
-              <p>No Ghosper selected</p>
-              <a onClick={loadNfts}>Choose Ghospers</a>
-            </div>
-            <div className="hero">
-              <h4>GHOSPERS</h4>
-              <div className="checkbox">
-                {typeArray.map((t) => {
-                  return (
-                    <label key={t} className="checkbox-wrap">
-                      <input
-                        type="checkbox"
-                        checked={selectedType === t}
-                        onChange={() => {
-                          if (selectedType === t) {
-                            setSelectedType(null);
-                          } else setSelectedType(t);
-                        }}
-                      />
-                      <span className="checkmark"></span>
-                      {t}
-                    </label>
-                  );
-                })}
-              </div>
-            </div>
-            <div className="hero">
-              <h4>PRICE</h4>
-              <div className="price">
-                <div className="price-inpt">
-                  <input
-                    type="number"
-                    onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
-                    onChange={(e) => {
-                      if (e.target.value < 0) {
-                        setMin(0);
-                      } else if (e.target.value > 100000000) {
-                        setMin(100000000);
-                      } else setMin(e.target.value);
+                ) : (
+                  <div
+                    style={{
+                      width: "100%",
+                      marginTop: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
                     }}
-                    placeholder="Min"
-                  />
+                  >
+                    <h2>No Data Found!</h2>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className={sidebar ? "sidebar sidebar-active" : "sidebar"}>
+              <div className="filter">
+                <h4>FILTERS</h4>
+                <a href="/" onClick={clearAll}>
+                  CLEAR ALL
+                </a>
+              </div>
+              {/* <div className="hero">
+                <h4>GHOSPERS</h4>
+                <p>No Ghosper selected</p>
+                <a onClick={loadNfts}>Choose Ghospers</a>
+              </div> */}
+              <div className="hero">
+                <h4>GHOSPERS</h4>
+                <div className="checkbox">
+                  {typeArray.map((t) => {
+                    return (
+                      <label key={t} className="checkbox-wrap">
+                        <input
+                          type="checkbox"
+                          checked={selectedType === t}
+                          onChange={() => {
+                            if (selectedType === t) {
+                              setSelectedType(null);
+                            } else setSelectedType(t);
+                          }}
+                        />
+                        <span className="checkmark"></span>
+                        {t}
+                      </label>
+                    );
+                  })}
                 </div>
-                <span></span>
-                <div className="price-inpt">
-                  <input
-                    placeholder="Max"
-                    type="number"
-                    onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
-                    onChange={(e) => {
-                      if (e.target.value < 0) {
-                        setMax(0);
-                      } else if (e.target.value > 100000000) {
-                        setMax(100000000);
-                      } else setMax(e.target.value);
-                    }}
-                  />
-                </div>
               </div>
-            </div>
-            <div className="hero">
-              <h4>Currency</h4>
-              <div className="levels">
-                <select
-                  onChange={(e) => setCurrency(e.target.value)}
-                  value={currency}
-                >
-                  <option selected>Select Currency</option>
-                  <option value="ghsp">GHSP</option>
-                  <option value="bnb">BNB</option>
-                  <option value="busd">BUSD</option>
-                </select>
-              </div>
-            </div>
-            <div className="hero">
-              <h4>LEVEL</h4>
-              <div className="levels">
-                <MultiRangeInput
-                  min={0}
-                  max={20}
-                  onChange={({ min, max }) => {
-                    setMinlevel(min);
-                    setMaxlevel(max);
-                    console.log(`min = ${min}, max = ${max}`);
-                  }}
-                />
-              </div>
-            </div>
-            {/* <div className="hero">
-            <h4>TRAITS</h4>
-            <div className="checkbox">
-              {traitsArray &&
-                traitsArray.map((trait, index) => {
-                  return (
-                    <label className="checkbox-wrap" key={index}>
-                      <input
-                        type="checkbox"
-                        checked={
-                          selectedTraits && selectedTraits.includes(trait)
-                        }
-                        onChange={() => {
-                          if (
-                            selectedTraits &&
-                            selectedTraits.includes(trait)
-                          ) {
-                            var remaningTraits =
-                              selectedTraits &&
-                              selectedTraits.filter((t) => t !== trait);
-                            setSelectedTraits(remaningTraits);
-                          } else {
-                            setSelectedTraits((prev) => [...prev, trait]);
-                          }
-                        }}
-                      />
-                      <span className="checkmark"></span>
-                      {trait}
-                    </label>
-                  );
-                })}
-            </div>
-          </div> */}
-            {properties &&
-              properties.map((data) => {
-                return (
-                  <div className="hero">
-                    <Accordian
-                      setSingleSelectedProperty={setSingleSelectedProperty}
-                      title={data.type}
-                      content={data.values}
+              <div className="hero">
+                <h4>PRICE</h4>
+                <div className="price">
+                  <div className="price-inpt">
+                    <input
+                      type="number"
+                      onKeyDown={(evt) =>
+                        evt.key === "e" && evt.preventDefault()
+                      }
+                      onChange={(e) => {
+                        if (e.target.value < 0) {
+                          setMin(0);
+                        } else if (e.target.value > 100000000) {
+                          setMin(100000000);
+                        } else setMin(e.target.value);
+                      }}
+                      placeholder="Min"
                     />
                   </div>
-                );
-              })}
-            {/* <div className="hero skin">
-							<h4>SKINS</h4>
-							<p>No skin selected</p>
-							<a href="/">Choose Skin</a>
-						</div> */}
+                  <span></span>
+                  <div className="price-inpt">
+                    <input
+                      placeholder="Max"
+                      type="number"
+                      onKeyDown={(evt) =>
+                        evt.key === "e" && evt.preventDefault()
+                      }
+                      onChange={(e) => {
+                        if (e.target.value < 0) {
+                          setMax(0);
+                        } else if (e.target.value > 100000000) {
+                          setMax(100000000);
+                        } else setMax(e.target.value);
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="hero">
+                <h4>Currency</h4>
+                <div className="levels">
+                  <select
+                    onChange={(e) => setCurrency(e.target.value)}
+                    value={currency}
+                  >
+                    <option selected>Select Currency</option>
+                    <option value="ghsp">GHSP</option>
+                    <option value="bnb">BNB</option>
+                    <option value="busd">BUSD</option>
+                  </select>
+                </div>
+              </div>
+              <div className="hero">
+                <h4>LEVEL</h4>
+                <div className="levels">
+                  <MultiRangeInput
+                    min={0}
+                    max={20}
+                    onChange={({ min, max }) => {
+                      setMinlevel(min);
+                      setMaxlevel(max);
+                      console.log(`min = ${min}, max = ${max}`);
+                    }}
+                  />
+                </div>
+              </div>
+              {/* <div className="hero">
+    <h4>TRAITS</h4>
+    <div className="checkbox">
+      {traitsArray &&
+        traitsArray.map((trait, index) => {
+          return (
+            <label className="checkbox-wrap" key={index}>
+              <input
+                type="checkbox"
+                checked={
+                  selectedTraits && selectedTraits.includes(trait)
+                }
+                onChange={() => {
+                  if (
+                    selectedTraits &&
+                    selectedTraits.includes(trait)
+                  ) {
+                    var remaningTraits =
+                      selectedTraits &&
+                      selectedTraits.filter((t) => t !== trait);
+                    setSelectedTraits(remaningTraits);
+                  } else {
+                    setSelectedTraits((prev) => [...prev, trait]);
+                  }
+                }}
+              />
+              <span className="checkmark"></span>
+              {trait}
+            </label>
+          );
+        })}
+    </div>
+  </div> */}
+              {properties &&
+                properties.map((data) => {
+                  return (
+                    <div className="hero">
+                      <Accordian
+                        setSingleSelectedProperty={setSingleSelectedProperty}
+                        title={data.type}
+                        content={data.values}
+                      />
+                    </div>
+                  );
+                })}
+              {/* <div className="hero skin">
+      <h4>SKINS</h4>
+      <p>No skin selected</p>
+      <a href="/">Choose Skin</a>
+    </div> */}
+            </div>
           </div>
-        </div>
-        <UpdateModal
-          walletAddress={walletAddress}
-          showModal={showModal}
-          setShowModal={setShowModal}
-        />
+        ) : (
+          <h2 style={{ textAlign: "center", marginTop: "40px" }}>
+            You are not registered with Ghospers
+          </h2>
+        )}
+        {userDetails && (
+          <UpdateModal
+            setUserDetails={setUserDetails}
+            userDetails={userDetails}
+            walletAddress={walletAddress}
+            showModal={showModal}
+            setShowModal={setShowModal}
+          />
+        )}
       </div>
-    </>
+    </div>
   );
 }
 
