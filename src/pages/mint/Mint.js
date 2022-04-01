@@ -111,11 +111,13 @@ function Mint({ setShowModal }) {
                     setLevel("");
                     setIsLoading(false);
                     NotificationManager.success("Nft Created Successfully");
+                    window.location.reload();
                   })
                   .catch((e) => {
                     NotificationManager.error("Error Writing to DB");
                     console.log(e);
                     setIsLoading(false);
+                    window.location.reload();
                   });
               } else {
                 setIsLoading(false);
