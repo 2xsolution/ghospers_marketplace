@@ -59,6 +59,9 @@
   margin-top: 15px;
 }
 
+.custom-slider {
+  z-index: -40000;
+}
 .thumb--zindex-3 {
   z-index: 3;
 }

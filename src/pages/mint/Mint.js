@@ -35,7 +35,7 @@ function Mint({ setShowModal }) {
   const [selectedType, setSelectedType] = useState("");
   // const [selectedTraits, setSelectedTraits] = useState([]);
   const [level, setLevel] = useState("");
-  const [properties, setProperties] = useState("");
+  const [properties, setProperties] = useState(null);
   // const [traitsArray, setTraitsArray] = useState([
   //   "tank",
   //   "marksman",
@@ -108,12 +108,15 @@ function Mint({ setShowModal }) {
                     // setSelectedTraits([]);
                     setSelectedType(null);
                     setImage("");
+                    setProperties(null);
                     setLevel("");
                     setIsLoading(false);
                     NotificationManager.success("Nft Created Successfully");
                   })
                   .catch((e) => {
+                    console.log(e.response.data.message);
                     NotificationManager.error("Error Writing to DB");
+                    NotificationManager.error(e.response.data.message);
                     console.log(e);
                     setIsLoading(false);
                   });
@@ -308,6 +311,7 @@ function Mint({ setShowModal }) {
         </div>
         <AddPropertyModal
           setProperties={setProperties}
+          properties={properties}
           showModal={showPropertyModal}
           setShowModal={setShowPropertyModal}
         />
