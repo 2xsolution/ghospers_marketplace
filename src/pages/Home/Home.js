@@ -369,7 +369,7 @@ const Home = ({ setShowModal }) => {
                         </div> */}
                             <div>
                               <span>Price</span>
-                              <p>900 {elem.currency?.toUpperCase()}</p>
+                              <p>{elem.price}&nbsp;{elem.currency?.toUpperCase()}</p>
                               <small>${elem.price} USD</small>
                             </div>
                           </div>
