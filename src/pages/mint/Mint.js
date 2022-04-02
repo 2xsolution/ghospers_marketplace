@@ -33,7 +33,6 @@ function Mint({ setShowModal }) {
   const [currency, setCurrency] = useState("ghsp");
   const [image, setImage] = useState("");
   const [selectedType, setSelectedType] = useState("");
-  // const [selectedTraits, setSelectedTraits] = useState([]);
   const [level, setLevel] = useState("");
   const [properties, setProperties] = useState(null);
   // const [traitsArray, setTraitsArray] = useState([
@@ -60,7 +59,7 @@ function Mint({ setShowModal }) {
 
   const saveNft = async (e) => {
     setIsLoading(true);
-    NotificationManager.info("Please wait for a minutes.");
+    // NotificationManager.info("Please wait for a minutes.");
     IPFSUtils.uploadFileToIPFS([image]).then((lists) => {
       if (lists.length > 0) {
         const content_uri1 = {
@@ -93,7 +92,6 @@ function Mint({ setShowModal }) {
                 formData.append("ipfs", ipfs);
                 formData.append("properties", JSON.stringify(properties));
                 formData.append("level", level);
-                // formData.append("traits", selectedTraits);
 
                 console.log(...formData);
 
@@ -105,13 +103,13 @@ function Mint({ setShowModal }) {
                     setTitle("");
                     setDescription("");
                     setPrice("");
-                    // setSelectedTraits([]);
                     setSelectedType(null);
                     setImage("");
                     setProperties(null);
                     setLevel("");
                     setIsLoading(false);
                     NotificationManager.success("Nft Created Successfully");
+                    window.location.reload();
                   })
                   .catch((e) => {
                     console.log(e.response.data.message);
@@ -119,6 +117,7 @@ function Mint({ setShowModal }) {
                     NotificationManager.error(e.response.data.message);
                     console.log(e);
                     setIsLoading(false);
+                    window.location.reload();
                   });
               } else {
                 setIsLoading(false);
@@ -272,39 +271,6 @@ function Mint({ setShowModal }) {
               })}
             </div>
           </div>
-          {/* <div className="checkbox">
-            <label htmlFor="">Traits</label>
-            <div className="mint-types">
-              {traitsArray &&
-                traitsArray.map((trait) => {
-                  return (
-                    <label className="checkbox-wrap  mint-wrap">
-                      <input
-                        type="checkbox"
-                        checked={
-                          selectedTraits && selectedTraits.includes(trait)
-                        }
-                        onChange={() => {
-                          if (
-                            selectedTraits &&
-                            selectedTraits.includes(trait)
-                          ) {
-                            var remaningTraits =
-                              selectedTraits &&
-                              selectedTraits.filter((t) => t !== trait);
-                            setSelectedTraits(remaningTraits);
-                          } else {
-                            setSelectedTraits((prev) => [...prev, trait]);
-                          }
-                        }}
-                      />
-                      <span className="checkmark"></span>
-                      {trait}
-                    </label>
-                  );
-                })}
-            </div>
-          </div> */}
           <button onClick={saveNft} disabled={!validateFields()}>
             Create Item
           </button>

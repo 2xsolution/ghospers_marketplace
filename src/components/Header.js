@@ -32,7 +32,7 @@ const Header = ({ setShowModal, setWalletAddress }) => {
       })
       .then((response) => {
         console.log(response);
-        NotificationManager.success("User Created Successfully");
+        //NotificationManager.success("User Created Successfully");
       })
       .catch((e) => {
         if (e.response.status !== 400) {
