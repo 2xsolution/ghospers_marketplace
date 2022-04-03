@@ -19,7 +19,7 @@ const Header = ({ setShowModal, setWalletAddress }) => {
     await loadWeb3();
     let res = await connectWallet();
     setCurWallet(res.address);
-    console.log(res.address);
+    // console.log(res.address);
     // setWalletAddress(res.address);
     // setWalletAddress("xyz");
   };
@@ -48,7 +48,7 @@ const Header = ({ setShowModal, setWalletAddress }) => {
   }, [curWallet]);
 
   const openModal = (e) => {
-    console.log("hwllo");
+    // console.log("hwllo");
     e.preventDefault();
     // setShowModal((prev) => !prev);
 
@@ -58,7 +58,7 @@ const Header = ({ setShowModal, setWalletAddress }) => {
   const getWallet = async () => {
     let res = await getCurrentWallet();
     if (res.success) {
-      console.log(res.account);
+      // console.log(res.account);
       setCurWallet(res.account);
       // setWalletAddress(res.account);
     }

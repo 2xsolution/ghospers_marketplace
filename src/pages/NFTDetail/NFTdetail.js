@@ -18,7 +18,6 @@ import {
 } from "../../core/web3";
 
 const NFTdetail = ({ setShowModal }) => {
-  console.log(useParams());
   const [nftDetail, setNftDetail] = useState(null);
   const [walletAddress, setWalletAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -35,10 +34,10 @@ const NFTdetail = ({ setShowModal }) => {
   }, []);
 
   const { nftId, tokenId } = useParams();
-  console.log(nftId);
-  console.log(tokenId);
+  // console.log(nftId);
+  // console.log(tokenId);
   useEffect(() => {
-    console.log(nftId);
+    // console.log(nftId);
     loadNftById(nftId);
   }, [nftId]);
 
@@ -47,7 +46,7 @@ const NFTdetail = ({ setShowModal }) => {
     axios
       .get(`${BASEURL}/nft/${id}`)
       .then((response) => {
-        console.log("detail data", response.data.data);
+        // console.log("detail data", response.data.data);
         setNftDetail(response.data.data);
         setIsLoading(false);
       })
