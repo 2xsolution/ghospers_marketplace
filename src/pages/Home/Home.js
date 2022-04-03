@@ -48,7 +48,7 @@ const Home = ({ setShowModal }) => {
         currency,
         properties: selectedProperties,
         maxlevel,
-        type: selectedType
+        type: selectedType,
       })
       .then((response) => {
         setTotalRecords(response.data.data[1].totalRecords);
@@ -64,6 +64,7 @@ const Home = ({ setShowModal }) => {
 
   const buyNft = async (e, nftId) => {
     e.stopPropagation();
+    console.log(walletAddress);
     axios
       .put(`${BASEURL}/nft/${nftId}`, {
         walletAddress,
@@ -184,7 +185,7 @@ const Home = ({ setShowModal }) => {
 
   return (
     <>
-      <Header setShowModal={setShowModal} />
+      <Header setShowModal={setShowModal} setWalletAddress={setWalletAddress} />
       <section className="root">
         <div className="fitermob">
           <a href="/" className="filter-btn" onClick={openSidebar}>
@@ -335,10 +336,7 @@ const Home = ({ setShowModal }) => {
                           }}
                         >
                           <div className="card-img">
-                            <img
-                              src={`${elem.imageUrl}`}
-                              alt="Card1"
-                            />
+                            <img src={`${elem.imageUrl}`} alt="Card1" />
                           </div>
                           <div className="card-title">
                             <h4>
@@ -359,7 +357,7 @@ const Home = ({ setShowModal }) => {
                                 }
                               }
                             >
-                              BUY
+                              OPEN
                             </button>
                           </div>
                           <div className="card-price">
@@ -369,8 +367,10 @@ const Home = ({ setShowModal }) => {
                         </div> */}
                             <div>
                               <span>Price</span>
-                              <p>{elem.price}&nbsp;{elem.currency?.toUpperCase()}</p>
-                              <small>${elem.price} USD</small>
+                              {/* <p>900 {elem.currency?.toUpperCase()}</p> */}
+                              <p>
+                                {elem.price} {elem.currency?.toUpperCase()}
+                              </p>
                             </div>
                           </div>
                         </div>

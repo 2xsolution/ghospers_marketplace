@@ -4,6 +4,7 @@ import Header from "../../components/Header";
 import NFTimg from "../../assets/img/nftimg.png";
 import coinIcon from "../../assets/img/coinicon.png";
 import Icon from "../../assets/img/icon_stat.png";
+import Loader from "../../components/loader/Loader";
 import SwordIcon from "../../assets/img/sword.png";
 import "./nftdetail.css";
 import axios from "axios";
@@ -17,10 +18,11 @@ import {
 } from "../../core/web3";
 
 const NFTdetail = ({ setShowModal }) => {
-  console.log(useParams());
   const [nftDetail, setNftDetail] = useState(null);
   const [walletAddress, setWalletAddress] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+
   useEffect(() => {
     const initWeb3 = async () => {
       await loadWeb3();
@@ -32,21 +34,44 @@ const NFTdetail = ({ setShowModal }) => {
   }, []);
 
   const { nftId, tokenId } = useParams();
-  console.log(nftId);
-  console.log(tokenId);
+  // console.log(nftId);
+  // console.log(tokenId);
   useEffect(() => {
-    console.log(nftId);
+    // console.log(nftId);
     loadNftById(nftId);
   }, [nftId]);
 
   const loadNftById = async (id) => {
+    setIsLoading(true);
     axios
       .get(`${BASEURL}/nft/${id}`)
       .then((response) => {
-        console.log("detail data", response.data.data);
+        // console.log("detail data", response.data.data);
         setNftDetail(response.data.data);
+        setIsLoading(false);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        setIsLoading(false);
+        console.log(e);
+      });
+  };
+
+  const changeOwner = async () => {
+    if (!walletAddress) alert("No wallet");
+    setIsLoading(true);
+    axios
+      .put(`${BASEURL}/nft/${nftId}`, {
+        walletAddress,
+      })
+      .then((response) => {
+        console.log("owner changed", response.data.data);
+        setNftDetail(response.data.data);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        console.log(e);
+      });
   };
 
   const buyNFT = async (event) => {
@@ -67,7 +92,10 @@ const NFTdetail = ({ setShowModal }) => {
   return (
     <>
       <Header setShowModal={setShowModal} />
-      {nftDetail ? (
+
+      {isLoading ? (
+        <Loader />
+      ) : nftDetail ? (
         <section className="nft">
           <div className="container">
             <div className="home-btn">
@@ -93,7 +121,10 @@ const NFTdetail = ({ setShowModal }) => {
                     </div>
                   </div>
                 </div>
-                <p className="view-owner"> View Owner</p>
+
+                {nftDetail?.walletAddress && (
+                  <p className="view-owner"> View Owner</p>
+                )}
 
                 <div className="nft-data">
                   <ul className="tags">
@@ -212,7 +243,11 @@ const NFTdetail = ({ setShowModal }) => {
                   {/* <p>{nftDetail && nftDetail.price} USD</p> */}
                 </div>
                 <div className="buy-btn">
-                  <a href="/" onClick={buyNFT}>
+                  <a
+                    // href="/"
+                    // onClick={buyNFT}
+                    onClick={changeOwner}
+                  >
                     BUY NOW
                   </a>
                 </div>

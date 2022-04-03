@@ -57,6 +57,7 @@
 
 .title h1 {
   font-size: 37px;
+  width: 400px;
   font-weight: 600;
 }
 .title h2 {
@@ -70,8 +71,9 @@
   text-align: center;
 }
 .head {
+  width: 200px;
   background-color: #133b4c;
-  flex-basis: 49%;
+  /* flex-basis: 49%; */
   padding: 8px;
   color: #ffff;
   border-radius: 18px;

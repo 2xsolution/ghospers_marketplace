@@ -19,7 +19,7 @@ const Header = ({ setShowModal, setWalletAddress }) => {
     await loadWeb3();
     let res = await connectWallet();
     setCurWallet(res.address);
-    console.log(res.address);
+    // console.log(res.address);
     // setWalletAddress(res.address);
     // setWalletAddress("xyz");
   };
@@ -28,27 +28,27 @@ const Header = ({ setShowModal, setWalletAddress }) => {
     axios
       .post(BASEURL + "/user/save", {
         // walletAddress: curWallet,
-        walletAddress: "xyz",
+        walletAddress: curWallet,
       })
       .then((response) => {
         console.log(response);
         //NotificationManager.success("User Created Successfully");
       })
       .catch((e) => {
-        if (e.response.status !== 400) {
+        if (e.response?.status !== 400) {
           NotificationManager.error(e.response.data.message);
         }
       });
   };
 
   useEffect(() => {
-    // if (curWallet) {
-    saveUser();
-    // }
+    if (curWallet) {
+      saveUser();
+    }
   }, [curWallet]);
 
   const openModal = (e) => {
-    console.log("hwllo");
+    // console.log("hwllo");
     e.preventDefault();
     // setShowModal((prev) => !prev);
 
@@ -58,7 +58,9 @@ const Header = ({ setShowModal, setWalletAddress }) => {
   const getWallet = async () => {
     let res = await getCurrentWallet();
     if (res.success) {
+      // console.log(res.account);
       setCurWallet(res.account);
+      // setWalletAddress(res.account);
     }
   };
 
