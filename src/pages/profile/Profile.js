@@ -8,7 +8,9 @@ import { useNavigate } from "react-router-dom";
 import "./profile.css";
 import ProfileImg from "../../assets/img/card1.png";
 import UpdateModal from "./updateModal/UpdateModal";
+import Header from "../../components/Header";
 import Loader from "../../components/loader/Loader";
+import Accordian from "../../components/accordian/Accordian";
 function Profile() {
   const navigate = useNavigate();
 
@@ -17,12 +19,6 @@ function Profile() {
     "rare",
     "epic",
     "legendary",
-  ]);
-
-  const [traitsArray, setTraitsArray] = useState([
-    "tank",
-    "marksman",
-    "assassin",
   ]);
 
   const loadNfts = async (e) => {
@@ -37,8 +33,6 @@ function Profile() {
         minlevel,
         maxlevel,
         type: selectedType,
-        traits:
-          selectedTraits && selectedTraits.length > 0 ? selectedTraits : null,
       })
       .then((response) => {
         console.log(response.data);
@@ -64,7 +58,6 @@ function Profile() {
 
   const clearAll = (e) => {
     e.preventDefault();
-    setSelectedTraits([]);
     setSelectedType(null);
     setMinlevel(0);
     setMax(null);
@@ -83,19 +76,86 @@ function Profile() {
   const [min, setMin] = useState(null);
   const [minlevel, setMinlevel] = useState(0);
   const [maxlevel, setMaxlevel] = useState(100);
-  const [traits, setTraits] = useState(null);
   const [currency, setCurrency] = useState(null);
 
   const [selectedType, setSelectedType] = useState(null);
-  const [selectedTraits, setSelectedTraits] = useState([]);
   const [max, setMax] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [walletAddress, setWalletAddress] = useState("xyz");
+  const [walletAddress, setWalletAddress] = useState("abcd");
   const [showModal, setShowModal] = useState(false);
+  const [userDetails, setUserDetails] = useState(null);
+  const [properties, setProperties] = useState(null);
+  const [selectedProperties, setSelectedProperties] = useState([]);
+  const [singleSelectedProperty, setSingleSelectedProperty] = useState(null);
+
   useEffect(() => {
     loadNfts();
     // updateTokenIds();
-  }, []);
+  }, [
+    min,
+    max,
+    page,
+    size,
+    minlevel,
+    currency,
+    selectedType,
+    maxlevel,
+    walletAddress,
+    selectedProperties,
+  ]);
+
+  useEffect(() => {
+    console.log(singleSelectedProperty);
+    if (
+      singleSelectedProperty &&
+      singleSelectedProperty.values &&
+      singleSelectedProperty.type
+    ) {
+      var index = selectedProperties.findIndex(
+        (x) => x.type === singleSelectedProperty.type
+      );
+      if (index !== -1) {
+        setSelectedProperties((prev) =>
+          Object.values({
+            ...prev,
+            [index]: {
+              ...prev[index],
+              values: [...singleSelectedProperty.values],
+            },
+          })
+        );
+      } else {
+        setSelectedProperties((prev) => [...prev, singleSelectedProperty]);
+      }
+      console.log(selectedProperties);
+    }
+  }, [singleSelectedProperty]);
+
+  useEffect(() => {
+    loadProperties();
+    loadUserDetails();
+  }, [walletAddress]);
+
+  const loadUserDetails = () => {
+    axios
+      .post(BASEURL + "/user/get-user", {
+        walletAddress,
+      })
+      .then((response) => {
+        console.log(response.data.data);
+        setUserDetails(response.data.data);
+      })
+      .catch((e) => console.log(e));
+  };
+  const loadProperties = () => {
+    axios
+      .get(BASEURL + "/property/all")
+      .then((response) => {
+        console.log(response.data.data);
+        setProperties(response.data.data);
+      })
+      .catch((e) => console.log(e));
+  };
 
   const sellNft = async (e, nftId) => {
     e.stopPropagation();
@@ -110,261 +170,311 @@ function Profile() {
   };
 
   return (
-    <div className="profile-content">
-      <div className="profile-back-filter">
-        <button
-          className="custom-btn back-btn"
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          Back to home
-        </button>
-        <div className="fitermob profile-filters">
-          <a href="/" className="filter-btn" onClick={openSidebar}>
-            Filters
-          </a>
-        </div>
-      </div>
-      <div className="profile-flex">
-        <div className="profile-div">
-          <div className="red-div">
-            <img src={ProfileImg} alt="" />
-          </div>
-          <button className="custom-btn" onClick={() => setShowModal(true)}>
-            Edit Profile
+    <div>
+      <Header setShowModal={setShowModal} setWalletAddress={setWalletAddress} />
+      <div className="profile-content">
+        <div className="profile-back-filter">
+          <button
+            className="custom-btn back-btn"
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            Back to home
           </button>
-          <h2>Johny</h2>
-          <p>Loremipsumdolor</p>{" "}
-          <div className="profile-about">
-            <p>About me</p>
-            <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vero
-              quaerat id eos doloribus incidunt nemo similique, obcaecati
-              repellat nisi rerum maiores culpa quasi. Explicabo, facilis.
-            </p>
+          <div className="fitermob profile-filters">
+            <a href="/" className="filter-btn" onClick={openSidebar}>
+              Filters
+            </a>
           </div>
         </div>
-
-        <div
-          className="profile-nft-div"
-          style={{ marginLeft: "60px", width: "100%" }}
-        >
-          <div className="nft-collections">
-            {isLoading ? (
-              <Loader />
-            ) : (
-              nftsArray &&
-              nftsArray.map((elem, i) => {
-                return (
-                  <div
-                    className="card"
-                    key={i}
-                    onClick={() => {
-                      onClickItem(i);
-                      navigate(`/trending/${elem._id}`);
-                    }}
-                  >
-                    <div className="card-img">
-                      <img
-                        src={`${BASEURL}/uploads/${elem.imageUrl}`}
-                        alt="Card1"
-                      />
-                    </div>
-                    <div className="card-title">
-                      <h4>
-                        {elem.title}
-                        {Number(sampleNFTTokenID)===Number(i) ? (
-                          <span>&#10003;</span>
-                        ) : (
-                          ""
-                        )}{" "}
-                        {saleItems[i] && saleItems[i].onSale===true
-                          ? "OnSale"
-                          : ""}
-                      </h4>
-                      {/* <span>{elem.description}</span> */}
-                      <button
-                        className="custom-btn"
-                        onClick={(e) => sellNft(e, elem._id)}
-                      >
-                        SELL
-                      </button>
-                    </div>
-                    <div className="card-price">
-                      {/* <div>
-                          <span>gTHC</span>
-                          <p>21/219</p>
-                        </div> */}
-                      <div>
-                        <span>Price</span>
-                        <p>900 {elem.currency?.toUpperCase()}</p>
-                        <small>${elem.price} USD</small>
+        {walletAddress ? (
+          <div className="profile-flex">
+            {userDetails && userDetails.facebook ? (
+              <div className="profile-div">
+                <div className="red-div">
+                  <img
+                    src={
+                      userDetails &&
+                      `${userDetails.imageUrl}`
+                    }
+                    alt=""
+                  />
+                </div>
+                <button
+                  className="custom-btn"
+                  onClick={() => setShowModal(true)}
+                >
+                  Edit Profile
+                </button>
+                <h2>{userDetails && userDetails.name}</h2>
+                <p>{userDetails && userDetails.walletAddress}</p>{" "}
+                <div className="profile-about">
+                  <p>About me</p>
+                  <p>{userDetails && userDetails.introduction}</p>
+                  <div className="profile-social">
+                    <a
+                      target="_blank"
+                      href={userDetails && userDetails.facebook}
+                    >
+                      <div className="white-round-div">
+                        <i className="fa-brands fa-facebook-f"></i>
                       </div>
-                    </div>
-                  </div>
-                );
-              })
-            )}
-
-            {nftsArray && nftsArray.length > 0 && !isLoading ? (
-              <div className="pagination-wrap">
-                <div className="pagination">
-                  <div className="icon">
-                    <a href="/">
-                      <img src={LeftIcon} alt="" />
                     </a>
-                  </div>
-                  <div className="number">
-                    <span>{size > totalRecords ? totalRecords : size}</span>
-                    of {totalRecords && totalRecords}
-                  </div>
-                  <div className="icon">
-                    <a href="/">
-                      <img src={RightIcon} alt="" />
+                    <a
+                      target="_blank"
+                      href={userDetails && userDetails.instagram}
+                    >
+                      <div className="white-round-div">
+                        <i className="fa-brands fa-instagram"></i>
+                      </div>
                     </a>
                   </div>
                 </div>
               </div>
             ) : (
-              <div
-                style={{
-                  width: "100%",
-                  marginTop: "20px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <h2>No Data Found!</h2>
+              <div className="overlay-blue">
+                <div>
+                  <h3>Profile is not updated</h3>
+                  <button
+                    className="custom-btn"
+                    onClick={() => setShowModal(true)}
+                  >
+                    Edit Profile
+                  </button>
+                </div>
               </div>
             )}
-          </div>
-        </div>
-        <div className={sidebar ? "sidebar sidebar-active" : "sidebar"}>
-          <div className="filter">
-            <h4>FILTERS</h4>
-            <a href="/" onClick={clearAll}>
-              CLEAR ALL
-            </a>
-          </div>
-          <div className="hero">
-            <h4>GHOSPHERS</h4>
-            <p>No Ghosper selected</p>
-            <a onClick={loadNfts}>Choose Ghospers</a>
-          </div>
-          <div className="hero">
-            <h4>GHOSPHERS</h4>
-            <div className="checkbox">
-              {typeArray.map((t) => {
-                return (
-                  <label key={t} className="checkbox-wrap">
+
+            <div
+              className="profile-nft-div"
+              style={{ marginLeft: "60px", width: "100%" }}
+            >
+              <div className="nft-collections">
+                {isLoading ? (
+                  <Loader />
+                ) : (
+                  nftsArray &&
+                  nftsArray.map((elem, i) => {
+                    return (
+                      <div
+                        className="card"
+                        key={i}
+                        onClick={() => {
+                          onClickItem(i);
+                          navigate(`/trending/${elem._id}`);
+                        }}
+                      >
+                        <div className="card-img">
+                          <img
+                            src={`${elem.imageUrl}`}
+                            alt="Card1"
+                          />
+                        </div>
+                        <div className="card-title">
+                          <h4>
+                            {elem.title}
+                            {Number(sampleNFTTokenID) === Number(i) ? (
+                              <span>&#10003;</span>
+                            ) : (
+                              ""
+                            )}{" "}
+                            {saleItems[i] && saleItems[i].onSale === true
+                              ? "OnSale"
+                              : ""}
+                          </h4>
+                          {/* <span>{elem.description}</span> */}
+                          <button
+                            className="custom-btn"
+                            onClick={(e) => sellNft(e, elem._id)}
+                          >
+                            SELL
+                          </button>
+                        </div>
+                        <div className="card-price">
+                          {/* <div>
+                  <span>gTHC</span>
+                  <p>21/219</p>
+                </div> */}
+                          <div>
+                            <span>Price</span>
+                            <p>{elem.price}&nbsp;{elem.currency?.toUpperCase()}</p>
+                            <small>${elem.price} USD</small>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+
+                {nftsArray && nftsArray.length > 0 && !isLoading ? (
+                  <div className="pagination-wrap">
+                    <div className="pagination">
+                      <div className="icon">
+                        <a href="/">
+                          <img src={LeftIcon} alt="" />
+                        </a>
+                      </div>
+                      <div className="number">
+                        <span>{size > totalRecords ? totalRecords : size}</span>
+                        of {totalRecords && totalRecords}
+                      </div>
+                      <div className="icon">
+                        <a href="/">
+                          <img src={RightIcon} alt="" />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      width: "100%",
+                      marginTop: "20px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <h2>No Data Found!</h2>
+                  </div>
+                )}
+              </div>
+            </div>
+            <div className={sidebar ? "sidebar sidebar-active" : "sidebar"}>
+              <div className="filter">
+                <h4>FILTERS</h4>
+                <a href="/" onClick={clearAll}>
+                  CLEAR ALL
+                </a>
+              </div>
+              {/* <div className="hero">
+                <h4>GHOSPERS</h4>
+                <p>No Ghosper selected</p>
+                <a onClick={loadNfts}>Choose Ghospers</a>
+              </div> */}
+              <div className="hero">
+                <h4>GHOSPERS</h4>
+                <div className="checkbox">
+                  {typeArray.map((t) => {
+                    return (
+                      <label key={t} className="checkbox-wrap">
+                        <input
+                          type="checkbox"
+                          checked={selectedType === t}
+                          onChange={() => {
+                            if (selectedType === t) {
+                              setSelectedType(null);
+                            } else setSelectedType(t);
+                          }}
+                        />
+                        <span className="checkmark"></span>
+                        {t}
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className="hero">
+                <h4>PRICE</h4>
+                <div className="price">
+                  <div className="price-inpt">
                     <input
-                      type="checkbox"
-                      checked={selectedType===t}
-                      onChange={() => {
-                        if (selectedType===t) {
-                          setSelectedType(null);
-                        } else setSelectedType(t);
+                      type="number"
+                      onKeyDown={(evt) =>
+                        evt.key === "e" && evt.preventDefault()
+                      }
+                      onChange={(e) => {
+                        if (e.target.value < 0) {
+                          setMin(0);
+                        } else if (e.target.value > 100000000) {
+                          setMin(100000000);
+                        } else setMin(e.target.value);
+                      }}
+                      placeholder="Min"
+                    />
+                  </div>
+                  <span></span>
+                  <div className="price-inpt">
+                    <input
+                      placeholder="Max"
+                      type="number"
+                      onKeyDown={(evt) =>
+                        evt.key === "e" && evt.preventDefault()
+                      }
+                      onChange={(e) => {
+                        if (e.target.value < 0) {
+                          setMax(0);
+                        } else if (e.target.value > 100000000) {
+                          setMax(100000000);
+                        } else setMax(e.target.value);
                       }}
                     />
-                    <span className="checkmark"></span>
-                    {t}
-                  </label>
-                );
-              })}
-            </div>
-          </div>
-          <div className="hero">
-            <h4>PRICE</h4>
-            <div className="price">
-              <div className="price-inpt">
-                <input
-                  type="text"
-                  placeholder="Min"
-                  onChange={(e) => setMin(e.target.value)}
-                />
+                  </div>
+                </div>
               </div>
-              <span></span>
-              <div className="price-inpt">
-                <input
-                  type="text"
-                  placeholder="Max"
-                  onChange={(e) => setMax(e.target.value)}
-                />
+              <div className="hero">
+                <h4>Currency</h4>
+                <div className="levels">
+                  <select
+                    onChange={(e) => setCurrency(e.target.value)}
+                    value={currency}
+                  >
+                    <option selected>Select Currency</option>
+                    <option value="ghsp">GHSP</option>
+                    <option value="bnb">BNB</option>
+                    <option value="busd">BUSD</option>
+                  </select>
+                </div>
               </div>
-            </div>
-          </div>
-          <div className="hero">
-            <h4>Currency</h4>
-            <div className="levels">
-              <select
-                onChange={(e) => setCurrency(e.target.value)}
-                value={currency}
-              >
-                <option selected value="ghsp">
-                  GHSP
-                </option>
-                <option value="bnb">BNB</option>
-                <option value="busd">BUSD</option>
-              </select>
-            </div>
-          </div>
-          <div className="hero">
-            <h4>LEVEL</h4>
-            <div className="levels">
-              <MultiRangeInput
-                min={0}
-                max={100}
-                onChange={({ min, max }) => {
-                  setMinlevel(min);
-                  setMaxlevel(max);
-                  console.log(`min = ${min}, max = ${max}`);
-                }}
-              />
-            </div>
-          </div>
-          <div className="hero">
-            <h4>TRAITS</h4>
-            <div className="checkbox">
-              {traitsArray &&
-                traitsArray.map((trait, index) => {
+              <div className="hero">
+                <h4>LEVEL</h4>
+                <div className="levels">
+                  <MultiRangeInput
+                    min={0}
+                    max={20}
+                    onChange={({ min, max }) => {
+                      setMinlevel(min);
+                      setMaxlevel(max);
+                      console.log(`min = ${min}, max = ${max}`);
+                    }}
+                  />
+                </div>
+              </div>
+              {properties &&
+                properties.map((data) => {
                   return (
-                    <label className="checkbox-wrap" key={index}>
-                      <input
-                        type="checkbox"
-                        checked={
-                          selectedTraits && selectedTraits.includes(trait)
-                        }
-                        onChange={() => {
-                          if (
-                            selectedTraits &&
-                            selectedTraits.includes(trait)
-                          ) {
-                            var remaningTraits =
-                              selectedTraits &&
-                              selectedTraits.filter((t) => t !== trait);
-                            setSelectedTraits(remaningTraits);
-                          } else {
-                            setSelectedTraits((prev) => [...prev, trait]);
-                          }
-                        }}
+                    <div className="hero">
+                      <Accordian
+                        setSingleSelectedProperty={setSingleSelectedProperty}
+                        title={data.type}
+                        content={data.values}
                       />
-                      <span className="checkmark"></span>
-                      {trait}
-                    </label>
+                    </div>
                   );
                 })}
+              {/* <div className="hero skin">
+      <h4>SKINS</h4>
+      <p>No skin selected</p>
+      <a href="/">Choose Skin</a>
+    </div> */}
             </div>
           </div>
-          {/* <div className="hero skin">
-							<h4>SKINS</h4>
-							<p>No skin selected</p>
-							<a href="/">Choose Skin</a>
-						</div> */}
-        </div>
+        ) : (
+          <h2 style={{ textAlign: "center", marginTop: "40px" }}>
+            You are not registered with Ghospers
+          </h2>
+        )}
+        {userDetails && (
+          <UpdateModal
+            setUserDetails={setUserDetails}
+            userDetails={userDetails}
+            walletAddress={walletAddress}
+            showModal={showModal}
+            setShowModal={setShowModal}
+          />
+        )}
       </div>
-      <UpdateModal showModal={showModal} setShowModal={setShowModal} />
     </div>
   );
 }

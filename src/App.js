@@ -7,6 +7,7 @@ import NFTdetail from "./pages/NFTDetail/NFTdetail";
 import "./App.css";
 import Mint from "./pages/mint/Mint";
 import Profile from "./pages/profile/Profile";
+import { Toaster } from "react-hot-toast";
 function App() {
   const [showModal, setShowModal] = useState(false);
   return (
@@ -35,6 +36,30 @@ function App() {
         />
       </Routes>
       <ConnectWallet showModal={showModal} setShowModal={setShowModal} />
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        gutter={8}
+        containerClassName=""
+        containerStyle={{}}
+        toastOptions={{
+          // Define default options
+          className: "",
+          duration: 5000,
+          style: {
+            background: "#363636",
+            color: "#fff",
+          },
+          // Default options for specific types
+          success: {
+            duration: 3000,
+            theme: {
+              primary: "green",
+              secondary: "black",
+            },
+          },
+        }}
+      />
     </>
   );
 }

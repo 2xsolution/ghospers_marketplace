@@ -1,10 +1,15 @@
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import Modal from "react-modal";
 import { BASEURL } from "../../../utils/Utils";
 import "./addPropertyModal.css";
 Modal.setAppElement("#root");
 
-function AddPropertyModal({ setShowModal, showModal, setProperties }) {
+function AddPropertyModal({
+  setShowModal,
+  showModal,
+  setProperties,
+  properties,
+}) {
   console.log(showModal);
   function closeModal() {
     setShowModal(false);
@@ -27,22 +32,41 @@ function AddPropertyModal({ setShowModal, showModal, setProperties }) {
   };
 
   const removeRow = (index) => {
+    console.log(index);
     if (rows.length !== 1) {
+      console.log(rows);
+      console.log(rows[index]);
       var rowsTemp = [...rows];
+      console.log(rowsTemp);
       rowsTemp.splice(index, 1);
+      console.log(rowsTemp);
       setRows(rowsTemp);
     }
   };
 
   const AddRows = () => {
-    setProperties(rows);
+    var rowsTemp = rows.filter((r) => r.type != "" && r.value != "");
+    setProperties(rowsTemp);
     setShowModal(false);
   };
+
+  useEffect(() => {
+    console.log(properties);
+    if (!properties) {
+      setRows([
+        {
+          type: "",
+          value: "",
+        },
+      ]);
+    }
+  }, [properties]);
 
   return (
     <div className="scrollable-modal">
       <Modal
         isOpen={showModal}
+        shouldCloseOnOverlayClick={false}
         // onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         // style={customStyles}
@@ -61,6 +85,7 @@ function AddPropertyModal({ setShowModal, showModal, setProperties }) {
                       <input
                         type="text"
                         name="type"
+                        value={row.type}
                         onChange={(e) => onChange(e, index)}
                         className="mint-input"
                         placeholder="Hair"
@@ -71,6 +96,7 @@ function AddPropertyModal({ setShowModal, showModal, setProperties }) {
                       <input
                         type="text"
                         name="value"
+                        value={row.value}
                         onChange={(e) => onChange(e, index)}
                         className="mint-input"
                         placeholder="Blonde"

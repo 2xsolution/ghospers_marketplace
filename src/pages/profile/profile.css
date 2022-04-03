@@ -9,11 +9,33 @@
   position: relative;
 }
 
+.profile-social {
+  display: flex;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.white-round-div {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 4px;
+  cursor: pointer;
+}
+.white-round-div i {
+  color: #133b4c;
+}
+
 .profile-div {
   flex: 2;
   border-radius: 14px;
   background-color: #133b4c;
   text-align: center;
+  height: max-content;
   padding-top: 30px;
   color: white;
 }
@@ -86,6 +108,31 @@
 }
 .profile-filters a {
   width: 140px;
+}
+
+.overlay-blue {
+  height: max-content;
+  padding: 20px;
+  padding-bottom: 40px;
+  margin-top: 40px;
+  /* width: 100%; */
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  background-color: #133b4c;
+}
+
+.overlay-blue div {
+  margin-top: 40px;
+}
+
+.overlay-blue h3 {
+  text-align: center;
+}
+
+.overlay-blue .custom-btn {
+  width: 200px;
+  margin-top: 20px;
 }
 
 @media screen and (max-width: 1150px) {

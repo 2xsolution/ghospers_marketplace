@@ -7,6 +7,7 @@ import LeftIcon from "../../assets/img/lefticon.png";
 import RightIcon from "../../assets/img/righticon.png";
 import axios from "axios";
 import "./home.css";
+
 import { useNavigate } from "react-router-dom";
 // import { Data } from "../../components/accordian/AccordianData";
 import {
@@ -32,8 +33,6 @@ const Home = ({ setShowModal }) => {
 
   const [typeArray] = useState(["common", "rare", "epic", "legendary"]);
 
-  const [traitsArray] = useState(["tank", "marksman", "assassin"]);
-
   const loadNfts = async (e) => {
     console.log(selectedProperties);
 
@@ -49,9 +48,7 @@ const Home = ({ setShowModal }) => {
         currency,
         properties: selectedProperties,
         maxlevel,
-        type: selectedType,
-        traits:
-          selectedTraits && selectedTraits.length > 0 ? selectedTraits : null,
+        type: selectedType
       })
       .then((response) => {
         setTotalRecords(response.data.data[1].totalRecords);
@@ -88,9 +85,7 @@ const Home = ({ setShowModal }) => {
   const [min, setMin] = useState(null);
   const [minlevel, setMinlevel] = useState(0);
   const [maxlevel, setMaxlevel] = useState(100);
-  // const [traits, setTraits] = useState(null);
   const [selectedType, setSelectedType] = useState(null);
-  const [selectedTraits, setSelectedTraits] = useState([]);
   const [max, setMax] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [currency, setCurrency] = useState(null);
@@ -171,17 +166,14 @@ const Home = ({ setShowModal }) => {
     page,
     size,
     minlevel,
-    selectedProperties,
     currency,
     selectedType,
     maxlevel,
-    selectedTraits,
     selectedProperties,
   ]);
 
   const clearAll = (e) => {
     e.preventDefault();
-    setSelectedTraits([]);
     setSelectedType(null);
     setMinlevel(0);
     setMax(null);
@@ -208,12 +200,12 @@ const Home = ({ setShowModal }) => {
               </a>
             </div>
             {/* <div className="hero">
-              <h4>GHOSPHERS</h4>
+              <h4>GHOSPERS</h4>
               <p>No Ghosper selected</p>
               <a onClick={loadNfts}>Choose Ghospers</a>
             </div> */}
             <div className="hero">
-              <h4>GHOSPHERS</h4>
+              <h4>GHOSPERS</h4>
               <div className="checkbox">
                 {typeArray.map((t) => {
                   return (
@@ -239,17 +231,35 @@ const Home = ({ setShowModal }) => {
               <div className="price">
                 <div className="price-inpt">
                   <input
-                    type="text"
+                    type="number"
+                    max="100000000"
+                    min="0"
+                    onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
                     placeholder="Min"
-                    onChange={(e) => setMin(e.target.value)}
+                    onChange={(e) => {
+                      if (e.target.value < 0) {
+                        setMin(0);
+                      } else if (e.target.value > 100000000) {
+                        setMin(100000000);
+                      } else setMin(e.target.value);
+                    }}
                   />
                 </div>
                 <span></span>
                 <div className="price-inpt">
                   <input
-                    type="text"
+                    max="100000000"
+                    min="0"
                     placeholder="Max"
-                    onChange={(e) => setMax(e.target.value)}
+                    type="number"
+                    onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                    onChange={(e) => {
+                      if (e.target.value < 0) {
+                        setMax(0);
+                      } else if (e.target.value > 100000000) {
+                        setMax(100000000);
+                      } else setMax(e.target.value);
+                    }}
                   />
                 </div>
               </div>
@@ -261,9 +271,8 @@ const Home = ({ setShowModal }) => {
                   onChange={(e) => setCurrency(e.target.value)}
                   value={currency}
                 >
-                  <option selected value="ghsp">
-                    GHSP
-                  </option>
+                  <option selected>Select Currency</option>
+                  <option value="ghsp">GHSP</option>
                   <option value="bnb">BNB</option>
                   <option value="busd">BUSD</option>
                 </select>
@@ -274,46 +283,13 @@ const Home = ({ setShowModal }) => {
               <div className="levels">
                 <MultiRangeInput
                   min={0}
-                  max={100}
+                  max={20}
                   onChange={({ min, max }) => {
                     setMinlevel(min);
                     setMaxlevel(max);
                     console.log(`min = ${min}, max = ${max}`);
                   }}
                 />
-              </div>
-            </div>
-            <div className="hero">
-              <h4>TRAITS</h4>
-              <div className="checkbox">
-                {traitsArray &&
-                  traitsArray.map((trait, index) => {
-                    return (
-                      <label className="checkbox-wrap" key={index}>
-                        <input
-                          type="checkbox"
-                          checked={
-                            selectedTraits && selectedTraits.includes(trait)
-                          }
-                          onChange={() => {
-                            if (
-                              selectedTraits &&
-                              selectedTraits.includes(trait)
-                            ) {
-                              var remaningTraits =
-                                selectedTraits &&
-                                selectedTraits.filter((t) => t !== trait);
-                              setSelectedTraits(remaningTraits);
-                            } else {
-                              setSelectedTraits((prev) => [...prev, trait]);
-                            }
-                          }}
-                        />
-                        <span className="checkmark"></span>
-                        {trait}
-                      </label>
-                    );
-                  })}
               </div>
             </div>
             {properties &&
@@ -360,7 +336,7 @@ const Home = ({ setShowModal }) => {
                         >
                           <div className="card-img">
                             <img
-                              src={`${BASEURL}/uploads/${elem.imageUrl}`}
+                              src={`${elem.imageUrl}`}
                               alt="Card1"
                             />
                           </div>
@@ -393,7 +369,7 @@ const Home = ({ setShowModal }) => {
                         </div> */}
                             <div>
                               <span>Price</span>
-                              <p>900 {elem.currency?.toUpperCase()}</p>
+                              <p>{elem.price}&nbsp;{elem.currency?.toUpperCase()}</p>
                               <small>${elem.price} USD</small>
                             </div>
                           </div>
@@ -422,6 +398,7 @@ const Home = ({ setShowModal }) => {
                           onClick={() => {
                             if (page != 1) {
                               setPage(page - 1);
+                              window.scrollTo(0, 0);
                             }
                           }}
                         >
@@ -441,7 +418,8 @@ const Home = ({ setShowModal }) => {
                           className="icon"
                           onClick={() => {
                             if (page * size < totalRecords) {
-                              console.log("inside");
+                              window.scrollTo(0, 0);
+
                               setPage(page + 1);
                             }
                           }}

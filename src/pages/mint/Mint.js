@@ -3,7 +3,7 @@ import "./mint.css";
 import { FileUploader } from "react-drag-drop-files";
 import IPFSUtils from "./IPFSUtils";
 import axios from "axios";
-import { BASEURL } from "../../utils/Utils";
+import { BASEURL, Error, Success } from "../../utils/Utils";
 
 import {
   loadWeb3,
@@ -13,6 +13,7 @@ import {
 } from "../../core/web3";
 import Header from "../../components/Header";
 import AddPropertyModal from "./addPropertyModal.js/AddPropertyModal";
+import LoaderModal from "./LoaderModal";
 import { NotificationManager } from "react-notifications";
 
 function Mint({ setShowModal }) {
@@ -26,20 +27,19 @@ function Mint({ setShowModal }) {
   const [description, setDescription] = useState("");
   const [tokenId, setTokenId] = useState("xyz");
   const [showPropertyModal, setShowPropertyModal] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [ipfs, setIpfs] = useState("test");
   const [price, setPrice] = useState("");
   const [currency, setCurrency] = useState("ghsp");
   const [image, setImage] = useState("");
-  const [selectedType, setSelectedType] = useState(null);
-  const [selectedTraits, setSelectedTraits] = useState([]);
-  const [level, setLevel] = useState(null);
+  const [selectedType, setSelectedType] = useState("");
+  const [level, setLevel] = useState("");
   const [properties, setProperties] = useState(null);
-  const [traitsArray, setTraitsArray] = useState([
-    "tank",
-    "marksman",
-    "assassin",
-  ]);
+  // const [traitsArray, setTraitsArray] = useState([
+  //   "tank",
+  //   "marksman",
+  //   "assassin",
+  // ]);
 
   const [typeArray, setTypeArray] = useState([
     "common",
@@ -57,43 +57,9 @@ function Mint({ setShowModal }) {
     initWeb3();
   }, []);
 
-  // PRINCE CODE
-  // const saveNft = async (e) => {
-  //   console.log(properties);
-  //   var formData = new FormData();
-  //   formData.append("title", title);
-  //   formData.append("description", description);
-  //   formData.append("price", price);
-  //   formData.append("nftImage", image);
-  //   formData.append("currency", currency);
-  //   formData.append("walletAddress", "TEST");
-  //   formData.append("type", selectedType);
-  //   formData.append("tokenId", "TEST");
-  //   formData.append("ipfs", ipfs);
-  //   formData.append("properties", JSON.stringify(properties));
-  //   formData.append("level", level);
-  //   formData.append("traits", selectedTraits);
-
-  //   console.log(...formData);
-
-  //   axios
-  //     .post(BASEURL + "/nft/save", formData)
-  //     .then((response) => {
-  //       console.log(response);
-  //       setCurrency("ghsp");
-  //       setTitle("");
-  //       setDescription("");
-  //       setPrice("");
-  //       setSelectedTraits([]);
-  //       setSelectedType(null);
-  //       setImage("");
-  //       setLevel("");
-  //     })
-  //     .catch((e) => console.log(e));
-  // };
-
   const saveNft = async (e) => {
-    NotificationManager.info("Please wait for a minutes.");
+    setIsLoading(true);
+    // NotificationManager.info("Please wait for a minutes.");
     IPFSUtils.uploadFileToIPFS([image]).then((lists) => {
       if (lists.length > 0) {
         const content_uri1 = {
@@ -126,7 +92,6 @@ function Mint({ setShowModal }) {
                 formData.append("ipfs", ipfs);
                 formData.append("properties", JSON.stringify(properties));
                 formData.append("level", level);
-                formData.append("traits", selectedTraits);
 
                 console.log(...formData);
 
@@ -138,20 +103,31 @@ function Mint({ setShowModal }) {
                     setTitle("");
                     setDescription("");
                     setPrice("");
-                    setSelectedTraits([]);
                     setSelectedType(null);
                     setImage("");
+                    setProperties(null);
                     setLevel("");
+                    setIsLoading(false);
+                    NotificationManager.success("Nft Created Successfully");
+                    window.location.reload();
                   })
                   .catch((e) => {
+                    console.log(e.response.data.message);
                     NotificationManager.error("Error Writing to DB");
+                    NotificationManager.error(e.response.data.message);
                     console.log(e);
+                    setIsLoading(false);
+                    window.location.reload();
                   });
               } else {
+                setIsLoading(false);
+
                 NotificationManager.error("Not Created Token ID from contract");
               }
             });
           } catch (error) {
+            setIsLoading(false);
+
             NotificationManager.error("Transaction Error");
           }
         });
@@ -160,14 +136,7 @@ function Mint({ setShowModal }) {
   };
 
   const validateFields = () => {
-    if (
-      !title ||
-      !price ||
-      !level ||
-      !selectedType ||
-      !selectedTraits.length > 0
-    )
-      return false;
+    if (!title || !price || !level) return false;
     return true;
   };
 
@@ -184,6 +153,7 @@ function Mint({ setShowModal }) {
     <div>
       <Header setShowModal={setShowModal} />
       <div className="mint-container">
+        {isLoading && <LoaderModal />}
         <div className="file-div">
           <p>PNG, GIF, WEBP, MP4 or MP3. Max 100mb.</p>
           <FileUploader
@@ -193,6 +163,17 @@ function Mint({ setShowModal }) {
             classes="drag-zone"
             types={fileTypes}
           />
+
+          {image && (
+            <>
+              <p className="preview-text">Image Preview</p>
+              <img
+                className="preview-img"
+                src={URL.createObjectURL(image)}
+                alt=""
+              />
+            </>
+          )}
         </div>
         <div className="inputs-div">
           <div>
@@ -219,11 +200,20 @@ function Mint({ setShowModal }) {
             <label htmlFor="">Price</label>
             <div className="price-flex">
               <input
+                onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
                 value={price}
-                onChange={(e) => setPrice(e.target.value)}
+                onChange={(e) => {
+                  if (e.target.value < 0) {
+                    setPrice(0);
+                  } else if (e.target.value > 100000000) {
+                    setPrice(100000000);
+                  } else setPrice(e.target.value);
+                }}
                 type="number"
+                min={0}
+                max="10"
                 className="mint-input"
-                placeholder="0 BNB"
+                placeholder="0.0"
               />
               <select
                 onChange={(e) => setCurrency(e.target.value)}
@@ -241,9 +231,16 @@ function Mint({ setShowModal }) {
             <label htmlFor="">Level</label>
             <input
               value={level}
-              max={20}
-              min={0}
-              onChange={(e) => setLevel(e.target.value)}
+              max="20"
+              min="0"
+              onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+              onChange={(e) => {
+                if (e.target.value < 0) {
+                  setLevel(0);
+                } else if (e.target.value > 20) {
+                  setLevel(20);
+                } else setLevel(e.target.value);
+              }}
               type="number"
               className="mint-input"
               placeholder="Level"
@@ -274,45 +271,13 @@ function Mint({ setShowModal }) {
               })}
             </div>
           </div>
-          <div className="checkbox">
-            <label htmlFor="">Traits</label>
-            <div className="mint-types">
-              {traitsArray &&
-                traitsArray.map((trait) => {
-                  return (
-                    <label className="checkbox-wrap  mint-wrap">
-                      <input
-                        type="checkbox"
-                        checked={
-                          selectedTraits && selectedTraits.includes(trait)
-                        }
-                        onChange={() => {
-                          if (
-                            selectedTraits &&
-                            selectedTraits.includes(trait)
-                          ) {
-                            var remaningTraits =
-                              selectedTraits &&
-                              selectedTraits.filter((t) => t !== trait);
-                            setSelectedTraits(remaningTraits);
-                          } else {
-                            setSelectedTraits((prev) => [...prev, trait]);
-                          }
-                        }}
-                      />
-                      <span className="checkmark"></span>
-                      {trait}
-                    </label>
-                  );
-                })}
-            </div>
-          </div>
           <button onClick={saveNft} disabled={!validateFields()}>
             Create Item
           </button>
         </div>
         <AddPropertyModal
           setProperties={setProperties}
+          properties={properties}
           showModal={showPropertyModal}
           setShowModal={setShowPropertyModal}
         />

@@ -57,6 +57,21 @@
   background-color: #40c6ff;
 }
 
+.preview-text {
+  font-weight: 500;
+  font-size: 20px;
+}
+
+.preview-img {
+  /* display: block; */
+  /* height: 300px; */
+  margin: 0px auto;
+  max-height: 450px;
+  width: 80%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
 .file-div p {
   margin: 20px;
   color: white;
