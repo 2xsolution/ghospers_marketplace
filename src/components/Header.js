@@ -28,7 +28,7 @@ const Header = ({ setShowModal, setWalletAddress }) => {
     axios
       .post(BASEURL + "/user/save", {
         // walletAddress: curWallet,
-        walletAddress: "xyz",
+        walletAddress: curWallet,
       })
       .then((response) => {
         console.log(response);
@@ -42,9 +42,9 @@ const Header = ({ setShowModal, setWalletAddress }) => {
   };
 
   useEffect(() => {
-    // if (curWallet) {
-    saveUser();
-    // }
+    if (curWallet) {
+      saveUser();
+    }
   }, [curWallet]);
 
   const openModal = (e) => {
@@ -58,7 +58,9 @@ const Header = ({ setShowModal, setWalletAddress }) => {
   const getWallet = async () => {
     let res = await getCurrentWallet();
     if (res.success) {
+      console.log(res.account);
       setCurWallet(res.account);
+      // setWalletAddress(res.account);
     }
   };
 

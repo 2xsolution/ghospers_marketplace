@@ -64,6 +64,7 @@ const Home = ({ setShowModal }) => {
 
   const buyNft = async (e, nftId) => {
     e.stopPropagation();
+    console.log(walletAddress);
     axios
       .put(`${BASEURL}/nft/${nftId}`, {
         walletAddress,
@@ -184,7 +185,7 @@ const Home = ({ setShowModal }) => {
 
   return (
     <>
-      <Header setShowModal={setShowModal} />
+      <Header setShowModal={setShowModal} setWalletAddress={setWalletAddress} />
       <section className="root">
         <div className="fitermob">
           <a href="/" className="filter-btn" onClick={openSidebar}>
@@ -356,7 +357,7 @@ const Home = ({ setShowModal }) => {
                                 }
                               }
                             >
-                              BUY
+                              OPEN
                             </button>
                           </div>
                           <div className="card-price">
@@ -368,7 +369,7 @@ const Home = ({ setShowModal }) => {
                               <span>Price</span>
                               {/* <p>900 {elem.currency?.toUpperCase()}</p> */}
                               <p>
-                                ${elem.price} {elem.currency?.toUpperCase()}
+                                {elem.price} {elem.currency?.toUpperCase()}
                               </p>
                             </div>
                           </div>
