@@ -12,6 +12,7 @@ import { BASEURL } from "../../utils/Utils";
 import {
   loadWeb3,
   connectWallet,
+  getCurrentWallet,
   buyNFTWithBNB,
   buyNFTWithBUSD,
   buyNFTWithGHSP,
@@ -57,11 +58,21 @@ const NFTdetail = ({ setShowModal }) => {
   };
 
   const changeOwner = async () => {
-    if (!walletAddress) alert("No wallet");
+
+    let curWallet = await getCurrentWallet();
+    if (!curWallet.success) {
+       alert("No wallet");
+       return;
+    }
+
+    setWalletAddress(curWallet.account);
+
+    let tmpWallet = curWallet.account;
+
     setIsLoading(true);
     axios
       .put(`${BASEURL}/nft/${nftId}`, {
-        walletAddress,
+        tmpWallet,
       })
       .then((response) => {
         console.log("owner changed", response.data.data);
@@ -80,11 +91,11 @@ const NFTdetail = ({ setShowModal }) => {
     if (tokenId) {
       const saleTokenType = 2; // GHSP, BUSD, BNB
       if (saleTokenType === 0) {
-        await buyNFTWithGHSP(tokenId);
+        await buyNFTWithGHSP(walletAddress, tokenId);
       } else if (saleTokenType === 1) {
-        await buyNFTWithBUSD(tokenId);
+        await buyNFTWithBUSD(walletAddress, tokenId);
       } else {
-        await buyNFTWithBNB(tokenId, 0.01);
+        await buyNFTWithBNB(walletAddress, tokenId, 0.01);
       }
     }
   };

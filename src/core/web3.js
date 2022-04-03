@@ -149,14 +149,9 @@ export const buyNFTWithBNB = async (tokenID, amount) => {
     return true;
 }
 
-export const buyNFTWithGHSP = async (tokenID) => {
-    const wallet = await getCurrentWallet();
-    if (wallet.success === false) {
-        return false;
-    }
-
+export const buyNFTWithGHSP = async (wallet, tokenID) => {
     try {
-        await market_contract.methods.buyNFTWithGHSP(tokenID, wallet.account).send({ from: wallet.account });
+        await market_contract.methods.buyNFTWithGHSP(tokenID, wallet).send({ from: wallet });
     } catch (error) {
         console.log('buyNFTWithGHSP error', error);
         return false;
@@ -165,14 +160,10 @@ export const buyNFTWithGHSP = async (tokenID) => {
     return true;
 }
 
-export const buyNFTWithBUSD = async (tokenID) => {
-    const wallet = await getCurrentWallet();
-    if (wallet.success === false) {
-        return false;
-    }
+export const buyNFTWithBUSD = async (wallet, tokenID) => {
 
     try {
-        await market_contract.methods.buyNFTWithBUSD(tokenID, wallet.account).send({ from: wallet.account });
+        await market_contract.methods.buyNFTWithBUSD(tokenID, wallet).send({ from: wallet });
     } catch (error) {
         console.log('buyNFTWithBUSD error', error);
         return false;
