@@ -19,9 +19,12 @@ let minter_contract = null;
 
 const NETWORK_ID = 97;
 
-const checkConnectedNetwork = (chainId) => {
+const checkConnectedNetwork = async (chainId) => {
     if (chainId != NETWORK_ID) {
-        NotificationManager.error("Please select BSC network");
+        let wallet = await getCurrentWallet();
+        if (wallet.success) {
+            NotificationManager.error("Please select BSC network");
+        }
         return false;
     }
 
@@ -44,24 +47,25 @@ export const loadWeb3 = async () => {
 
     minter_contract = new window.web3.eth.Contract(minterAbi, MINTER_ADDRESS);
     market_contract = new window.web3.eth.Contract(marketAbi, MARKETPLACE_ADDRESS);
-//    ghosp_contract = new window.web3.eth.Contract(ghospAbi, GHOSP_ADDRESS);
-//    busd_contract = new window.web3.eth.Contract(busdAbi, BUSD_ADDRESS);
+    //    ghosp_contract = new window.web3.eth.Contract(ghospAbi, GHOSP_ADDRESS);
+    //    busd_contract = new window.web3.eth.Contract(busdAbi, BUSD_ADDRESS);
 
     window.ethereum.on('chainChanged', function (chainId) {
+        console.log('chain chainged with this chain id : ', chainId);
         checkConnectedNetwork(chainId);
     });
 };
 
 
 export const connectWallet = async () => {
-    const chainId = await getConnectedNetworkId();
-    if (checkConnectedNetwork(chainId) == false) {
-        return  {
-            address: "",
-            status: "Network connection error",
-            res: 3,
-        };
-    }
+    // const chainId = await getConnectedNetworkId();
+    // if (checkConnectedNetwork(chainId) == false) {
+    //     return  {
+    //         address: "",
+    //         status: "Network connection error",
+    //         res: 3,
+    //     };
+    // }
 
     if (window.ethereum) {
         try {
@@ -130,7 +134,7 @@ export const getCurrentWallet = async () => {
 export const buyNFTWithBNB = async (tokenID, amount) => {
 
     const wallet = await getCurrentWallet();
-    if (wallet.success===false) {
+    if (wallet.success === false) {
         return false;
     }
 
@@ -147,7 +151,7 @@ export const buyNFTWithBNB = async (tokenID, amount) => {
 
 export const buyNFTWithGHSP = async (tokenID) => {
     const wallet = await getCurrentWallet();
-    if (wallet.success===false) {
+    if (wallet.success === false) {
         return false;
     }
 
@@ -163,7 +167,7 @@ export const buyNFTWithGHSP = async (tokenID) => {
 
 export const buyNFTWithBUSD = async (tokenID) => {
     const wallet = await getCurrentWallet();
-    if (wallet.success===false) {
+    if (wallet.success === false) {
         return false;
     }
 
@@ -179,7 +183,7 @@ export const buyNFTWithBUSD = async (tokenID) => {
 
 export const removeTokenFromSale = async (tokenID) => {
     const wallet = await getCurrentWallet();
-    if (wallet.success===false) {
+    if (wallet.success === false) {
         return false;
     }
 
@@ -195,7 +199,7 @@ export const removeTokenFromSale = async (tokenID) => {
 
 export const putTokenOnSale = async (tokenID, price, saleTokenType) => {
     const wallet = await getCurrentWallet();
-    if (wallet.success===false) {
+    if (wallet.success === false) {
         return false;
     }
 
@@ -234,7 +238,7 @@ export const getSaleItems = async (tokenIds) => {
 
 export const createNFT = async (tokenURI) => {
     const wallet = await getCurrentWallet();
-    if (wallet.success===false) {
+    if (wallet.success === false) {
         return null;
     }
 
@@ -242,7 +246,7 @@ export const createNFT = async (tokenURI) => {
         let tokenID = 0;
         let tx = await minter_contract.methods.createNFT(tokenURI).send({ from: wallet.account });
         tokenID = tx.events.Transfer.returnValues.tokenId;
-        return {tokenId: tokenID, wallet: wallet.account};
+        return { tokenId: tokenID, wallet: wallet.account };
     } catch (error) {
         console.log('createNFT error', error);
         return null;
@@ -252,7 +256,7 @@ export const createNFT = async (tokenURI) => {
 
 export const getCreator = async (tokenID) => {
     const wallet = await getCurrentWallet();
-    if (wallet.success===false) {
+    if (wallet.success === false) {
         return false;
     }
 
@@ -268,7 +272,7 @@ export const getCreator = async (tokenID) => {
 
 export const getTokenIds = async () => {
     const wallet = await getCurrentWallet();
-    if (wallet.success===false) {
+    if (wallet.success === false) {
         return [];
     }
 
