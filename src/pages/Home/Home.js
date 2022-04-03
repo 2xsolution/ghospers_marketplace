@@ -48,7 +48,7 @@ const Home = ({ setShowModal }) => {
         currency,
         properties: selectedProperties,
         maxlevel,
-        type: selectedType
+        type: selectedType,
       })
       .then((response) => {
         setTotalRecords(response.data.data[1].totalRecords);
@@ -335,10 +335,7 @@ const Home = ({ setShowModal }) => {
                           }}
                         >
                           <div className="card-img">
-                            <img
-                              src={`${elem.imageUrl}`}
-                              alt="Card1"
-                            />
+                            <img src={`${elem.imageUrl}`} alt="Card1" />
                           </div>
                           <div className="card-title">
                             <h4>
@@ -369,8 +366,10 @@ const Home = ({ setShowModal }) => {
                         </div> */}
                             <div>
                               <span>Price</span>
-                              <p>900 {elem.currency?.toUpperCase()}</p>
-                              <small>${elem.price} USD</small>
+                              {/* <p>900 {elem.currency?.toUpperCase()}</p> */}
+                              <p>
+                                ${elem.price} {elem.currency?.toUpperCase()}
+                              </p>
                             </div>
                           </div>
                         </div>
