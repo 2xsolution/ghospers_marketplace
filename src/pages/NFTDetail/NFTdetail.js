@@ -277,19 +277,20 @@ const NFTdetail = ({ setShowModal }) => {
                   </h1>
                   {/* <p>{nftDetail && nftDetail.price} USD</p> */}
                 </div>
-                <div className="buy-btn">
-                  <a
-                    // href="/"
-                    // onClick={buyNFT}
-                    onClick={changeOwner}
-                  >
-                    BUY NOW
-                  </a>
-                </div>
-                {nftDetail && walletAddress === nftDetail.walletAddress && (
+                {nftDetail && walletAddress === nftDetail.walletAddress ? (
                   <div className="buy-btn">
                     <a href="/" onClick={sellNFT}>
                       SELL
+                    </a>
+                  </div>
+                ) : (
+                  <div className="buy-btn">
+                    <a
+                      // href="/"
+                      // onClick={buyNFT}
+                      onClick={changeOwner}
+                    >
+                      BUY NOW
                     </a>
                   </div>
                 )}
