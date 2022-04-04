@@ -11,6 +11,11 @@ import UpdateModal from "./updateModal/UpdateModal";
 import Header from "../../components/Header";
 import Loader from "../../components/loader/Loader";
 import Accordian from "../../components/accordian/Accordian";
+import {
+  loadWeb3,
+  connectWallet,
+} from "../../core/web3";
+
 function Profile() {
   const navigate = useNavigate();
 
@@ -81,7 +86,7 @@ function Profile() {
   const [selectedType, setSelectedType] = useState(null);
   const [max, setMax] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [walletAddress, setWalletAddress] = useState("abcd");
+  const [walletAddress, setWalletAddress] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
   const [properties, setProperties] = useState(null);
@@ -132,8 +137,17 @@ function Profile() {
   }, [singleSelectedProperty]);
 
   useEffect(() => {
+    const initWeb3 = async () => {
+      await loadWeb3();
+      let res = await connectWallet();
+      setWalletAddress(res.address);
+    };
+
     loadProperties();
     loadUserDetails();
+
+    initWeb3();
+
   }, [walletAddress]);
 
   const loadUserDetails = () => {

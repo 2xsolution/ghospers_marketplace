@@ -20,8 +20,7 @@ const Header = ({ setShowModal, setWalletAddress }) => {
     let res = await connectWallet();
     setCurWallet(res.address);
     // console.log(res.address);
-    // setWalletAddress(res.address);
-    // setWalletAddress("xyz");
+    setWalletAddress(res.address);
   };
 
   const saveUser = (e) => {
