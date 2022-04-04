@@ -16,6 +16,7 @@ import {
   buyNFTWithBNB,
   buyNFTWithBUSD,
   buyNFTWithGHSP,
+  putTokenOnSale,
 } from "../../core/web3";
 
 const NFTdetail = ({ setShowModal }) => {
@@ -58,14 +59,15 @@ const NFTdetail = ({ setShowModal }) => {
   };
 
   const changeOwner = async () => {
-
     let curWallet = await getCurrentWallet();
     if (!curWallet.success) {
-       alert("No wallet");
-       return;
+      alert("No wallet");
+      return;
     }
 
     setWalletAddress(curWallet.account);
+
+    await buyNFT();
 
     let tmpWallet = curWallet.account;
 
@@ -85,20 +87,42 @@ const NFTdetail = ({ setShowModal }) => {
       });
   };
 
-  const buyNFT = async (event) => {
-    event.preventDefault();
-
+  const buyNFT = async () => {
     if (tokenId) {
-      const saleTokenType = 2; // GHSP, BUSD, BNB
-      if (saleTokenType === 0) {
-        await buyNFTWithGHSP(walletAddress, tokenId);
-      } else if (saleTokenType === 1) {
-        await buyNFTWithBUSD(walletAddress, tokenId);
+      let tokenType = 0;
+      if (nftDetail.currency == "ghsp") {
+        tokenType = 0;
+      } else if (nftDetail.currency == "busd") {
+        tokenType = 1;
       } else {
-        await buyNFTWithBNB(walletAddress, tokenId, 0.01);
+        tokenType = 2;
+      }
+
+      if (tokenType === 0) {
+        await buyNFTWithGHSP(tokenId);
+      } else if (tokenType === 1) {
+        await buyNFTWithBUSD(tokenId);
+      } else {
+        await buyNFTWithBNB(tokenId, nftDetail.price);
       }
     }
   };
+
+  const sellNFT = async (event) => {
+    event.preventDefault();
+
+    let tokenType = 0;
+    if (nftDetail.currency == "ghsp") {
+      tokenType = 0;
+    } else if (nftDetail.currency == "busd") {
+      tokenType = 1;
+    } else {
+      tokenType = 2;
+    }
+
+    console.log('sellNFT info', nftDetail);
+    putTokenOnSale(tokenId, nftDetail.price, tokenType)
+  }
 
   return (
     <>
@@ -214,10 +238,10 @@ const NFTdetail = ({ setShowModal }) => {
                             (nftDetail.type == "common"
                               ? "0.25"
                               : nftDetail.type == "rare"
-                              ? "0.5"
-                              : nftDetail.type == "epic"
-                              ? "0.75"
-                              : "1.0")}
+                                ? "0.5"
+                                : nftDetail.type == "epic"
+                                  ? "0.75"
+                                  : "1.0")}
                         </p>
                       </div>
                       <div className="nft-stats">
@@ -237,10 +261,10 @@ const NFTdetail = ({ setShowModal }) => {
                             (nftDetail.type == "common"
                               ? "5"
                               : nftDetail.type == "rare"
-                              ? "10"
-                              : nftDetail.type == "epic"
-                              ? "15"
-                              : "20")}
+                                ? "10"
+                                : nftDetail.type == "epic"
+                                  ? "15"
+                                  : "20")}
                         </p>
                       </div>
                     </>
@@ -264,7 +288,7 @@ const NFTdetail = ({ setShowModal }) => {
                 </div>
                 {nftDetail && walletAddress === nftDetail.walletAddress && (
                   <div className="buy-btn">
-                    <a href="/" onClick={buyNFT}>
+                    <a href="/" onClick={sellNFT}>
                       SELL
                     </a>
                   </div>
