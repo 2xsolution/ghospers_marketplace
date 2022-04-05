@@ -7,6 +7,8 @@ import Icon from "../../assets/img/icon_stat.png";
 import Loader from "../../components/loader/Loader";
 import SwordIcon from "../../assets/img/sword.png";
 import "./nftdetail.css";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+
 import axios from "axios";
 import { BASEURL } from "../../utils/Utils";
 import {
@@ -94,7 +96,16 @@ const NFTdetail = ({ setShowModal }) => {
       <Header setShowModal={setShowModal} />
 
       {isLoading ? (
-        <Loader />
+        <SkeletonTheme baseColor="#0d2733" highlightColor="#41c6ff">
+          <div className="loader-flex">
+            <div className="left-loader">
+              <Skeleton width={365} height={375} />
+            </div>
+            <div className="right-loader">
+              <Skeleton width={440} height={500} />
+            </div>
+          </div>
+        </SkeletonTheme>
       ) : nftDetail ? (
         <section className="nft">
           <div className="container">

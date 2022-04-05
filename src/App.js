@@ -5,6 +5,7 @@ import Contact from "./pages/Contact/Contact";
 import Home from "./pages/Home/Home";
 import NFTdetail from "./pages/NFTDetail/NFTdetail";
 import "./App.css";
+import 'react-loading-skeleton/dist/skeleton.css'
 import Mint from "./pages/mint/Mint";
 import Profile from "./pages/profile/Profile";
 import { Toaster } from "react-hot-toast";

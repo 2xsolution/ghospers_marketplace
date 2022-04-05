@@ -8,7 +8,7 @@ function LoaderModal() {
     <div className="">
       <Modal isOpen={true} contentLabel="Example Modal">
         <div style={{ width: "400px", margin: "auto" }}>
-          <h2 style={{ textAlign: "center", marginTop: "40px" }}>Loading.. </h2>
+          {/* <h2 style={{ textAlign: "center", marginTop: "40px" }}>Loading.. </h2> */}
           <Loader />
         </div>
       </Modal>

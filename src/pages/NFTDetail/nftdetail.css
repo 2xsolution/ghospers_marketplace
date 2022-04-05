@@ -286,6 +286,22 @@ option {
   color: #41c6ff;
 }
 
+.loader-flex {
+  display: flex;
+  height: 80vh;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left-loader,
+.right-loader {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media (max-width: 768px) {
   .nft-detail-container {
     flex-direction: column;
