@@ -67,7 +67,12 @@ const NFTdetail = ({ setShowModal }) => {
 
     setWalletAddress(curWallet.account);
 
-    await buyNFT();
+    try {
+      await buyNFT();      
+    } catch (error) {
+      console.log('failed to buy nft', error);
+      return;
+    }
 
     let tmpWallet = curWallet.account;
 
