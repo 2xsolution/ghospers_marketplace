@@ -121,9 +121,9 @@ const NFTdetail = ({ setShowModal }) => {
       }
 
       if (tokenType === 0) {
-        await buyNFTWithGHSP(tokenId);
+        await buyNFTWithGHSP(tokenId, nftDetail.price);
       } else if (tokenType === 1) {
-        await buyNFTWithBUSD(tokenId);
+        await buyNFTWithBUSD(tokenId, nftDetail.price);
       } else {
         await buyNFTWithBNB(tokenId, nftDetail.price);
       }
