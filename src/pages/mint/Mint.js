@@ -79,7 +79,8 @@ function Mint({ setShowModal }) {
                 "********** minted token id ***********",
                 res?.tokenId
               );
-              if (res && res.tokenId) {
+              console.log(res);
+              if (res && res.tokenId && res.wallet) {
                 var formData = new FormData();
                 formData.append("title", title);
                 formData.append("description", description);
@@ -121,13 +122,11 @@ function Mint({ setShowModal }) {
                   });
               } else {
                 setIsLoading(false);
-
                 NotificationManager.error("Not Created Token ID from contract");
               }
             });
           } catch (error) {
             setIsLoading(false);
-
             NotificationManager.error("Transaction Error");
           }
         });
@@ -136,7 +135,7 @@ function Mint({ setShowModal }) {
   };
 
   const validateFields = () => {
-    if (!title || !price || !level) return false;
+    if (!title || !price || !level || !selectedType || !image) return false;
     return true;
   };
 

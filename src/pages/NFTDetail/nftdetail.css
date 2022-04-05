@@ -250,6 +250,7 @@ select {
   border-radius: 2em;
   box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
   cursor: pointer;
+  margin-top: 20px;
 }
 
 option {
@@ -284,6 +285,22 @@ option {
 
 .detail-card .percentage {
   color: #41c6ff;
+}
+
+.loader-flex {
+  display: flex;
+  height: 80vh;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.left-loader,
+.right-loader {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media (max-width: 768px) {

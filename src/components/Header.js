@@ -104,7 +104,8 @@ const Header = ({ setShowModal, setWalletAddress }) => {
                 ? "Connect Wallet"
                 : curWallet.slice(0, 5) + "..." + curWallet.slice(-4)}
             </a>
-            <a href="/profile">Profile</a>
+
+            {curWallet && <a href="/profile">Profile</a>}
           </div>
         </div>
         <div className="hamburger" onClick={() => isnavActive(!navActive)}>

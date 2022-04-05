@@ -4,7 +4,7 @@ import MultiRangeInput from "../../components/MultiRangeInput";
 import { BASEURL } from "../../utils/Utils";
 import LeftIcon from "../../assets/img/lefticon.png";
 import RightIcon from "../../assets/img/righticon.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "./profile.css";
 import ProfileImg from "../../assets/img/card1.png";
 import UpdateModal from "./updateModal/UpdateModal";
@@ -137,18 +137,24 @@ function Profile() {
     }
   }, [singleSelectedProperty]);
 
+  var { address } = useParams();
+
   useEffect(() => {
-    const initWeb3 = async () => {
-      await loadWeb3();
-      let res = await connectWallet();
-      setWalletAddress(res.address);
-    };
+    if (address) {
+      console.log("if");
+      setWalletAddress(address);
+    } else {
+      const initWeb3 = async () => {
+        await loadWeb3();
+        let res = await connectWallet();
+        // console.log(res);
+        setWalletAddress(res.address);
+      };
+      initWeb3();
+    }
 
     loadProperties();
     loadUserDetails();
-
-    initWeb3();
-
   }, [walletAddress]);
 
   const loadUserDetails = () => {
@@ -220,13 +226,7 @@ function Profile() {
             {userDetails && userDetails.facebook ? (
               <div className="profile-div">
                 <div className="red-div">
-                  <img
-                    src={
-                      userDetails &&
-                      `${userDetails.imageUrl}`
-                    }
-                    alt=""
-                  />
+                  <img src={userDetails && `${userDetails.imageUrl}`} alt="" />
                 </div>
                 <button
                   className="custom-btn"
@@ -289,14 +289,13 @@ function Profile() {
                         key={i}
                         onClick={() => {
                           onClickItem(i);
-                          navigate(`/trending/${elem._id}/tokenid/${elem.tokenId}`);
+                          navigate(
+                            `/trending/${elem._id}/tokenid/${elem.tokenId}`
+                          );
                         }}
                       >
                         <div className="card-img">
-                          <img
-                            src={`${elem.imageUrl}`}
-                            alt="Card1"
-                          />
+                          <img src={`${elem.imageUrl}`} alt="Card1" />
                         </div>
                         <div className="card-title">
                           <h4>
@@ -325,7 +324,9 @@ function Profile() {
                 </div> */}
                           <div>
                             <span>Price</span>
-                            <p>{elem.price}&nbsp;{elem.currency?.toUpperCase()}</p>
+                            <p>
+                              {elem.price}&nbsp;{elem.currency?.toUpperCase()}
+                            </p>
                             <small>${elem.price} USD</small>
                           </div>
                         </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
 import NFTimg from "../../assets/img/nftimg.png";
 import coinIcon from "../../assets/img/coinicon.png";
@@ -7,6 +7,8 @@ import Icon from "../../assets/img/icon_stat.png";
 import Loader from "../../components/loader/Loader";
 import SwordIcon from "../../assets/img/sword.png";
 import "./nftdetail.css";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+
 import axios from "axios";
 import { BASEURL } from "../../utils/Utils";
 import {
@@ -59,6 +61,22 @@ const NFTdetail = ({ setShowModal }) => {
   };
 
   const changeOwner = async () => {
+    setIsLoading(true);
+    axios
+      .put(`${BASEURL}/nft/${nftId}`, {
+        walletAddress: "xyz",
+      })
+      .then((response) => {
+        console.log("owner changed", response.data.data);
+        setNftDetail(response.data.data);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        console.log(e);
+      });
+
+    return;
     let curWallet = await getCurrentWallet();
     if (!curWallet.success) {
       alert("No wallet");
@@ -68,9 +86,9 @@ const NFTdetail = ({ setShowModal }) => {
     setWalletAddress(curWallet.account);
 
     try {
-      await buyNFT();      
+      await buyNFT();
     } catch (error) {
-      console.log('failed to buy nft', error);
+      console.log("failed to buy nft", error);
       return;
     }
 
@@ -125,16 +143,27 @@ const NFTdetail = ({ setShowModal }) => {
       tokenType = 2;
     }
 
-    console.log('sellNFT info', nftDetail);
-    putTokenOnSale(tokenId, nftDetail.price, tokenType)
-  }
+    console.log("sellNFT info", nftDetail);
+    putTokenOnSale(tokenId, nftDetail.price, tokenType);
+  };
+
+  const navigate = useNavigate();
 
   return (
     <>
       <Header setShowModal={setShowModal} />
 
       {isLoading ? (
-        <Loader />
+        <SkeletonTheme baseColor="#0d2733" highlightColor="#41c6ff">
+          <div className="loader-flex">
+            <div className="left-loader">
+              <Skeleton width={365} height={375} />
+            </div>
+            <div className="right-loader">
+              <Skeleton width={440} height={500} />
+            </div>
+          </div>
+        </SkeletonTheme>
       ) : nftDetail ? (
         <section className="nft">
           <div className="container">
@@ -163,7 +192,15 @@ const NFTdetail = ({ setShowModal }) => {
                 </div>
 
                 {nftDetail?.walletAddress && (
-                  <p className="view-owner"> View Owner</p>
+                  <p
+                    className="view-owner"
+                    onClick={() =>
+                      navigate("/profile/" + nftDetail.walletAddress)
+                    }
+                  >
+                    {" "}
+                    View Owner
+                  </p>
                 )}
 
                 <div className="nft-data">
@@ -243,10 +280,10 @@ const NFTdetail = ({ setShowModal }) => {
                             (nftDetail.type == "common"
                               ? "0.25"
                               : nftDetail.type == "rare"
-                                ? "0.5"
-                                : nftDetail.type == "epic"
-                                  ? "0.75"
-                                  : "1.0")}
+                              ? "0.5"
+                              : nftDetail.type == "epic"
+                              ? "0.75"
+                              : "1.0")}
                         </p>
                       </div>
                       <div className="nft-stats">
@@ -266,10 +303,10 @@ const NFTdetail = ({ setShowModal }) => {
                             (nftDetail.type == "common"
                               ? "5"
                               : nftDetail.type == "rare"
-                                ? "10"
-                                : nftDetail.type == "epic"
-                                  ? "15"
-                                  : "20")}
+                              ? "10"
+                              : nftDetail.type == "epic"
+                              ? "15"
+                              : "20")}
                         </p>
                       </div>
                     </>
