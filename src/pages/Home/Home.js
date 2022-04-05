@@ -348,14 +348,20 @@ const Home = ({ setShowModal }) => {
                             {/* <span>{elem.description}</span> */}
                             <button
                               className="custom-btn"
-                              onClick={(e) =>
-                                // navigate(
-                                //   `/trending/${elem._id}/tokenid/${elem.tokenId}`
-                                // )
-                                {
-                                  buyNft(e, elem._id);
-                                }
-                              }
+                              key={i}
+                              onClick={() => {
+                                navigate(
+                                  `/trending/${elem._id}/tokenid/${elem.tokenId}`
+                                );
+                              }}
+                              // onClick={(e) =>
+                              //   // navigate(
+                              //   //   `/trending/${elem._id}/tokenid/${elem.tokenId}`
+                              //   // )
+                              //   {
+                              //     buyNft(e, elem._id);
+                              //   }
+                              // }
                             >
                               OPEN
                             </button>
