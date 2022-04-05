@@ -14,6 +14,7 @@ import Accordian from "../../components/accordian/Accordian";
 import {
   loadWeb3,
   connectWallet,
+  putTokenOnSale,
 } from "../../core/web3";
 
 function Profile() {
@@ -171,8 +172,20 @@ function Profile() {
       .catch((e) => console.log(e));
   };
 
-  const sellNft = async (e, nftId) => {
+  const sellNft = async (e, item) => {
     e.stopPropagation();
+
+    let tokenType = 0;
+    if (item.currency == "ghsp") {
+      tokenType = 0;
+    } else if (item.currency == "busd") {
+      tokenType = 1;
+    } else {
+      tokenType = 2;
+    }
+    const nftId = item._id;
+    await putTokenOnSale(item.tokenId, item.price, tokenType);
+
     axios
       .put(`${BASEURL}/nft/sell/${nftId}`, {
         walletAddress,
@@ -300,7 +313,7 @@ function Profile() {
                           {/* <span>{elem.description}</span> */}
                           <button
                             className="custom-btn"
-                            onClick={(e) => sellNft(e, elem._id)}
+                            onClick={(e) => sellNft(e, elem)}
                           >
                             SELL
                           </button>
