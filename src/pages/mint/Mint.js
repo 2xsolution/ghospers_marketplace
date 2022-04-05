@@ -109,7 +109,7 @@ function Mint({ setShowModal }) {
                     setLevel("");
                     setIsLoading(false);
                     NotificationManager.success("Nft Created Successfully");
-                    window.location.reload();
+                    // window.location.reload();
                   })
                   .catch((e) => {
                     console.log(e.response.data.message);
@@ -117,7 +117,7 @@ function Mint({ setShowModal }) {
                     NotificationManager.error(e.response.data.message);
                     console.log(e);
                     setIsLoading(false);
-                    window.location.reload();
+                    // window.location.reload();
                   });
               } else {
                 setIsLoading(false);

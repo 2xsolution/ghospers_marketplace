@@ -276,7 +276,7 @@ function Profile() {
                         key={i}
                         onClick={() => {
                           onClickItem(i);
-                          navigate(`/trending/${elem._id}`);
+                          navigate(`/trending/${elem._id}/tokenid/${elem.tokenId}`);
                         }}
                       >
                         <div className="card-img">
