@@ -140,10 +140,10 @@ function Profile() {
       console.log("if");
       setWalletAddress(address);
     } else {
-      console.log("else");
       const initWeb3 = async () => {
         await loadWeb3();
         let res = await connectWallet();
+        // console.log(res);
         setWalletAddress(res.address);
       };
       initWeb3();
@@ -273,7 +273,9 @@ function Profile() {
                         key={i}
                         onClick={() => {
                           onClickItem(i);
-                          navigate(`/trending/${elem._id}/tokenid/${elem.tokenId}`);
+                          navigate(
+                            `/trending/${elem._id}/tokenid/${elem.tokenId}`
+                          );
                         }}
                       >
                         <div className="card-img">

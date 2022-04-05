@@ -52,6 +52,7 @@ const Home = ({ setShowModal }) => {
       })
       .then((response) => {
         setTotalRecords(response.data.data[1].totalRecords);
+        // var sortedArray = sortNfts(response.data.data[0]);
         setNftsArray(response.data.data[0]);
 
         setIsLoading(false);
@@ -140,6 +141,15 @@ const Home = ({ setShowModal }) => {
       })
       .catch((e) => console.log(e));
   };
+
+  // var sortNfts = (ar) => {
+  //   console.log(ar);
+  //   var ar = ar.sort(function (a, b) {
+  //     return new Date(b.createdAt) - new Date(a.createdAt);
+  //   });
+  //   console.log(ar);
+  //   return ar;
+  // };
 
   useEffect(() => {
     const initWeb3 = async () => {

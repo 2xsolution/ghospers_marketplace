@@ -61,6 +61,22 @@ const NFTdetail = ({ setShowModal }) => {
   };
 
   const changeOwner = async () => {
+    setIsLoading(true);
+    axios
+      .put(`${BASEURL}/nft/${nftId}`, {
+        walletAddress: "xyz",
+      })
+      .then((response) => {
+        console.log("owner changed", response.data.data);
+        setNftDetail(response.data.data);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        console.log(e);
+      });
+
+    return;
     let curWallet = await getCurrentWallet();
     if (!curWallet.success) {
       alert("No wallet");
