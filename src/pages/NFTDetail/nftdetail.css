@@ -250,6 +250,7 @@ select {
   border-radius: 2em;
   box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.2);
   cursor: pointer;
+  margin-top: 20px;
 }
 
 option {

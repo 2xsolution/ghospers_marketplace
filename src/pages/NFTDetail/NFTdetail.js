@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
 import NFTimg from "../../assets/img/nftimg.png";
 import coinIcon from "../../assets/img/coinicon.png";
@@ -14,9 +14,11 @@ import { BASEURL } from "../../utils/Utils";
 import {
   loadWeb3,
   connectWallet,
+  getCurrentWallet,
   buyNFTWithBNB,
   buyNFTWithBUSD,
   buyNFTWithGHSP,
+  putTokenOnSale,
 } from "../../core/web3";
 
 const NFTdetail = ({ setShowModal }) => {
@@ -59,11 +61,27 @@ const NFTdetail = ({ setShowModal }) => {
   };
 
   const changeOwner = async () => {
-    if (!walletAddress) alert("No wallet");
+    let curWallet = await getCurrentWallet();
+    if (!curWallet.success) {
+      alert("No wallet");
+      return;
+    }
+
+    setWalletAddress(curWallet.account);
+
+    try {
+      await buyNFT();
+    } catch (error) {
+      console.log("failed to buy nft", error);
+      return;
+    }
+
+    let tmpWallet = curWallet.account;
+
     setIsLoading(true);
     axios
       .put(`${BASEURL}/nft/${nftId}`, {
-        walletAddress,
+        tmpWallet,
       })
       .then((response) => {
         console.log("owner changed", response.data.data);
@@ -76,20 +94,44 @@ const NFTdetail = ({ setShowModal }) => {
       });
   };
 
-  const buyNFT = async (event) => {
-    event.preventDefault();
-
+  const buyNFT = async () => {
     if (tokenId) {
-      const saleTokenType = 2; // GHSP, BUSD, BNB
-      if (saleTokenType === 0) {
+      let tokenType = 0;
+      if (nftDetail.currency == "ghsp") {
+        tokenType = 0;
+      } else if (nftDetail.currency == "busd") {
+        tokenType = 1;
+      } else {
+        tokenType = 2;
+      }
+
+      if (tokenType === 0) {
         await buyNFTWithGHSP(tokenId);
-      } else if (saleTokenType === 1) {
+      } else if (tokenType === 1) {
         await buyNFTWithBUSD(tokenId);
       } else {
-        await buyNFTWithBNB(tokenId, 0.01);
+        await buyNFTWithBNB(tokenId, nftDetail.price);
       }
     }
   };
+
+  const sellNFT = async (event) => {
+    event.preventDefault();
+
+    let tokenType = 0;
+    if (nftDetail.currency == "ghsp") {
+      tokenType = 0;
+    } else if (nftDetail.currency == "busd") {
+      tokenType = 1;
+    } else {
+      tokenType = 2;
+    }
+
+    console.log("sellNFT info", nftDetail);
+    putTokenOnSale(tokenId, nftDetail.price, tokenType);
+  };
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -134,7 +176,15 @@ const NFTdetail = ({ setShowModal }) => {
                 </div>
 
                 {nftDetail?.walletAddress && (
-                  <p className="view-owner"> View Owner</p>
+                  <p
+                    className="view-owner"
+                    onClick={() =>
+                      navigate("/profile/" + nftDetail.walletAddress)
+                    }
+                  >
+                    {" "}
+                    View Owner
+                  </p>
                 )}
 
                 <div className="nft-data">
@@ -253,19 +303,20 @@ const NFTdetail = ({ setShowModal }) => {
                   </h1>
                   {/* <p>{nftDetail && nftDetail.price} USD</p> */}
                 </div>
-                <div className="buy-btn">
-                  <a
-                    // href="/"
-                    // onClick={buyNFT}
-                    onClick={changeOwner}
-                  >
-                    BUY NOW
-                  </a>
-                </div>
-                {nftDetail && walletAddress === nftDetail.walletAddress && (
+                {nftDetail && walletAddress === nftDetail.walletAddress ? (
                   <div className="buy-btn">
-                    <a href="/" onClick={buyNFT}>
+                    <a href="/" onClick={sellNFT}>
                       SELL
+                    </a>
+                  </div>
+                ) : (
+                  <div className="buy-btn">
+                    <a
+                      // href="/"
+                      // onClick={buyNFT}
+                      onClick={changeOwner}
+                    >
+                      BUY NOW
                     </a>
                   </div>
                 )}

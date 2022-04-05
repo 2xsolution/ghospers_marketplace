@@ -130,6 +130,15 @@
   text-align: center;
 }
 
+.profile-content .card-img {
+  height: 300px;
+  background: none;
+}
+
+.profile-content .card-img img {
+  height: 100%;
+}
+
 .overlay-blue .custom-btn {
   width: 200px;
   margin-top: 20px;

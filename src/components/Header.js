@@ -20,8 +20,7 @@ const Header = ({ setShowModal, setWalletAddress }) => {
     let res = await connectWallet();
     setCurWallet(res.address);
     // console.log(res.address);
-    // setWalletAddress(res.address);
-    // setWalletAddress("xyz");
+    setWalletAddress(res.address);
   };
 
   const saveUser = (e) => {
@@ -105,7 +104,8 @@ const Header = ({ setShowModal, setWalletAddress }) => {
                 ? "Connect Wallet"
                 : curWallet.slice(0, 5) + "..." + curWallet.slice(-4)}
             </a>
-            <a href="/profile">Profile</a>
+
+            {curWallet && <a href="/profile">Profile</a>}
           </div>
         </div>
         <div className="hamburger" onClick={() => isnavActive(!navActive)}>
