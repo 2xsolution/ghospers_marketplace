@@ -19,6 +19,7 @@ import {
   buyNFTWithBUSD,
   buyNFTWithGHSP,
   putTokenOnSale,
+  removeTokenFromSale,
 } from "../../core/web3";
 
 const NFTdetail = ({ setShowModal }) => {
@@ -130,9 +131,11 @@ const NFTdetail = ({ setShowModal }) => {
     }
   };
 
-  const sellNFT = async (event) => {
-    event.preventDefault();
+  const cancelNft = async () => {
+    removeTokenFromSale(tokenId);
+  }
 
+  const sellNft = async () => {
     let tokenType = 0;
     if (nftDetail.currency == "ghsp") {
       tokenType = 0;
@@ -142,7 +145,7 @@ const NFTdetail = ({ setShowModal }) => {
       tokenType = 2;
     }
 
-    console.log("sellNFT info", nftDetail);
+    console.log("sellNft info", nftDetail);
     putTokenOnSale(tokenId, nftDetail.price, tokenType);
   };
 
@@ -279,10 +282,10 @@ const NFTdetail = ({ setShowModal }) => {
                             (nftDetail.type == "common"
                               ? "0.25"
                               : nftDetail.type == "rare"
-                              ? "0.5"
-                              : nftDetail.type == "epic"
-                              ? "0.75"
-                              : "1.0")}
+                                ? "0.5"
+                                : nftDetail.type == "epic"
+                                  ? "0.75"
+                                  : "1.0")}
                         </p>
                       </div>
                       <div className="nft-stats">
@@ -302,10 +305,10 @@ const NFTdetail = ({ setShowModal }) => {
                             (nftDetail.type == "common"
                               ? "5"
                               : nftDetail.type == "rare"
-                              ? "10"
-                              : nftDetail.type == "epic"
-                              ? "15"
-                              : "20")}
+                                ? "10"
+                                : nftDetail.type == "epic"
+                                  ? "15"
+                                  : "20")}
                         </p>
                       </div>
                     </>
@@ -320,8 +323,15 @@ const NFTdetail = ({ setShowModal }) => {
                 </div>
                 {nftDetail && walletAddress === nftDetail.walletAddress ? (
                   <div className="buy-btn">
-                    <a href="/" onClick={sellNFT}>
-                      SELL
+                    <a href="/" onClick={(e) => {
+                      if (nftDetail.nftOnSale) {
+                        cancelNft();
+                      } else {
+                        sellNft();
+                      }
+                    }
+                    }>
+                      {nftDetail.nftOnSale ? "CANCEL" : "SELL"}
                     </a>
                   </div>
                 ) : (

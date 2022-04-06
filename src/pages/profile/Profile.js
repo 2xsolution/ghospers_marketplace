@@ -15,6 +15,7 @@ import {
   loadWeb3,
   connectWallet,
   putTokenOnSale,
+  removeTokenFromSale,
 } from "../../core/web3";
 
 function Profile() {
@@ -45,6 +46,8 @@ function Profile() {
         setTotalRecords(response.data.data[1].totalRecords);
         setNftsArray(response.data.data[0]);
         setIsLoading(false);
+
+        console.log('111111111111', response.data.data[0]);
       })
       .catch((e) => {
         console.log(e);
@@ -178,9 +181,11 @@ function Profile() {
       .catch((e) => console.log(e));
   };
 
-  const sellNft = async (e, item) => {
-    e.stopPropagation();
+  const cancelNft = async (item) => {
+    removeTokenFromSale(item.tokenId);
+  }
 
+  const sellNft = async (item) => {
     let tokenType = 0;
     if (item.currency == "ghsp") {
       tokenType = 0;
@@ -312,9 +317,16 @@ function Profile() {
                           {/* <span>{elem.description}</span> */}
                           <button
                             className="custom-btn"
-                            onClick={(e) => sellNft(e, elem)}
+                            onClick={(e) => {
+                              if (elem.nftOnSale) {
+                                cancelNft(elem);
+                              } else {
+                                sellNft(elem);
+                              }
+                            }
+                            }
                           >
-                            SELL
+                            {elem.nftOnSale ? "CANCEL" : "SELL"}
                           </button>
                         </div>
                         <div className="card-price">
