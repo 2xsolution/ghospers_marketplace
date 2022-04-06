@@ -200,7 +200,7 @@ function Profile() {
             Back to home
           </button>
           <div className="fitermob profile-filters">
-            <a href="/" className="filter-btn" onClick={openSidebar}>
+            <a className="filter-btn" onClick={openSidebar}>
               Filters
             </a>
           </div>
@@ -212,12 +212,14 @@ function Profile() {
                 <div className="red-div">
                   <img src={userDetails && `${userDetails.imageUrl}`} alt="" />
                 </div>
-                <button
-                  className="custom-btn"
-                  onClick={() => setShowModal(true)}
-                >
-                  Edit Profile
-                </button>
+                {walletAddress && walletAddress == userDetails.walletAddress && (
+                  <button
+                    className="custom-btn"
+                    onClick={() => setShowModal(true)}
+                  >
+                    Edit Profile
+                  </button>
+                )}
                 <h2>{userDetails && userDetails.name}</h2>
                 <p>{userDetails && userDetails.walletAddress}</p>{" "}
                 <div className="profile-about">
@@ -294,12 +296,27 @@ function Profile() {
                               : ""}
                           </h4>
                           {/* <span>{elem.description}</span> */}
-                          <button
-                            className="custom-btn"
-                            onClick={(e) => sellNft(e, elem._id)}
-                          >
-                            SELL
-                          </button>
+
+                          {walletAddress &&
+                          walletAddress == userDetails?.walletAddress ? (
+                            <button
+                              className="custom-btn"
+                              onClick={(e) => sellNft(e, elem._id)}
+                            >
+                              SELL
+                            </button>
+                          ) : (
+                            <button
+                              className="custom-btn"
+                              onClick={() =>
+                                navigate(
+                                  `/trending/${elem._id}/tokenid/${elem.tokenId}`
+                                )
+                              }
+                            >
+                              OPEN
+                            </button>
+                          )}
                         </div>
                         <div className="card-price">
                           {/* <div>
@@ -322,17 +339,38 @@ function Profile() {
                 {nftsArray && nftsArray.length > 0 && !isLoading ? (
                   <div className="pagination-wrap">
                     <div className="pagination">
-                      <div className="icon">
-                        <a href="/">
+                      <div
+                        className="icon"
+                        onClick={() => {
+                          if (page != 1) {
+                            setPage(page - 1);
+                            window.scrollTo(0, 0);
+                          }
+                        }}
+                      >
+                        <a>
                           <img src={LeftIcon} alt="" />
                         </a>
                       </div>
                       <div className="number">
-                        <span>{size > totalRecords ? totalRecords : size}</span>
+                        <span>
+                          {" "}
+                          {page * size > totalRecords
+                            ? totalRecords
+                            : size * page}
+                        </span>
                         of {totalRecords && totalRecords}
                       </div>
-                      <div className="icon">
-                        <a href="/">
+                      <div
+                        className="icon"
+                        onClick={() => {
+                          if (page * size < totalRecords) {
+                            window.scrollTo(0, 0);
+                            setPage(page + 1);
+                          }
+                        }}
+                      >
+                        <a>
                           <img src={RightIcon} alt="" />
                         </a>
                       </div>
@@ -356,9 +394,7 @@ function Profile() {
             <div className={sidebar ? "sidebar sidebar-active" : "sidebar"}>
               <div className="filter">
                 <h4>FILTERS</h4>
-                <a href="/" onClick={clearAll}>
-                  CLEAR ALL
-                </a>
+                <a onClick={clearAll}>CLEAR ALL</a>
               </div>
               {/* <div className="hero">
                 <h4>GHOSPERS</h4>
@@ -454,9 +490,9 @@ function Profile() {
                 </div>
               </div>
               {properties &&
-                properties.map((data) => {
+                properties.map((data, index) => {
                   return (
-                    <div className="hero">
+                    <div className="hero" key={index}>
                       <Accordian
                         setSingleSelectedProperty={setSingleSelectedProperty}
                         title={data.type}

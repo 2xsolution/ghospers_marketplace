@@ -8,7 +8,7 @@ import RightIcon from "../../assets/img/righticon.png";
 import axios from "axios";
 import "./home.css";
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import { Data } from "../../components/accordian/AccordianData";
 import {
   loadWeb3,
@@ -198,7 +198,7 @@ const Home = ({ setShowModal }) => {
       <Header setShowModal={setShowModal} setWalletAddress={setWalletAddress} />
       <section className="root">
         <div className="fitermob">
-          <a href="/" className="filter-btn" onClick={openSidebar}>
+          <a className="filter-btn" onClick={openSidebar}>
             Filter
           </a>
         </div>
@@ -206,9 +206,7 @@ const Home = ({ setShowModal }) => {
           <div className={sidebar ? "sidebar sidebar-active" : "sidebar"}>
             <div className="filter">
               <h4>FILTERS</h4>
-              <a href="/" onClick={clearAll}>
-                CLEAR ALL
-              </a>
+              <a onClick={clearAll}>CLEAR ALL</a>
             </div>
             {/* <div className="hero">
               <h4>GHOSPERS</h4>
@@ -325,7 +323,7 @@ const Home = ({ setShowModal }) => {
           <div style={{ marginLeft: "60px", width: "100%" }}>
             <div style={{ display: "flex", marginBottom: "20px" }}>
               <div className="nav-btn">
-                <a href="/mint">Mint</a>
+                <Link to="/mint">Mint</Link>
               </div>
             </div>
             <div className="nft-collections">

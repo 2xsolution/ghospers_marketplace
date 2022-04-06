@@ -40,12 +40,12 @@ function Accordian({ title, content, setSingleSelectedProperty }) {
         <h4>{title}</h4>
         {showContent ? (
           <i
-            class="fa-solid fa-caret-up"
+            className="fa-solid fa-caret-up"
             onClick={() => setShowContent(false)}
           ></i>
         ) : (
           <i
-            class="fa-solid fa-caret-down"
+            className="fa-solid fa-caret-down"
             onClick={() => setShowContent(true)}
           ></i>
         )}

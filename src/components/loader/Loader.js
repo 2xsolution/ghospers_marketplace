@@ -3,7 +3,7 @@ import "./loader.css";
 function Loader() {
   return (
     <div className="loader">
-      <div class="square"></div>
+      <div className="square"></div>
       <p className="mt-3">Loading...</p>
     </div>
   );

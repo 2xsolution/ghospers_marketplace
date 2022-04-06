@@ -321,9 +321,7 @@ const NFTdetail = ({ setShowModal }) => {
                 </div>
                 {nftDetail && walletAddress === nftDetail.walletAddress ? (
                   <div className="buy-btn">
-                    <a href="/" onClick={sellNFT}>
-                      SELL
-                    </a>
+                    <a onClick={sellNFT}>SELL</a>
                   </div>
                 ) : (
                   <div className="buy-btn">

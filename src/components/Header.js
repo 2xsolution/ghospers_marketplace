@@ -78,9 +78,13 @@ const Header = ({ setShowModal, setWalletAddress }) => {
         <div className={navActive ? "links nav-active" : "links"}>
           <ul className="navigations">
             <li>
-              <Link to="https://ghospers.com/" activeclassname="active">
+              <a
+                target="_blank"
+                href="https://ghospers.com/"
+                activeclassname="active"
+              >
                 Home
-              </Link>
+              </a>
             </li>
             <li>
               <NavLink to="/" activeclassname="active">
@@ -88,9 +92,13 @@ const Header = ({ setShowModal, setWalletAddress }) => {
               </NavLink>
             </li>
             <li>
-              <Link to="https://staking.ghospers.com/" activeclassname="active">
+              <a
+                target="_blank"
+                href="https://staking.ghospers.com/"
+                activeclassname="active"
+              >
                 Staking
-              </Link>
+              </a>
             </li>
             {/* <li>
 							<NavLink to="/contact" activeclassname="active">
@@ -99,13 +107,13 @@ const Header = ({ setShowModal, setWalletAddress }) => {
 						</li> */}
           </ul>
           <div className="nav-btn">
-            <a href="/" onClick={openModal}>
+            <a onClick={openModal}>
               {curWallet === ""
                 ? "Connect Wallet"
                 : curWallet.slice(0, 5) + "..." + curWallet.slice(-4)}
             </a>
 
-            {curWallet && <a href="/profile">Profile</a>}
+            {curWallet && <NavLink to="/profile">Profile</NavLink>}
           </div>
         </div>
         <div className="hamburger" onClick={() => isnavActive(!navActive)}>
