@@ -194,6 +194,7 @@ const NFTdetail = ({ setShowModal }) => {
   };
 
   const cancelNft = async () => {
+    setShowLoadingModal(true);
     let curWallet = await getCurrentWallet();
     removeTokenFromSale(tokenId).then((res)=>{
       if(res === true){
@@ -221,6 +222,7 @@ const NFTdetail = ({ setShowModal }) => {
   };
 
   const sellNft = async () => {
+    setShowLoadingModal(true);
     let curWallet = await getCurrentWallet();
     let tokenType = 0;
     if (nftDetail.currency == "ghsp") {
