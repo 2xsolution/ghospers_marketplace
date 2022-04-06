@@ -21,13 +21,14 @@ import {
   putTokenOnSale,
   removeTokenFromSale,
 } from "../../core/web3";
+import LoaderModal from "../../components/loaderModal/LoaderModal";
 
 const NFTdetail = ({ setShowModal }) => {
   const [nftDetail, setNftDetail] = useState(null);
   const [walletAddress, setWalletAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
-
+  const [showLoadingModal, setShowLoadingModal] = useState(false);
   useEffect(() => {
     const initWeb3 = async () => {
       await loadWeb3();
@@ -62,7 +63,7 @@ const NFTdetail = ({ setShowModal }) => {
   };
 
   const changeOwner = async () => {
-    setIsLoading(true);
+    setShowLoadingModal(true);
     // axios
     //   .put(`${BASEURL}/nft/${nftId}`, {
     //     walletAddress: "xyz",
@@ -94,7 +95,6 @@ const NFTdetail = ({ setShowModal }) => {
 
     let tmpWallet = curWallet.account;
 
-    setIsLoading(true);
     axios
       .put(`${BASEURL}/nft/${nftId}`, {
         walletAddress: tmpWallet,
@@ -102,11 +102,11 @@ const NFTdetail = ({ setShowModal }) => {
       .then((response) => {
         console.log("owner changed", response.data.data);
         setNftDetail(response.data.data);
-        setIsLoading(false);
+        setShowLoadingModal(false);
       })
       .catch((e) => {
-        setIsLoading(false);
         console.log(e);
+        setShowLoadingModal(false);
       });
   };
 
@@ -154,7 +154,7 @@ const NFTdetail = ({ setShowModal }) => {
   return (
     <>
       <Header setShowModal={setShowModal} />
-
+      {showLoadingModal && <LoaderModal />}
       {isLoading ? (
         <SkeletonTheme baseColor="#0d2733" highlightColor="#41c6ff">
           <div className="loader-flex">
