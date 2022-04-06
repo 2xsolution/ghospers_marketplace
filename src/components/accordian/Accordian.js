@@ -27,7 +27,6 @@ function Accordian({ title, content, setSingleSelectedProperty }) {
   };
 
   useEffect(() => {
-    console.log(selectedProperties);
     setSingleSelectedProperty(selectedProperties);
   }, [selectedProperties]);
 

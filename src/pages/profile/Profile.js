@@ -11,8 +11,13 @@ import UpdateModal from "./updateModal/UpdateModal";
 import Header from "../../components/Header";
 import Loader from "../../components/loader/Loader";
 import Accordian from "../../components/accordian/Accordian";
-import { loadWeb3, connectWallet, putTokenOnSale } from "../../core/web3";
 import LoaderModal from "../../components/loaderModal/LoaderModal";
+import {
+  loadWeb3,
+  connectWallet,
+  putTokenOnSale,
+  removeTokenFromSale,
+} from "../../core/web3";
 
 function Profile() {
   const navigate = useNavigate();
@@ -38,10 +43,11 @@ function Profile() {
         type: selectedType,
       })
       .then((response) => {
-        console.log(response.data);
         setTotalRecords(response.data.data[1].totalRecords);
         setNftsArray(response.data.data[0]);
         setIsLoading(false);
+
+        console.log("111111111111", response.data.data[0]);
       })
       .catch((e) => {
         console.log(e);
@@ -92,7 +98,9 @@ function Profile() {
   const [singleSelectedProperty, setSingleSelectedProperty] = useState(null);
   const [showLoadingModal, setShowLoadingModal] = useState(false);
   useEffect(() => {
-    loadNfts();
+    if (walletAddress) {
+      loadNfts();
+    }
     // updateTokenIds();
   }, [
     min,
@@ -108,7 +116,6 @@ function Profile() {
   ]);
 
   useEffect(() => {
-    console.log(singleSelectedProperty);
     if (
       singleSelectedProperty &&
       singleSelectedProperty.values &&
@@ -137,21 +144,24 @@ function Profile() {
   var { address } = useParams();
 
   useEffect(() => {
+    setIsLoading(true);
     if (address) {
-      console.log("if");
       setWalletAddress(address);
+      setIsLoading(false);
     } else {
       const initWeb3 = async () => {
         await loadWeb3();
         let res = await connectWallet();
-        // console.log(res);
         setWalletAddress(res.address);
+        setIsLoading(false);
       };
       initWeb3();
     }
 
     loadProperties();
-    loadUserDetails();
+    if (walletAddress) {
+      loadUserDetails();
+    }
   }, [walletAddress]);
 
   const loadUserDetails = () => {
@@ -169,15 +179,36 @@ function Profile() {
     axios
       .get(BASEURL + "/property/all")
       .then((response) => {
-        console.log(response.data.data);
         setProperties(response.data.data);
       })
       .catch((e) => console.log(e));
   };
 
+  const cancelNft = async (e, item) => {
+    e.stopPropagation();
+    const nftId = item._id;
+    setShowLoadingModal(true);
+
+    removeTokenFromSale(item.tokenId);
+    axios
+      .put(`${BASEURL}/nft/cancel/${nftId}`, {
+        walletAddress,
+      })
+      .then((response) => {
+        console.log(response);
+        setShowLoadingModal(false);
+        loadNfts();
+      })
+      .catch((e) => {
+        console.log(e);
+        setShowLoadingModal(false);
+      });
+  };
+
   const sellNft = async (e, item) => {
     e.stopPropagation();
     setShowLoadingModal(true);
+
     let tokenType = 0;
     if (item.currency == "ghsp") {
       tokenType = 0;
@@ -196,6 +227,7 @@ function Profile() {
       .then((response) => {
         console.log(response);
         setShowLoadingModal(false);
+        loadNfts();
       })
       .catch((e) => {
         console.log(e);
@@ -317,15 +349,20 @@ function Profile() {
                               : ""}
                           </h4>
                           {/* <span>{elem.description}</span> */}
-
                           {walletAddress &&
                           walletAddress.toLowerCase() ==
-                            userDetails?.walletAddress.toLowerCase() ? (
+                            elem?.walletAddress.toLowerCase() ? (
                             <button
                               className="custom-btn"
-                              onClick={(e) => sellNft(e, elem)}
+                              onClick={(e) => {
+                                if (elem.nftOnSale) {
+                                  cancelNft(e, elem);
+                                } else {
+                                  sellNft(e, elem);
+                                }
+                              }}
                             >
-                              SELL
+                              {elem.nftOnSale ? "CANCEL" : "SELL"}
                             </button>
                           ) : (
                             <button
@@ -339,6 +376,18 @@ function Profile() {
                               OPEN
                             </button>
                           )}
+                          {/* <button
+                            className="custom-btn"
+                            onClick={(e) => {
+                              if (elem.nftOnSale) {
+                                cancelNft(elem);
+                              } else {
+                                sellNft(elem);
+                              }
+                            }}
+                          >
+                            {elem.nftOnSale ? "CANCEL" : "SELL"}
+                          </button> */}
                         </div>
                         <div className="card-price">
                           {/* <div>
@@ -506,7 +555,6 @@ function Profile() {
                     onChange={({ min, max }) => {
                       setMinlevel(min);
                       setMaxlevel(max);
-                      console.log(`min = ${min}, max = ${max}`);
                     }}
                   />
                 </div>

@@ -19,6 +19,7 @@ import {
   buyNFTWithBUSD,
   buyNFTWithGHSP,
   putTokenOnSale,
+  removeTokenFromSale,
 } from "../../core/web3";
 
 const NFTdetail = ({ setShowModal }) => {
@@ -96,7 +97,7 @@ const NFTdetail = ({ setShowModal }) => {
     setIsLoading(true);
     axios
       .put(`${BASEURL}/nft/${nftId}`, {
-        walletAddress: tmpWallet
+        walletAddress: tmpWallet,
       })
       .then((response) => {
         console.log("owner changed", response.data.data);
@@ -130,9 +131,11 @@ const NFTdetail = ({ setShowModal }) => {
     }
   };
 
-  const sellNFT = async (event) => {
-    event.preventDefault();
+  const cancelNft = async () => {
+    removeTokenFromSale(tokenId);
+  };
 
+  const sellNft = async () => {
     let tokenType = 0;
     if (nftDetail.currency == "ghsp") {
       tokenType = 0;
@@ -142,7 +145,7 @@ const NFTdetail = ({ setShowModal }) => {
       tokenType = 2;
     }
 
-    console.log("sellNFT info", nftDetail);
+    console.log("sellNft info", nftDetail);
     putTokenOnSale(tokenId, nftDetail.price, tokenType);
   };
 
@@ -320,7 +323,17 @@ const NFTdetail = ({ setShowModal }) => {
                 </div>
                 {nftDetail && walletAddress === nftDetail.walletAddress ? (
                   <div className="buy-btn">
-                    <a onClick={sellNFT}>SELL</a>
+                    <a
+                      onClick={(e) => {
+                        if (nftDetail.nftOnSale) {
+                          cancelNft();
+                        } else {
+                          sellNft();
+                        }
+                      }}
+                    >
+                      {nftDetail.nftOnSale ? "CANCEL" : "SELL"}
+                    </a>
                   </div>
                 ) : (
                   <div className="buy-btn">
