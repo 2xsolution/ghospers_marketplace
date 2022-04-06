@@ -118,6 +118,9 @@ const NFTdetail = ({ setShowModal }) => {
             .then((response) => {
               console.log("owner changed", response.data.data);
               setNftDetail(response.data.data);
+              setNftDetail(prev=>({
+                ...prev, walletAddress:wallet
+              }))
               setShowLoadingModal(false);
             })
             .catch((e) => {
@@ -142,7 +145,9 @@ const NFTdetail = ({ setShowModal }) => {
             })
             .then((response) => {
               console.log("owner changed", response.data.data);
-              setNftDetail(response.data.data);
+              setNftDetail(prev=>({
+                ...prev, walletAddress:wallet
+              }))
               setShowLoadingModal(false);
             })
             .catch((e) => {
@@ -166,7 +171,9 @@ const NFTdetail = ({ setShowModal }) => {
             })
             .then((response) => {
               console.log("owner changed", response.data.data);
-              setNftDetail(response.data.data);
+              setNftDetail(prev=>({
+                ...prev, walletAddress:wallet
+              }))
               setShowLoadingModal(false);
             })
             .catch((e) => {
@@ -196,7 +203,6 @@ const NFTdetail = ({ setShowModal }) => {
         })
         .then((response) => {
           console.log("Nft removed from sell", response.data.data);
-          setNftDetail(response.data.data);
           setShowLoadingModal(false);
         })
         .catch((e) => {
