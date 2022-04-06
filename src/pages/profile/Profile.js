@@ -11,7 +11,8 @@ import UpdateModal from "./updateModal/UpdateModal";
 import Header from "../../components/Header";
 import Loader from "../../components/loader/Loader";
 import Accordian from "../../components/accordian/Accordian";
-import { loadWeb3, connectWallet } from "../../core/web3";
+import { loadWeb3, connectWallet, putTokenOnSale } from "../../core/web3";
+import LoaderModal from "../../components/loaderModal/LoaderModal";
 
 function Profile() {
   const navigate = useNavigate();
@@ -89,7 +90,7 @@ function Profile() {
   const [properties, setProperties] = useState(null);
   const [selectedProperties, setSelectedProperties] = useState([]);
   const [singleSelectedProperty, setSingleSelectedProperty] = useState(null);
-
+  const [showLoadingModal, setShowLoadingModal] = useState(false);
   useEffect(() => {
     loadNfts();
     // updateTokenIds();
@@ -174,22 +175,40 @@ function Profile() {
       .catch((e) => console.log(e));
   };
 
-  const sellNft = async (e, nftId) => {
+  const sellNft = async (e, item) => {
     e.stopPropagation();
+    setShowLoadingModal(true);
+    let tokenType = 0;
+    if (item.currency == "ghsp") {
+      tokenType = 0;
+    } else if (item.currency == "busd") {
+      tokenType = 1;
+    } else {
+      tokenType = 2;
+    }
+    const nftId = item._id;
+    await putTokenOnSale(item.tokenId, item.price, tokenType);
+
     axios
       .put(`${BASEURL}/nft/sell/${nftId}`, {
         walletAddress,
       })
       .then((response) => {
         console.log(response);
+        setShowLoadingModal(false);
       })
-      .catch((e) => console.log(e));
+      .catch((e) => {
+        console.log(e);
+        setShowLoadingModal(false);
+      });
   };
 
   return (
     <div>
       <Header setShowModal={setShowModal} setWalletAddress={setWalletAddress} />
       <div className="profile-content">
+        {showLoadingModal && <LoaderModal />}
+
         <div className="profile-back-filter">
           <button
             className="custom-btn back-btn"
@@ -205,7 +224,9 @@ function Profile() {
             </a>
           </div>
         </div>
-        {walletAddress ? (
+        {isLoading ? (
+          <Loader />
+        ) : !isLoading && walletAddress ? (
           <div className="profile-flex">
             {userDetails && userDetails.facebook ? (
               <div className="profile-div">
@@ -298,10 +319,11 @@ function Profile() {
                           {/* <span>{elem.description}</span> */}
 
                           {walletAddress &&
-                          walletAddress == userDetails?.walletAddress ? (
+                          walletAddress.toLowerCase() ==
+                            userDetails?.walletAddress.toLowerCase() ? (
                             <button
                               className="custom-btn"
-                              onClick={(e) => sellNft(e, elem._id)}
+                              onClick={(e) => sellNft(e, elem)}
                             >
                               SELL
                             </button>
@@ -502,10 +524,10 @@ function Profile() {
                   );
                 })}
               {/* <div className="hero skin">
-      <h4>SKINS</h4>
-      <p>No skin selected</p>
-      <a href="/">Choose Skin</a>
-    </div> */}
+              <h4>SKINS</h4>
+              <p>No skin selected</p>
+              <a href="/">Choose Skin</a>
+            </div> */}
             </div>
           </div>
         ) : (

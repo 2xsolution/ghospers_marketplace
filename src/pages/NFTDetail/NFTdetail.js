@@ -62,21 +62,20 @@ const NFTdetail = ({ setShowModal }) => {
 
   const changeOwner = async () => {
     setIsLoading(true);
-    axios
-      .put(`${BASEURL}/nft/${nftId}`, {
-        walletAddress: "xyz",
-      })
-      .then((response) => {
-        console.log("owner changed", response.data.data);
-        setNftDetail(response.data.data);
-        setIsLoading(false);
-      })
-      .catch((e) => {
-        setIsLoading(false);
-        console.log(e);
-      });
-
-    return;
+    // axios
+    //   .put(`${BASEURL}/nft/${nftId}`, {
+    //     walletAddress: "xyz",
+    //   })
+    //   .then((response) => {
+    //     console.log("owner changed", response.data.data);
+    //     setNftDetail(response.data.data);
+    //     setIsLoading(false);
+    //   })
+    //   .catch((e) => {
+    //     setIsLoading(false);
+    //     console.log(e);
+    //   });
+    // return;
     let curWallet = await getCurrentWallet();
     if (!curWallet.success) {
       alert("No wallet");
@@ -97,7 +96,7 @@ const NFTdetail = ({ setShowModal }) => {
     setIsLoading(true);
     axios
       .put(`${BASEURL}/nft/${nftId}`, {
-        tmpWallet,
+        walletAddress: tmpWallet
       })
       .then((response) => {
         console.log("owner changed", response.data.data);
@@ -122,9 +121,9 @@ const NFTdetail = ({ setShowModal }) => {
       }
 
       if (tokenType === 0) {
-        await buyNFTWithGHSP(tokenId);
+        await buyNFTWithGHSP(tokenId, nftDetail.price);
       } else if (tokenType === 1) {
-        await buyNFTWithBUSD(tokenId);
+        await buyNFTWithBUSD(tokenId, nftDetail.price);
       } else {
         await buyNFTWithBNB(tokenId, nftDetail.price);
       }
