@@ -189,20 +189,43 @@ function Profile() {
     const nftId = item._id;
     setShowLoadingModal(true);
 
-    removeTokenFromSale(item.tokenId);
-    axios
-      .put(`${BASEURL}/nft/cancel/${nftId}`, {
-        walletAddress,
-      })
-      .then((response) => {
-        console.log(response);
+    removeTokenFromSale(item.tokenId).then((res)=>{
+      if(res === true){
+        axios
+        .put(`${BASEURL}/nft/cancel/${nftId}`, {
+          walletAddress,
+        })
+        .then((response) => {
+          console.log(response);
+          setShowLoadingModal(false);
+          loadNfts();
+        })
+        .catch((e) => {
+          console.log(e);
+          setShowLoadingModal(false);
+        });
+      }
+      else{
         setShowLoadingModal(false);
-        loadNfts();
-      })
-      .catch((e) => {
-        console.log(e);
-        setShowLoadingModal(false);
-      });
+      }
+    })
+    .catch((err)=>{
+      setShowLoadingModal(false);
+      console.log(err);
+    });
+    // axios
+    //   .put(`${BASEURL}/nft/cancel/${nftId}`, {
+    //     walletAddress,
+    //   })
+    //   .then((response) => {
+    //     console.log(response);
+    //     setShowLoadingModal(false);
+    //     loadNfts();
+    //   })
+    //   .catch((e) => {
+    //     console.log(e);
+    //     setShowLoadingModal(false);
+    //   });
   };
 
   const sellNft = async (e, item) => {
@@ -218,21 +241,31 @@ function Profile() {
       tokenType = 2;
     }
     const nftId = item._id;
-    await putTokenOnSale(item.tokenId, item.price, tokenType);
+    putTokenOnSale(item.tokenId, item.price, tokenType).then((res)=>{
+      if(res === true){
+        axios
+          .put(`${BASEURL}/nft/sell/${nftId}`, {
+            walletAddress,
+          })
+          .then((response) => {
+            console.log(response);
+            setShowLoadingModal(false);
+            loadNfts();
+          })
+          .catch((e) => {
+            console.log(e);
+            setShowLoadingModal(false);
+          });
+      }
+      else{
+        setShowLoadingModal(false);
+      }
+    })
+    .catch((err)=>{
+      setShowLoadingModal(false);
+      console.log(err);
+    });;
 
-    axios
-      .put(`${BASEURL}/nft/sell/${nftId}`, {
-        walletAddress,
-      })
-      .then((response) => {
-        console.log(response);
-        setShowLoadingModal(false);
-        loadNfts();
-      })
-      .catch((e) => {
-        console.log(e);
-        setShowLoadingModal(false);
-      });
   };
 
   return (
