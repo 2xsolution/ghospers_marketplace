@@ -90,9 +90,9 @@ const NFTdetail = ({ setShowModal }) => {
       await buyNFT(curWallet.account);
     } catch (error) {
       console.log("failed to buy nft", error);
+      setShowLoadingModal(false);
       return;
     }
-
     // let tmpWallet = curWallet.account;
 
   };
@@ -125,8 +125,12 @@ const NFTdetail = ({ setShowModal }) => {
               setShowLoadingModal(false);
             });
           }
+          else{
+            setShowLoadingModal(false);
+          }
         })
         .catch((err)=>{
+          setShowLoadingModal(false);
           console.log(err);
         });
       } else if (tokenType === 1) {
@@ -146,8 +150,11 @@ const NFTdetail = ({ setShowModal }) => {
               setShowLoadingModal(false);
             });
           }
+          else{
+            setShowLoadingModal(false);}
         })
         .catch((err)=>{
+          setShowLoadingModal(false);
           console.log(err);
         });
       } else {
@@ -167,8 +174,12 @@ const NFTdetail = ({ setShowModal }) => {
               setShowLoadingModal(false);
             });
           }
+          else{
+            setShowLoadingModal(false);
+          }
         })
         .catch((err)=>{
+          setShowLoadingModal(false);
           console.log(err);
         });
       }
@@ -193,8 +204,12 @@ const NFTdetail = ({ setShowModal }) => {
           setShowLoadingModal(false);
         });
       }
+      else{
+        setShowLoadingModal(false);
+      }
     })
     .catch((err)=>{
+      setShowLoadingModal(false);
       console.log(err);
     });;
   };
@@ -229,9 +244,13 @@ const NFTdetail = ({ setShowModal }) => {
           setShowLoadingModal(false);
         });
       }
+      else{
+        setShowLoadingModal(false);}
+        
     })
     .catch((err)=>{
       console.log(err);
+      setShowLoadingModal(false);
     });
   };
 
