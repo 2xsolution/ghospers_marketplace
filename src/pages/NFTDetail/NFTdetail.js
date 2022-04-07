@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
-import NFTimg from "../../assets/img/nftimg.png";
-import coinIcon from "../../assets/img/coinicon.png";
-import Icon from "../../assets/img/icon_stat.png";
-import Loader from "../../components/loader/Loader";
-import SwordIcon from "../../assets/img/sword.png";
 import "./nftdetail.css";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
@@ -40,10 +35,7 @@ const NFTdetail = ({ setShowModal }) => {
   }, []);
 
   const { nftId, tokenId } = useParams();
-  // console.log(nftId);
-  // console.log(tokenId);
   useEffect(() => {
-    // console.log(nftId);
     loadNftById(nftId);
   }, [nftId]);
 
@@ -64,28 +56,12 @@ const NFTdetail = ({ setShowModal }) => {
 
   const changeOwner = async () => {
     setShowLoadingModal(true);
-    // axios
-    //   .put(`${BASEURL}/nft/${nftId}`, {
-    //     walletAddress: "xyz",
-    //   })
-    //   .then((response) => {
-    //     console.log("owner changed", response.data.data);
-    //     setNftDetail(response.data.data);
-    //     setIsLoading(false);
-    //   })
-    //   .catch((e) => {
-    //     setIsLoading(false);
-    //     console.log(e);
-    //   });
-    // return;
     let curWallet = await getCurrentWallet();
     if (!curWallet.success) {
       alert("No wallet");
       return;
     }
-
     setWalletAddress(curWallet.account);
-
     try {
       await buyNFT(curWallet.account);
     } catch (error) {
@@ -93,7 +69,6 @@ const NFTdetail = ({ setShowModal }) => {
       setShowLoadingModal(false);
       return;
     }
-    // let tmpWallet = curWallet.account;
   };
 
   const buyNFT = async (wallet) => {
@@ -201,9 +176,7 @@ const NFTdetail = ({ setShowModal }) => {
 
   const cancelNftFunction = async () => {
     setShowLoadingModal(true);
-
     let curWallet = await getCurrentWallet();
-
     axios
       .put(`${BASEURL}/nft/cancel/${nftId}`, {
         walletAddress: curWallet.account,
@@ -236,10 +209,9 @@ const NFTdetail = ({ setShowModal }) => {
         console.log(err);
       });
   };
-// 
+  // 
   const sellNftFunction = async () => {
     setShowLoadingModal(true);
-
     let curWallet = await getCurrentWallet();
     axios
       .put(`${BASEURL}/nft/sell/${nftId}`, {
@@ -418,10 +390,10 @@ const NFTdetail = ({ setShowModal }) => {
                             (nftDetail.type == "common"
                               ? "0.25"
                               : nftDetail.type == "rare"
-                              ? "0.5"
-                              : nftDetail.type == "epic"
-                              ? "0.75"
-                              : "1.0")}
+                                ? "0.5"
+                                : nftDetail.type == "epic"
+                                  ? "0.75"
+                                  : "1.0")}
                         </p>
                       </div>
                       <div className="nft-stats">
@@ -441,10 +413,10 @@ const NFTdetail = ({ setShowModal }) => {
                             (nftDetail.type == "common"
                               ? "5"
                               : nftDetail.type == "rare"
-                              ? "10"
-                              : nftDetail.type == "epic"
-                              ? "15"
-                              : "20")}
+                                ? "10"
+                                : nftDetail.type == "epic"
+                                  ? "15"
+                                  : "20")}
                         </p>
                       </div>
                     </>

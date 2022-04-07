@@ -247,19 +247,6 @@ function Profile() {
         setShowLoadingModal(false);
         console.log(err);
       });
-    // axios
-    //   .put(`${BASEURL}/nft/cancel/${nftId}`, {
-    //     walletAddress,
-    //   })
-    //   .then((response) => {
-    //     console.log(response);
-    //     setShowLoadingModal(false);
-    //     loadNfts();
-    //   })
-    //   .catch((e) => {
-    //     console.log(e);
-    //     setShowLoadingModal(false);
-    //   });
   };
 
   const sellNft = async (e, item, index) => {
@@ -279,7 +266,6 @@ function Profile() {
       .then((res) => {
         if (res === true) {
           sellNftFunction(nftId, index);
-          setShowLoadingModal(false);
         } else {
           setShowLoadingModal(false);
         }
@@ -405,7 +391,7 @@ function Profile() {
                           </h4>
                           {/* <span>{elem.description}</span> */}
                           {walletAddress &&
-                          walletAddress.toLowerCase() ==
+                            walletAddress.toLowerCase() ==
                             elem?.walletAddress.toLowerCase() ? (
                             <button
                               className="custom-btn"
@@ -414,8 +400,8 @@ function Profile() {
                                   // cancelNftFunction(e, e, elem, i);
                                   cancelNft(e, elem, i);
                                 } else {
-                                  sellNftFunction(e, elem, i);
-                                  // sellNft(e, elem, i);
+                                  // sellNftFunction(e, elem, i);
+                                  sellNft(e, elem, i);
                                 }
                               }}
                             >
