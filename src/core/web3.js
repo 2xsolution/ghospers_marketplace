@@ -143,6 +143,7 @@ export const buyNFTWithBNB = async (tokenID, amount) => {
         await market_contract.methods.buyNFTWithBNB(tokenID, wallet.account).send({ from: wallet.account, value: bnAmount });
 
         await removeTokenFromSale(tokenID);
+        return true;
     } catch (error) {
         console.log('buyNFTWithBNB error', error);
         return false;
@@ -169,6 +170,7 @@ export const buyNFTWithGHSP = async (tokenID, amount) => {
         await market_contract.methods.buyNFTWithGHSP(tokenID, wallet.account).send({ from: wallet.account });
 
         await removeTokenFromSale(tokenID);
+        return true;
 
     } catch (error) {
         console.log('buyNFTWithGHSP error', error);
@@ -196,6 +198,7 @@ export const buyNFTWithBUSD = async (tokenID, amount) => {
         await market_contract.methods.buyNFTWithBUSD(tokenID, wallet.account).send({ from: wallet.account });
 
         await removeTokenFromSale(tokenID);
+        return true;
     } catch (error) {
         console.log('buyNFTWithBUSD error', error);
         return false;
@@ -212,6 +215,7 @@ export const removeTokenFromSale = async (tokenID) => {
 
     try {
         await market_contract.methods.removeTokenFromSale(tokenID).send({ from: wallet.account });
+        return true;
     } catch (error) {
         console.log('removeTokenFromSale error', error);
         return false;
