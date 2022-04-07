@@ -11,6 +11,7 @@ import UpdateModal from "./updateModal/UpdateModal";
 import Header from "../../components/Header";
 import Loader from "../../components/loader/Loader";
 import Accordian from "../../components/accordian/Accordian";
+import LoaderModal from "../../components/loaderModal/LoaderModal";
 import {
   loadWeb3,
   connectWallet,
@@ -42,12 +43,11 @@ function Profile() {
         type: selectedType,
       })
       .then((response) => {
-        console.log(response.data);
         setTotalRecords(response.data.data[1].totalRecords);
         setNftsArray(response.data.data[0]);
         setIsLoading(false);
 
-        console.log('111111111111', response.data.data[0]);
+        console.log("111111111111", response.data.data[0]);
       })
       .catch((e) => {
         console.log(e);
@@ -96,9 +96,11 @@ function Profile() {
   const [properties, setProperties] = useState(null);
   const [selectedProperties, setSelectedProperties] = useState([]);
   const [singleSelectedProperty, setSingleSelectedProperty] = useState(null);
-
+  const [showLoadingModal, setShowLoadingModal] = useState(false);
   useEffect(() => {
-    loadNfts();
+    if (walletAddress) {
+      loadNfts();
+    }
     // updateTokenIds();
   }, [
     min,
@@ -114,7 +116,6 @@ function Profile() {
   ]);
 
   useEffect(() => {
-    console.log(singleSelectedProperty);
     if (
       singleSelectedProperty &&
       singleSelectedProperty.values &&
@@ -143,21 +144,24 @@ function Profile() {
   var { address } = useParams();
 
   useEffect(() => {
+    setIsLoading(true);
     if (address) {
-      console.log("if");
       setWalletAddress(address);
+      setIsLoading(false);
     } else {
       const initWeb3 = async () => {
         await loadWeb3();
         let res = await connectWallet();
-        // console.log(res);
         setWalletAddress(res.address);
+        setIsLoading(false);
       };
       initWeb3();
     }
 
     loadProperties();
-    loadUserDetails();
+    if (walletAddress) {
+      loadUserDetails();
+    }
   }, [walletAddress]);
 
   const loadUserDetails = () => {
@@ -175,17 +179,59 @@ function Profile() {
     axios
       .get(BASEURL + "/property/all")
       .then((response) => {
-        console.log(response.data.data);
         setProperties(response.data.data);
       })
       .catch((e) => console.log(e));
   };
 
-  const cancelNft = async (item) => {
-    removeTokenFromSale(item.tokenId);
-  }
+  const cancelNft = async (e, item) => {
+    e.stopPropagation();
+    const nftId = item._id;
+    setShowLoadingModal(true);
 
-  const sellNft = async (item) => {
+    removeTokenFromSale(item.tokenId).then((res)=>{
+      if(res === true){
+        axios
+        .put(`${BASEURL}/nft/cancel/${nftId}`, {
+          walletAddress,
+        })
+        .then((response) => {
+          console.log(response);
+          setShowLoadingModal(false);
+          loadNfts();
+        })
+        .catch((e) => {
+          console.log(e);
+          setShowLoadingModal(false);
+        });
+      }
+      else{
+        setShowLoadingModal(false);
+      }
+    })
+    .catch((err)=>{
+      setShowLoadingModal(false);
+      console.log(err);
+    });
+    // axios
+    //   .put(`${BASEURL}/nft/cancel/${nftId}`, {
+    //     walletAddress,
+    //   })
+    //   .then((response) => {
+    //     console.log(response);
+    //     setShowLoadingModal(false);
+    //     loadNfts();
+    //   })
+    //   .catch((e) => {
+    //     console.log(e);
+    //     setShowLoadingModal(false);
+    //   });
+  };
+
+  const sellNft = async (e, item) => {
+    e.stopPropagation();
+    setShowLoadingModal(true);
+
     let tokenType = 0;
     if (item.currency == "ghsp") {
       tokenType = 0;
@@ -195,22 +241,39 @@ function Profile() {
       tokenType = 2;
     }
     const nftId = item._id;
-    await putTokenOnSale(item.tokenId, item.price, tokenType);
+    putTokenOnSale(item.tokenId, item.price, tokenType).then((res)=>{
+      if(res === true){
+        axios
+          .put(`${BASEURL}/nft/sell/${nftId}`, {
+            walletAddress,
+          })
+          .then((response) => {
+            console.log(response);
+            setShowLoadingModal(false);
+            loadNfts();
+          })
+          .catch((e) => {
+            console.log(e);
+            setShowLoadingModal(false);
+          });
+      }
+      else{
+        setShowLoadingModal(false);
+      }
+    })
+    .catch((err)=>{
+      setShowLoadingModal(false);
+      console.log(err);
+    });;
 
-    axios
-      .put(`${BASEURL}/nft/sell/${nftId}`, {
-        walletAddress,
-      })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((e) => console.log(e));
   };
 
   return (
     <div>
       <Header setShowModal={setShowModal} setWalletAddress={setWalletAddress} />
       <div className="profile-content">
+        {showLoadingModal && <LoaderModal />}
+
         <div className="profile-back-filter">
           <button
             className="custom-btn back-btn"
@@ -221,24 +284,28 @@ function Profile() {
             Back to home
           </button>
           <div className="fitermob profile-filters">
-            <a href="/" className="filter-btn" onClick={openSidebar}>
+            <a className="filter-btn" onClick={openSidebar}>
               Filters
             </a>
           </div>
         </div>
-        {walletAddress ? (
+        {isLoading ? (
+          <Loader />
+        ) : !isLoading && walletAddress ? (
           <div className="profile-flex">
             {userDetails && userDetails.facebook ? (
               <div className="profile-div">
                 <div className="red-div">
                   <img src={userDetails && `${userDetails.imageUrl}`} alt="" />
                 </div>
-                <button
-                  className="custom-btn"
-                  onClick={() => setShowModal(true)}
-                >
-                  Edit Profile
-                </button>
+                {walletAddress && walletAddress == userDetails.walletAddress && (
+                  <button
+                    className="custom-btn"
+                    onClick={() => setShowModal(true)}
+                  >
+                    Edit Profile
+                  </button>
+                )}
                 <h2>{userDetails && userDetails.name}</h2>
                 <p>{userDetails && userDetails.walletAddress}</p>{" "}
                 <div className="profile-about">
@@ -315,7 +382,34 @@ function Profile() {
                               : ""}
                           </h4>
                           {/* <span>{elem.description}</span> */}
-                          <button
+                          {walletAddress &&
+                          walletAddress.toLowerCase() ==
+                            elem?.walletAddress.toLowerCase() ? (
+                            <button
+                              className="custom-btn"
+                              onClick={(e) => {
+                                if (elem.nftOnSale) {
+                                  cancelNft(e, elem);
+                                } else {
+                                  sellNft(e, elem);
+                                }
+                              }}
+                            >
+                              {elem.nftOnSale ? "CANCEL" : "SELL"}
+                            </button>
+                          ) : (
+                            <button
+                              className="custom-btn"
+                              onClick={() =>
+                                navigate(
+                                  `/trending/${elem._id}/tokenid/${elem.tokenId}`
+                                )
+                              }
+                            >
+                              OPEN
+                            </button>
+                          )}
+                          {/* <button
                             className="custom-btn"
                             onClick={(e) => {
                               if (elem.nftOnSale) {
@@ -323,11 +417,10 @@ function Profile() {
                               } else {
                                 sellNft(elem);
                               }
-                            }
-                            }
+                            }}
                           >
                             {elem.nftOnSale ? "CANCEL" : "SELL"}
-                          </button>
+                          </button> */}
                         </div>
                         <div className="card-price">
                           {/* <div>
@@ -350,17 +443,38 @@ function Profile() {
                 {nftsArray && nftsArray.length > 0 && !isLoading ? (
                   <div className="pagination-wrap">
                     <div className="pagination">
-                      <div className="icon">
-                        <a href="/">
+                      <div
+                        className="icon"
+                        onClick={() => {
+                          if (page != 1) {
+                            setPage(page - 1);
+                            window.scrollTo(0, 0);
+                          }
+                        }}
+                      >
+                        <a>
                           <img src={LeftIcon} alt="" />
                         </a>
                       </div>
                       <div className="number">
-                        <span>{size > totalRecords ? totalRecords : size}</span>
+                        <span>
+                          {" "}
+                          {page * size > totalRecords
+                            ? totalRecords
+                            : size * page}
+                        </span>
                         of {totalRecords && totalRecords}
                       </div>
-                      <div className="icon">
-                        <a href="/">
+                      <div
+                        className="icon"
+                        onClick={() => {
+                          if (page * size < totalRecords) {
+                            window.scrollTo(0, 0);
+                            setPage(page + 1);
+                          }
+                        }}
+                      >
+                        <a>
                           <img src={RightIcon} alt="" />
                         </a>
                       </div>
@@ -384,9 +498,7 @@ function Profile() {
             <div className={sidebar ? "sidebar sidebar-active" : "sidebar"}>
               <div className="filter">
                 <h4>FILTERS</h4>
-                <a href="/" onClick={clearAll}>
-                  CLEAR ALL
-                </a>
+                <a onClick={clearAll}>CLEAR ALL</a>
               </div>
               {/* <div className="hero">
                 <h4>GHOSPERS</h4>
@@ -476,15 +588,14 @@ function Profile() {
                     onChange={({ min, max }) => {
                       setMinlevel(min);
                       setMaxlevel(max);
-                      console.log(`min = ${min}, max = ${max}`);
                     }}
                   />
                 </div>
               </div>
               {properties &&
-                properties.map((data) => {
+                properties.map((data, index) => {
                   return (
-                    <div className="hero">
+                    <div className="hero" key={index}>
                       <Accordian
                         setSingleSelectedProperty={setSingleSelectedProperty}
                         title={data.type}
@@ -494,10 +605,10 @@ function Profile() {
                   );
                 })}
               {/* <div className="hero skin">
-      <h4>SKINS</h4>
-      <p>No skin selected</p>
-      <a href="/">Choose Skin</a>
-    </div> */}
+              <h4>SKINS</h4>
+              <p>No skin selected</p>
+              <a href="/">Choose Skin</a>
+            </div> */}
             </div>
           </div>
         ) : (
