@@ -189,7 +189,7 @@ function Profile() {
     setShowLoadingModal(true);
 
     axios
-      .put(`${BASEURL}/nft/cancel/${nft._id}`, {
+      .put(`${BASEURL}/nft/${nft._id}`, {
         walletAddress,
       })
       .then((response) => {
