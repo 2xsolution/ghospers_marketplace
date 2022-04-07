@@ -207,7 +207,7 @@ function Profile() {
       });
   };
   const sellNftFunction = async (e, nft, index) => {
-    setShowLoadingModal(true);
+    setShowLoadingModal(true, i);
     e.stopPropagation();
     axios
       .put(`${BASEURL}/nft/sell/${nft._id}`, {
@@ -238,7 +238,7 @@ function Profile() {
     removeTokenFromSale(item.tokenId)
       .then((res) => {
         if (res === true) {
-          cancelNftFunction(nftId, index);
+          cancelNftFunction(e, nftId, index);
         } else {
           setShowLoadingModal(false);
         }
@@ -278,9 +278,9 @@ function Profile() {
     putTokenOnSale(item.tokenId, item.price, tokenType)
       .then((res) => {
         if (res === true) {
-          sellNftFunction(nftId, index);
+          // sellNftFunction(nftId, index);
         } else {
-          setShowLoadingModal(false);
+          // setShowLoadingModal, i(false);
         }
       })
       .catch((err) => {
@@ -410,11 +410,11 @@ function Profile() {
                               className="custom-btn"
                               onClick={(e) => {
                                 if (elem.nftOnSale) {
-                                  cancelNftFunction(e, elem, i);
-                                  // cancelNft(e, elem);
+                                  // cancelNftFunction(e, e, elem, i);
+                                  cancelNft(e, elem, i);
                                 } else {
                                   sellNftFunction(e, elem, i);
-                                  // sellNft(e, elem);
+                                  // sellNft(e, elem, i);
                                 }
                               }}
                             >

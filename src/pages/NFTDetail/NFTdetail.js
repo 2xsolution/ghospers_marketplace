@@ -233,11 +233,11 @@ const NFTdetail = ({ setShowModal }) => {
       })
       .catch((err) => {
         // setShowLoadingModal(false);
-        console.log(err);
-      });
+        // console.log(err);
+      // });
   };
-
-  const sellNftFunction = async () => {
+// 
+  // const sellNftFunction = async () => {
     setShowLoadingModal(true);
 
     let curWallet = await getCurrentWallet();
@@ -270,11 +270,11 @@ const NFTdetail = ({ setShowModal }) => {
       tokenType = 2;
     }
 
-    console.log("sellNft info", nftDetail);
-    putTokenOnSale(tokenId, nftDetail.price, tokenType)
+    // console.log("sellNft info", nftDetail);
+    // putTokenOnSale(tokenId, nftDetail.price, tokenType)
       .then((res) => {
-        if (res === true) {
-          sellNftFunction();
+        // if (res === true) {
+          // sellNftFunction();
         } else {
           setShowLoadingModal(false);
         }
@@ -462,11 +462,11 @@ const NFTdetail = ({ setShowModal }) => {
                     <a
                       onClick={(e) => {
                         if (nftDetail.nftOnSale) {
-                          // cancelNft();
-                          cancelNftFunction();
+                          cancelNft();
+                          // cancelNftFunction();
                         } else {
-                          // sellNft();
-                          sellNftFunction();
+                          sellNft();
+                          // sellNftFunction();
                         }
                       }}
                     >
