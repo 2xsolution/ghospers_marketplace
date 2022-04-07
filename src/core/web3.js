@@ -141,6 +141,8 @@ export const buyNFTWithBNB = async (tokenID, amount) => {
     try {
         let bnAmount = window.web3.utils.toWei("" + amount);
         await market_contract.methods.buyNFTWithBNB(tokenID, wallet.account).send({ from: wallet.account, value: bnAmount });
+
+        await removeTokenFromSale(tokenID);
     } catch (error) {
         console.log('buyNFTWithBNB error', error);
         return false;
@@ -165,6 +167,9 @@ export const buyNFTWithGHSP = async (tokenID, amount) => {
 
     try {
         await market_contract.methods.buyNFTWithGHSP(tokenID, wallet.account).send({ from: wallet.account });
+
+        await removeTokenFromSale(tokenID);
+
     } catch (error) {
         console.log('buyNFTWithGHSP error', error);
         return false;
@@ -189,6 +194,8 @@ export const buyNFTWithBUSD = async (tokenID, amount) => {
 
     try {
         await market_contract.methods.buyNFTWithBUSD(tokenID, wallet.account).send({ from: wallet.account });
+
+        await removeTokenFromSale(tokenID);
     } catch (error) {
         console.log('buyNFTWithBUSD error', error);
         return false;
