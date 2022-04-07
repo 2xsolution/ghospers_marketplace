@@ -119,7 +119,7 @@ const NFTdetail = ({ setShowModal }) => {
               console.log("owner changed", response.data.data);
               setNftDetail(response.data.data);
               setNftDetail(prev=>({
-                ...prev, walletAddress:wallet
+                ...prev, walletAddress:wallet, nftOnSale:false
               }))
               setShowLoadingModal(false);
             })
@@ -146,7 +146,7 @@ const NFTdetail = ({ setShowModal }) => {
             .then((response) => {
               console.log("owner changed", response.data.data);
               setNftDetail(prev=>({
-                ...prev, walletAddress:wallet
+                ...prev, walletAddress:wallet, nftOnSale:false
               }))
               setShowLoadingModal(false);
             })
@@ -172,7 +172,7 @@ const NFTdetail = ({ setShowModal }) => {
             .then((response) => {
               console.log("owner changed", response.data.data);
               setNftDetail(prev=>({
-                ...prev, walletAddress:wallet
+                ...prev, walletAddress:wallet, nftOnSale:false
               }))
               setShowLoadingModal(false);
             })
