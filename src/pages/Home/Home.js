@@ -280,7 +280,9 @@ const Home = ({ setShowModal }) => {
                   onChange={(e) => setCurrency(e.target.value)}
                   value={currency}
                 >
-                  <option selected>Select Currency</option>
+                  <option selected value="">
+                    Select Currency
+                  </option>
                   <option value="ghsp">GHSP</option>
                   <option value="bnb">BNB</option>
                   <option value="busd">BUSD</option>
