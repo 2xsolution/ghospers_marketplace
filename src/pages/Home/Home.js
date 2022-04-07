@@ -435,9 +435,8 @@ const Home = ({ setShowModal }) => {
                           className="icon"
                           onClick={() => {
                             if (page * size < totalRecords) {
-                              window.scrollTo(0, 0);
-
                               setPage(page + 1);
+                              window.scrollTo(0, 0);
                             }
                           }}
                         >

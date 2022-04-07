@@ -449,7 +449,6 @@ function Profile() {
                     );
                   })
                 )}
-
                 {nftsArray && nftsArray.length > 0 && !isLoading ? (
                   <div className="pagination-wrap">
                     <div className="pagination">
@@ -468,7 +467,6 @@ function Profile() {
                       </div>
                       <div className="number">
                         <span>
-                          {" "}
                           {page * size > totalRecords
                             ? totalRecords
                             : size * page}
@@ -479,8 +477,8 @@ function Profile() {
                         className="icon"
                         onClick={() => {
                           if (page * size < totalRecords) {
-                            window.scrollTo(0, 0);
                             setPage(page + 1);
+                            window.scrollTo(0, 0);
                           }
                         }}
                       >
