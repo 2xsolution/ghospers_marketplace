@@ -185,7 +185,7 @@ function Profile() {
   };
 
   const cancelNftFunction = async (e, nft, index) => {
-    e.stopPropagation();
+    // e.stopPropagation();
     setShowLoadingModal(true);
 
     axios
@@ -208,7 +208,7 @@ function Profile() {
   };
   const sellNftFunction = async (e, nft, index) => {
     setShowLoadingModal(true);
-    e.stopPropagation();
+    // e.stopPropagation();
     axios
       .put(`${BASEURL}/nft/sell/${nft._id}`, {
         walletAddress,
