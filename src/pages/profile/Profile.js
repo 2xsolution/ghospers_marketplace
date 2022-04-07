@@ -184,20 +184,45 @@ function Profile() {
       .catch((e) => console.log(e));
   };
 
-  const cancelNft = async (e, item) => {
+  const cancelNftFunction = async (e, nft, index) => {
     e.stopPropagation();
-    const nftId = item._id;
     setShowLoadingModal(true);
 
-    removeTokenFromSale(item.tokenId);
     axios
-      .put(`${BASEURL}/nft/cancel/${nftId}`, {
+      .put(`${BASEURL}/nft/cancel/${nft._id}`, {
+        walletAddress,
+      })
+      .then((response) => {
+        setNftsArray((prev) =>
+          Object.values({
+            ...prev,
+            [index]: { ...prev[index], nftOnSale: false },
+          })
+        );
+        setShowLoadingModal(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setShowLoadingModal(false);
+      });
+  };
+  const sellNftFunction = async (e, nft, index) => {
+    setShowLoadingModal(true);
+    e.stopPropagation();
+    axios
+      .put(`${BASEURL}/nft/sell/${nft._id}`, {
         walletAddress,
       })
       .then((response) => {
         console.log(response);
+
+        setNftsArray((prev) =>
+          Object.values({
+            ...prev,
+            [index]: { ...prev[index], nftOnSale: true },
+          })
+        );
         setShowLoadingModal(false);
-        loadNfts();
       })
       .catch((e) => {
         console.log(e);
@@ -205,7 +230,39 @@ function Profile() {
       });
   };
 
-  const sellNft = async (e, item) => {
+  const cancelNft = async (e, item, index) => {
+    e.stopPropagation();
+    const nftId = item._id;
+    setShowLoadingModal(true);
+
+    removeTokenFromSale(item.tokenId)
+      .then((res) => {
+        if (res === true) {
+          cancelNftFunction(nftId, index);
+        } else {
+          setShowLoadingModal(false);
+        }
+      })
+      .catch((err) => {
+        setShowLoadingModal(false);
+        console.log(err);
+      });
+    // axios
+    //   .put(`${BASEURL}/nft/cancel/${nftId}`, {
+    //     walletAddress,
+    //   })
+    //   .then((response) => {
+    //     console.log(response);
+    //     setShowLoadingModal(false);
+    //     loadNfts();
+    //   })
+    //   .catch((e) => {
+    //     console.log(e);
+    //     setShowLoadingModal(false);
+    //   });
+  };
+
+  const sellNft = async (e, item, index) => {
     e.stopPropagation();
     setShowLoadingModal(true);
 
@@ -218,20 +275,17 @@ function Profile() {
       tokenType = 2;
     }
     const nftId = item._id;
-    await putTokenOnSale(item.tokenId, item.price, tokenType);
-
-    axios
-      .put(`${BASEURL}/nft/sell/${nftId}`, {
-        walletAddress,
+    putTokenOnSale(item.tokenId, item.price, tokenType)
+      .then((res) => {
+        if (res === true) {
+          sellNftFunction(nftId, index);
+        } else {
+          setShowLoadingModal(false);
+        }
       })
-      .then((response) => {
-        console.log(response);
+      .catch((err) => {
         setShowLoadingModal(false);
-        loadNfts();
-      })
-      .catch((e) => {
-        console.log(e);
-        setShowLoadingModal(false);
+        console.log(err);
       });
   };
 
@@ -356,9 +410,11 @@ function Profile() {
                               className="custom-btn"
                               onClick={(e) => {
                                 if (elem.nftOnSale) {
-                                  cancelNft(e, elem);
+                                  cancelNftFunction(e, elem, i);
+                                  // cancelNft(e, elem);
                                 } else {
-                                  sellNft(e, elem);
+                                  sellNftFunction(e, elem, i);
+                                  // sellNft(e, elem);
                                 }
                               }}
                             >
@@ -539,7 +595,9 @@ function Profile() {
                     onChange={(e) => setCurrency(e.target.value)}
                     value={currency}
                   >
-                    <option selected>Select Currency</option>
+                    <option selected value="">
+                      Select Currency
+                    </option>
                     <option value="ghsp">GHSP</option>
                     <option value="bnb">BNB</option>
                     <option value="busd">BUSD</option>

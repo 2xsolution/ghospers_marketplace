@@ -87,30 +87,16 @@ const NFTdetail = ({ setShowModal }) => {
     setWalletAddress(curWallet.account);
 
     try {
-      await buyNFT();
+      await buyNFT(curWallet.account);
     } catch (error) {
       console.log("failed to buy nft", error);
+      setShowLoadingModal(false);
       return;
     }
-
-    let tmpWallet = curWallet.account;
-
-    axios
-      .put(`${BASEURL}/nft/${nftId}`, {
-        walletAddress: tmpWallet,
-      })
-      .then((response) => {
-        console.log("owner changed", response.data.data);
-        setNftDetail(response.data.data);
-        setShowLoadingModal(false);
-      })
-      .catch((e) => {
-        console.log(e);
-        setShowLoadingModal(false);
-      });
+    // let tmpWallet = curWallet.account;
   };
 
-  const buyNFT = async () => {
+  const buyNFT = async (wallet) => {
     if (tokenId) {
       let tokenType = 0;
       if (nftDetail.currency == "ghsp") {
@@ -122,20 +108,159 @@ const NFTdetail = ({ setShowModal }) => {
       }
 
       if (tokenType === 0) {
-        await buyNFTWithGHSP(tokenId, nftDetail.price);
+        buyNFTWithGHSP(tokenId, nftDetail.price)
+          .then((res) => {
+            if (res === true) {
+              axios
+                .put(`${BASEURL}/nft/${nftId}`, {
+                  walletAddress: wallet,
+                })
+                .then((response) => {
+                  console.log("owner changed", response.data.data);
+                  setNftDetail(response.data.data);
+                  setNftDetail((prev) => ({
+                    ...prev,
+                    walletAddress: wallet,
+                    nftOnSale: false,
+                  }));
+                  setShowLoadingModal(false);
+                })
+                .catch((e) => {
+                  console.log(e);
+                  setShowLoadingModal(false);
+                });
+            } else {
+              setShowLoadingModal(false);
+            }
+          })
+          .catch((err) => {
+            setShowLoadingModal(false);
+            console.log(err);
+          });
       } else if (tokenType === 1) {
-        await buyNFTWithBUSD(tokenId, nftDetail.price);
+        buyNFTWithBUSD(tokenId, nftDetail.price)
+          .then((res) => {
+            if (res === true) {
+              axios
+                .put(`${BASEURL}/nft/${nftId}`, {
+                  walletAddress: wallet,
+                })
+                .then((response) => {
+                  console.log("owner changed", response.data.data);
+                  setNftDetail((prev) => ({
+                    ...prev,
+                    walletAddress: wallet,
+                    nftOnSale: false,
+                  }));
+                  setShowLoadingModal(false);
+                })
+                .catch((e) => {
+                  console.log(e);
+                  setShowLoadingModal(false);
+                });
+            } else {
+              setShowLoadingModal(false);
+            }
+          })
+          .catch((err) => {
+            setShowLoadingModal(false);
+            console.log(err);
+          });
       } else {
-        await buyNFTWithBNB(tokenId, nftDetail.price);
+        buyNFTWithBNB(tokenId, nftDetail.price)
+          .then((res) => {
+            if (res === true) {
+              axios
+                .put(`${BASEURL}/nft/${nftId}`, {
+                  walletAddress: wallet,
+                })
+                .then((response) => {
+                  console.log("owner changed", response.data.data);
+                  setNftDetail((prev) => ({
+                    ...prev,
+                    walletAddress: wallet,
+                    nftOnSale: false,
+                  }));
+                  setShowLoadingModal(false);
+                })
+                .catch((e) => {
+                  console.log(e);
+                  setShowLoadingModal(false);
+                });
+            } else {
+              setShowLoadingModal(false);
+            }
+          })
+          .catch((err) => {
+            setShowLoadingModal(false);
+            console.log(err);
+          });
       }
     }
   };
 
+  const cancelNftFunction = async () => {
+    setShowLoadingModal(true);
+
+    let curWallet = await getCurrentWallet();
+
+    axios
+      .put(`${BASEURL}/nft/cancel/${nftId}`, {
+        walletAddress: curWallet.account,
+      })
+      .then((response) => {
+        setNftDetail((prev) => ({
+          ...prev,
+          nftOnSale: false,
+        }));
+        setShowLoadingModal(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setShowLoadingModal(false);
+      });
+  };
+
   const cancelNft = async () => {
-    removeTokenFromSale(tokenId);
+    // setShowLoadingModal(true);
+    removeTokenFromSale(tokenId)
+      .then((res) => {
+        if (res === true) {
+          cancelNftFunction();
+        } else {
+          setShowLoadingModal(false);
+        }
+      })
+      .catch((err) => {
+        // setShowLoadingModal(false);
+        console.log(err);
+      });
+  };
+
+  const sellNftFunction = async () => {
+    setShowLoadingModal(true);
+
+    let curWallet = await getCurrentWallet();
+    axios
+      .put(`${BASEURL}/nft/sell/${nftId}`, {
+        walletAddress: curWallet.account,
+      })
+      .then((response) => {
+        console.log(response);
+        setNftDetail((prev) => ({
+          ...prev,
+          nftOnSale: true,
+        }));
+        setShowLoadingModal(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setShowLoadingModal(false);
+      });
   };
 
   const sellNft = async () => {
+    // let curWallet = await getCurrentWallet();
     let tokenType = 0;
     if (nftDetail.currency == "ghsp") {
       tokenType = 0;
@@ -146,7 +271,18 @@ const NFTdetail = ({ setShowModal }) => {
     }
 
     console.log("sellNft info", nftDetail);
-    putTokenOnSale(tokenId, nftDetail.price, tokenType);
+    putTokenOnSale(tokenId, nftDetail.price, tokenType)
+      .then((res) => {
+        if (res === true) {
+          sellNftFunction();
+        } else {
+          setShowLoadingModal(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        setShowLoadingModal(false);
+      });
   };
 
   const navigate = useNavigate();
@@ -326,9 +462,11 @@ const NFTdetail = ({ setShowModal }) => {
                     <a
                       onClick={(e) => {
                         if (nftDetail.nftOnSale) {
-                          cancelNft();
+                          // cancelNft();
+                          cancelNftFunction();
                         } else {
-                          sellNft();
+                          // sellNft();
+                          sellNftFunction();
                         }
                       }}
                     >

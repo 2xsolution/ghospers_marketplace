@@ -186,11 +186,12 @@ const Home = ({ setShowModal }) => {
   const clearAll = (e) => {
     e.preventDefault();
     setSelectedType(null);
-    setMinlevel(0);
     setMax(null);
     setMin(null);
     setCurrency(null);
-    setMaxlevel(100);
+    setMinlevel(0);
+    setMaxlevel(20);
+    setSelectedProperties([]);
   };
 
   return (
