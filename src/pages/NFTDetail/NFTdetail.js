@@ -211,7 +211,7 @@ const NFTdetail = ({ setShowModal }) => {
   };
   // 
   const sellNftFunction = async () => {
-    setShowLoadingModal(true);
+    // setShowLoadingModal(true);
     let curWallet = await getCurrentWallet();
     axios
       .put(`${BASEURL}/nft/sell/${nftId}`, {
@@ -232,7 +232,7 @@ const NFTdetail = ({ setShowModal }) => {
   };
 
   const sellNft = async () => {
-    let curWallet = await getCurrentWallet();
+    setShowLoadingModal(true);
     let tokenType = 0;
     if (nftDetail.currency == "ghsp") {
       tokenType = 0;
