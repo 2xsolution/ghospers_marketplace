@@ -222,7 +222,7 @@ const NFTdetail = ({ setShowModal }) => {
   };
 
   const cancelNft = async () => {
-    // setShowLoadingModal(true);
+    setShowLoadingModal(true);
     removeTokenFromSale(tokenId)
       .then((res) => {
         if (res === true) {
@@ -232,12 +232,12 @@ const NFTdetail = ({ setShowModal }) => {
         }
       })
       .catch((err) => {
-        // setShowLoadingModal(false);
-        // console.log(err);
-      // });
+        setShowLoadingModal(false);
+        console.log(err);
+      });
   };
 // 
-  // const sellNftFunction = async () => {
+  const sellNftFunction = async () => {
     setShowLoadingModal(true);
 
     let curWallet = await getCurrentWallet();
@@ -260,7 +260,7 @@ const NFTdetail = ({ setShowModal }) => {
   };
 
   const sellNft = async () => {
-    // let curWallet = await getCurrentWallet();
+    let curWallet = await getCurrentWallet();
     let tokenType = 0;
     if (nftDetail.currency == "ghsp") {
       tokenType = 0;
@@ -270,11 +270,11 @@ const NFTdetail = ({ setShowModal }) => {
       tokenType = 2;
     }
 
-    // console.log("sellNft info", nftDetail);
-    // putTokenOnSale(tokenId, nftDetail.price, tokenType)
+    console.log("sellNft info", nftDetail);
+    putTokenOnSale(tokenId, nftDetail.price, tokenType)
       .then((res) => {
-        // if (res === true) {
-          // sellNftFunction();
+        if (res === true) {
+          sellNftFunction();
         } else {
           setShowLoadingModal(false);
         }
