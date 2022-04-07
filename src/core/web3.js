@@ -211,7 +211,7 @@ export const removeTokenFromSale = async (tokenID) => {
     }
 
     try {
-        await market_contract.methods.removeTokenFromSale(tokenID, wallet.account).send({ from: wallet.account });
+        await market_contract.methods.removeTokenFromSale(tokenID).send({ from: wallet.account });
     } catch (error) {
         console.log('removeTokenFromSale error', error);
         return false;
