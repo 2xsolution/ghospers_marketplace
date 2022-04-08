@@ -440,8 +440,8 @@ const NFTdetail = ({ setShowModal }) => {
                           cancelNft();
                           // cancelNftFunction();
                         } else {
-                          // sellNft();
-                          setShowSellModal(true);
+                          sellNft();
+                          // setShowSellModal(true);
 
                           // sellNftFunction();
                         }

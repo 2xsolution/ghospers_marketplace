@@ -409,8 +409,8 @@ function Profile() {
                                   cancelNft(e, elem, i);
                                 } else {
                                   // sellNftFunction(e, elem, i);
-                                  //sellNft(e, elem, i);/
-                                  setShowSellModal(true);
+                                  sellNft(e, elem, i);
+                                  // setShowSellModal(true);
                                 }
                               }}
                             >
