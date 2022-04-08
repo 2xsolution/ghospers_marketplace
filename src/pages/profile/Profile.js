@@ -17,6 +17,7 @@ import {
   connectWallet,
   putTokenOnSale,
   removeTokenFromSale,
+  getCurrentWallet
 } from "../../core/web3";
 
 function Profile() {
@@ -36,6 +37,8 @@ function Profile() {
       .post(BASEURL + "/nft/all/", {
         min,
         max,
+        page,
+        size,
         walletAddress,
         currency,
         minlevel,
@@ -186,11 +189,13 @@ function Profile() {
 
   const cancelNftFunction = async (e, nft, index) => {
     // e.stopPropagation();
+    
+    let curWallet = await getCurrentWallet();
     setShowLoadingModal(true);
 
     axios
       .put(`${BASEURL}/nft/${nft._id}`, {
-        walletAddress,
+        walletAddress: curWallet,
       })
       .then((response) => {
         setNftsArray((prev) =>
@@ -208,10 +213,11 @@ function Profile() {
   };
   const sellNftFunction = async (e, nft, index) => {
     setShowLoadingModal(true);
+    let curWallet = await getCurrentWallet();
     // e.stopPropagation();
     axios
       .put(`${BASEURL}/nft/sell/${nft._id}`, {
-        walletAddress,
+        walletAddress: curWallet,
       })
       .then((response) => {
         console.log(response);
