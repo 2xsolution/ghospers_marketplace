@@ -17,12 +17,15 @@ import {
   removeTokenFromSale,
 } from "../../core/web3";
 import LoaderModal from "../../components/loaderModal/LoaderModal";
+import SellModal from "../../components/sellModal/SellModal";
 
 const NFTdetail = ({ setShowModal }) => {
   const [nftDetail, setNftDetail] = useState(null);
   const [walletAddress, setWalletAddress] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+  const [showSellModal, setShowSellModal] = useState(false);
+
   const [showLoadingModal, setShowLoadingModal] = useState(false);
   useEffect(() => {
     const initWeb3 = async () => {
@@ -209,7 +212,7 @@ const NFTdetail = ({ setShowModal }) => {
         console.log(err);
       });
   };
-  // 
+  //
   const sellNftFunction = async () => {
     // setShowLoadingModal(true);
     let curWallet = await getCurrentWallet();
@@ -390,10 +393,10 @@ const NFTdetail = ({ setShowModal }) => {
                             (nftDetail.type == "common"
                               ? "0.25"
                               : nftDetail.type == "rare"
-                                ? "0.5"
-                                : nftDetail.type == "epic"
-                                  ? "0.75"
-                                  : "1.0")}
+                              ? "0.5"
+                              : nftDetail.type == "epic"
+                              ? "0.75"
+                              : "1.0")}
                         </p>
                       </div>
                       <div className="nft-stats">
@@ -413,10 +416,10 @@ const NFTdetail = ({ setShowModal }) => {
                             (nftDetail.type == "common"
                               ? "5"
                               : nftDetail.type == "rare"
-                                ? "10"
-                                : nftDetail.type == "epic"
-                                  ? "15"
-                                  : "20")}
+                              ? "10"
+                              : nftDetail.type == "epic"
+                              ? "15"
+                              : "20")}
                         </p>
                       </div>
                     </>
@@ -437,7 +440,9 @@ const NFTdetail = ({ setShowModal }) => {
                           cancelNft();
                           // cancelNftFunction();
                         } else {
-                          sellNft();
+                          // sellNft();
+                          setShowSellModal(true);
+
                           // sellNftFunction();
                         }
                       }}
@@ -462,6 +467,10 @@ const NFTdetail = ({ setShowModal }) => {
         </section>
       ) : (
         <h1 style={{ marginTop: "40px", textAlign: "center" }}>No NFT found</h1>
+      )}
+
+      {nftDetail && (
+        <SellModal showModal={showSellModal} setShowModal={setShowSellModal} />
       )}
     </>
   );

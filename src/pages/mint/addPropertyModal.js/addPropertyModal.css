@@ -3,10 +3,6 @@
   max-height: 80vh !important; */
 /* } */
 
-.properties-modal-content {
-  height: 80vh;
-  overflow: scroll;
-}
 .properties-modal-content::-webkit-scrollbar {
   display: none !important;
 }

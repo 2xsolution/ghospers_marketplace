@@ -18,6 +18,7 @@ import {
   putTokenOnSale,
   removeTokenFromSale,
 } from "../../core/web3";
+import SellModal from "../../components/sellModal/SellModal";
 
 function Profile() {
   const navigate = useNavigate();
@@ -86,7 +87,7 @@ function Profile() {
   const [minlevel, setMinlevel] = useState(0);
   const [maxlevel, setMaxlevel] = useState(100);
   const [currency, setCurrency] = useState(null);
-
+  const [showSellModal, setShowSellModal] = useState(false);
   const [selectedType, setSelectedType] = useState(null);
   const [max, setMax] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -391,17 +392,19 @@ function Profile() {
                           </h4>
                           {/* <span>{elem.description}</span> */}
                           {walletAddress &&
-                            walletAddress.toLowerCase() ==
+                          walletAddress.toLowerCase() ==
                             elem?.walletAddress.toLowerCase() ? (
                             <button
                               className="custom-btn"
                               onClick={(e) => {
+                                e.stopPropagation();
                                 if (elem.nftOnSale) {
                                   // cancelNftFunction(e, e, elem, i);
                                   cancelNft(e, elem, i);
                                 } else {
                                   // sellNftFunction(e, elem, i);
-                                  sellNft(e, elem, i);
+                                  //sellNft(e, elem, i);/
+                                  setShowSellModal(true);
                                 }
                               }}
                             >
@@ -633,6 +636,13 @@ function Profile() {
             walletAddress={walletAddress}
             showModal={showModal}
             setShowModal={setShowModal}
+          />
+        )}
+
+        {userDetails && (
+          <SellModal
+            showModal={showSellModal}
+            setShowModal={setShowSellModal}
           />
         )}
       </div>

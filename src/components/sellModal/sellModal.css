@@ -1,0 +1,53 @@
+.sell-modal .properties-modal-content {
+  height: auto;
+  overflow: scroll;
+}
+.properties-modal-content::-webkit-scrollbar {
+  display: none !important;
+}
+
+.properties-modal-content .property-rows {
+  height: 50vh !important;
+  overflow: scroll;
+}
+
+.properties-modal-content .property-rows::-webkit-scrollbar {
+  display: none !important;
+}
+
+.properties-modal-content .ReactModal__Overlay--after-open {
+  overflow: scroll !important;
+}
+
+.sell-modal .properties-modal-content select {
+  width: 200px !important;
+  background-color: #41c6ff !important;
+}
+
+.properties-modal-content .inputs-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.properties-modal-content .inputs-div {
+  margin-top: 16px;
+}
+
+.sell-modal label {
+  color: white !important;
+  display: block;
+}
+
+.properties-modal-content button {
+  display: block;
+  border: 2px solid #41c6ff;
+  width: 80%;
+  cursor: pointer !important;
+  min-width: 200px;
+  margin: 30px auto 10px !important ;
+  padding: 12px 0px;
+  border-radius: 55px;
+  transition: all 0.25s ease-in;
+  background-color: #40c6ff;
+}
