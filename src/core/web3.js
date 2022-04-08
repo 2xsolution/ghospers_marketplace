@@ -232,6 +232,7 @@ export const putTokenOnSale = async (tokenID, price, saleTokenType) => {
 
     try {
         await minter_contract.methods.setApprovalForAll(MARKETPLACE_ADDRESS, true).send({ from: wallet.account });
+        return true;
     } catch (error) {
         console.log('setApprovalForAll error', error);
         return false;

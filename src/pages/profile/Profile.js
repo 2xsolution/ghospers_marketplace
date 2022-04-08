@@ -189,14 +189,9 @@ function Profile() {
   };
 
   const cancelNftFunction = async (e, nft, index) => {
-    // e.stopPropagation();
-    
-    let curWallet = await getCurrentWallet();
-    setShowLoadingModal(true);
-
     axios
-      .put(`${BASEURL}/nft/${nft._id}`, {
-        walletAddress: curWallet,
+      .put(`${BASEURL}/nft/${nft}`, {
+        walletAddress,
       })
       .then((response) => {
         setNftsArray((prev) =>
@@ -212,13 +207,10 @@ function Profile() {
         setShowLoadingModal(false);
       });
   };
-  const sellNftFunction = async (e, nft, index) => {
-    setShowLoadingModal(true);
-    let curWallet = await getCurrentWallet();
-    // e.stopPropagation();
+  const sellNftFunction = async (nft, index) => {
     axios
-      .put(`${BASEURL}/nft/sell/${nft._id}`, {
-        walletAddress: curWallet,
+      .put(`${BASEURL}/nft/sell/${nft}`, {
+        walletAddress,
       })
       .then((response) => {
         console.log(response);
