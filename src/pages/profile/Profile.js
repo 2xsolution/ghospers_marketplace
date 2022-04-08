@@ -17,7 +17,7 @@ import {
   connectWallet,
   putTokenOnSale,
   removeTokenFromSale,
-  getCurrentWallet
+  getCurrentWallet,
 } from "../../core/web3";
 import SellModal from "../../components/sellModal/SellModal";
 
@@ -595,6 +595,7 @@ function Profile() {
                 <div className="levels">
                   <MultiRangeInput
                     min={0}
+                    isProfileFilter
                     max={20}
                     onChange={({ min, max }) => {
                       setMinlevel(min);

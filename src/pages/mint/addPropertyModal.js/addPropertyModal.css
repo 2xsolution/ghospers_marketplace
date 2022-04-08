@@ -82,3 +82,13 @@
 
   background-color: #40c6ff;
 }
+.css-1s2u09g-control {
+  display: flex !important;
+}
+#react-select-3-placeholder {
+  width: 80% !important;
+  display: inline;
+}
+
+.createble-select {
+}

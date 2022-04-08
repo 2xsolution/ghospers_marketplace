@@ -47,8 +47,7 @@ function UpdateModal({
   // const [walletAddress] = useState("xyz");
 
   const validateFields = () => {
-    if (!name || !introduction || !facebook || !instagram || !walletAddress)
-      return false;
+    if (!name || !introduction || !walletAddress) return false;
     return true;
   };
 
@@ -70,13 +69,12 @@ function UpdateModal({
         console.log(response.data.data);
         setUserDetails(response.data.data);
         // setUserDetails
-        setFacebook("");
-        setInstagram("");
-        setName("");
-        setImage("");
-        setIntroduction("");
+        // setFacebook("");
+        // setInstagram("");
+        // setName("");
+        // setImage("");
+        // setIntroduction("");
         NotificationManager.success("Profile Updated Successfully");
-
         closeModal();
       })
       .catch((e) => {
@@ -86,7 +84,7 @@ function UpdateModal({
   };
 
   return (
-    <div>
+    <div className="scrollable-modal">
       <Modal
         isOpen={showModal}
         // onAfterOpen={afterOpenModal}
@@ -146,13 +144,24 @@ function UpdateModal({
             </div>
             <div className="file-div">
               <label htmlFor="">PNG, JPEG, JPG</label>
-              <FileUploader
-                multiple={false}
-                handleChange={handleChange}
-                name="profileImage"
-                classes="drag-zone"
-                types={fileTypes}
-              />
+              <div className="img-preview-div">
+                <FileUploader
+                  multiple={false}
+                  handleChange={handleChange}
+                  name="profileImage"
+                  classes="drag-zone"
+                  types={fileTypes}
+                />
+                {image && (
+                  <>
+                    <img
+                      className="preview-img"
+                      src={URL.createObjectURL(image)}
+                      alt=""
+                    />
+                  </>
+                )}
+              </div>
             </div>
           </div>
           <button disabled={!validateFields()} onClick={updateProfile}>
