@@ -296,9 +296,7 @@ function Profile() {
             </a>
           </div>
         </div>
-        {isLoading ? (
-          <Loader />
-        ) : !isLoading && walletAddress ? (
+        {walletAddress ? (
           <div className="profile-flex">
             {userDetails && userDetails.facebook ? (
               <div className="profile-div">
@@ -490,17 +488,19 @@ function Profile() {
                     </div>
                   </div>
                 ) : (
-                  <div
-                    style={{
-                      width: "100%",
-                      marginTop: "20px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <h2>No Data Found!</h2>
-                  </div>
+                  !isLoading && (
+                    <div
+                      style={{
+                        width: "100%",
+                        marginTop: "20px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <h2>No Data Found!</h2>
+                    </div>
+                  )
                 )}
               </div>
             </div>
@@ -624,9 +624,11 @@ function Profile() {
             </div>
           </div>
         ) : (
-          <h2 style={{ textAlign: "center", marginTop: "40px" }}>
-            You are not registered with Ghospers
-          </h2>
+          !isLoading && (
+            <h2 style={{ textAlign: "center", marginTop: "40px" }}>
+              You are not registered with Ghospers
+            </h2>
+          )
         )}
         {userDetails && (
           <UpdateModal
