@@ -17,6 +17,24 @@
   margin: auto;
 }
 
+.ReactModal__Content--after-open {
+  max-height: 80vh !important;
+}
+.ReactModal__Content--after-open::-webkit-scrollbar {
+  display: none !important;
+}
+
+.update-modal-content .img-preview-div {
+  display: flex;
+  justify-content: space-between;
+}
+.update-modal-content .preview-img {
+  width: 100px;
+  margin-left: 10px;
+  height: 100px;
+  object-fit: cover;
+}
+
 .update-modal-content h2 {
   margin-bottom: 20px;
 }
@@ -35,8 +53,8 @@
 }
 
 .update-modal-content .drag-zone {
-  width: 100% !important;
-  margin: auto;
+  width: 60% !important;
+  margin: 10px auto;
   margin-top: 10px;
   height: 80px !important;
 }

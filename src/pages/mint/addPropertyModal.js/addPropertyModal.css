@@ -1,74 +1,3 @@
-/* .properties-modal-content .ReactModal__Content {
-  overflow-y: scroll !important;
-  max-height: 80vh !important; */
-/* } */
-
-.properties-modal-content::-webkit-scrollbar {
-  display: none !important;
-}
-
-.properties-modal-content .property-rows {
-  height: 50vh !important;
-  overflow: scroll;
-}
-
-.properties-modal-content .property-rows::-webkit-scrollbar {
-  display: none !important;
-}
-
-.properties-modal-content .ReactModal__Overlay--after-open {
-  overflow: scroll !important;
-}
-.properties-modal-content .ReactModal__Content {
-  /* overflow-y: scroll !important; */
-  /* max-height: 90% !important; */
-}
-
-.properties-modal-content .ReactModal__Content--after-open {
-  max-height: 80vh !important;
-}
-.scrollable-modal {
-  /* max-height: 80vh !important;
-  height: 80vh !important;
-  background-color: red;
-  overflow-y: scroll !important; */
-}
-
-.properties-modal-content .inputs-div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.properties-modal-content .inputs-div {
-  margin-top: 16px;
-}
-
-.properties-modal-content .inputs-div div {
-  width: 100% !important;
-  margin: auto;
-}
-.properties-modal-content .mint-input {
-  width: 90% !important;
-}
-
-.remove-btn {
-  background-color: darkred !important;
-  min-width: 100px !important;
-  color: white;
-  width: 100px !important;
-  border: none !important;
-}
-
-.add-btn {
-  color: white !important;
-  border: none !important;
-  background-color: #2ca924 !important;
-  min-width: 200px !important;
-  width: 160px !important;
-  margin: 10px !important;
-}
-
 .properties-modal-content button {
   display: block;
   border: 2px solid #41c6ff;
@@ -81,4 +10,26 @@
   transition: all 0.25s ease-in;
 
   background-color: #40c6ff;
+}
+
+.properties-flex {
+  display: flex;
+  align-items: center;
+  margin: 20px auto;
+  justify-content: space-between;
+}
+
+.properties-row {
+  width: 80%;
+  margin: 20px auto;
+}
+.properties-flex p {
+  color: white;
+}
+
+.properties-select {
+  flex: 2;
+}
+.properties-type {
+  flex: 1;
 }

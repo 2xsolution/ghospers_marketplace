@@ -3,7 +3,7 @@ import classnames from "classnames";
 import PropTypes from "prop-types";
 import "./MultiRangeInput.css";
 
-const MultiRangeInput = ({ min, max, onChange }) => {
+const MultiRangeInput = ({ min, max, onChange, isProfileFilter = false }) => {
   const [minVal, setMinVal] = useState(min);
   const [maxVal, setMaxVal] = useState(max);
   const minValRef = useRef(null);
@@ -52,6 +52,7 @@ const MultiRangeInput = ({ min, max, onChange }) => {
         type="range"
         min={min}
         max={max}
+        style={isProfileFilter ? { width: "308px" } : { width: "300px" }}
         value={minVal}
         ref={minValRef}
         onChange={(event) => {
@@ -67,6 +68,7 @@ const MultiRangeInput = ({ min, max, onChange }) => {
         type="range"
         min={min}
         max={max}
+        style={isProfileFilter ? { width: "308px" } : { width: "300px" }}
         value={maxVal}
         ref={maxValRef}
         onChange={(event) => {
