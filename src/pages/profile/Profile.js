@@ -82,6 +82,7 @@ function Profile() {
   const [tokenIds, setTokenIds] = useState([1, 2, 3, 5]);
   const [saleItems, setSaleItems] = useState([]);
   const [nftsArray, setNftsArray] = useState(null);
+  const [currentNftIndex, setCurrentNftIndex] = useState(-1);
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(6);
   const [totalRecords, setTotalRecords] = useState(null);
@@ -168,6 +169,12 @@ function Profile() {
     }
   }, [walletAddress]);
 
+  const onClickSellInDialog = () => {
+    setShowSellModal(false);
+
+    sellNft(currentNftIndex);
+  }
+
   const loadUserDetails = () => {
     axios
       .post(BASEURL + "/user/get-user", {
@@ -248,8 +255,16 @@ function Profile() {
       });
   };
 
-  const sellNft = async (e, item, index) => {
-    e.stopPropagation();
+  const sellNft = async (index) => {
+    alert(index);
+    if (index < 0 || index >= nftsArray.length) {
+      console.log('invalid nft index', index);
+      return;
+    }
+
+
+    let item = nftsArray[index];
+
     setShowLoadingModal(true);
 
     let tokenType = 0;
@@ -396,13 +411,16 @@ function Profile() {
                               className="custom-btn"
                               onClick={(e) => {
                                 e.stopPropagation();
+
+                                setCurrentNftIndex(i);
+
                                 if (elem.nftOnSale) {
                                   // cancelNftFunction(e, e, elem, i);
                                   cancelNft(e, elem, i);
                                 } else {
                                   // sellNftFunction(e, elem, i);
-                                  sellNft(e, elem, i);
-                                  // setShowSellModal(true);
+                                  // sellNft(e, elem, i);
+                                  setShowSellModal(true);
                                 }
                               }}
                             >
@@ -640,7 +658,7 @@ function Profile() {
         {userDetails && (
           <SellModal
             showModal={showSellModal}
-            setShowModal={setShowSellModal}
+            setShowModal={onClickSellInDialog}
           />
         )}
       </div>

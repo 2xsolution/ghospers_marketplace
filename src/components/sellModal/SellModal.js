@@ -8,7 +8,8 @@ Modal.setAppElement("#root");
 function SellModal({ setShowModal, showModal }) {
   console.log(showModal);
   function closeModal() {
-    setShowModal(false);
+    alert('ccc');
+    setShowModal();
   }
 
   const [currency, setCurrency] = useState("");
@@ -61,7 +62,7 @@ function SellModal({ setShowModal, showModal }) {
               <option value="busd">BUSD</option>
             </select>
           </div>
-          <button>Sell</button>
+          <button onClick={() => closeModal()}>Sell</button>
         </div>
       </Modal>
     </div>
