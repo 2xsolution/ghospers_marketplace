@@ -58,6 +58,8 @@ function Mint({ setShowModal }) {
   }, []);
 
   const saveNft = async (e) => {
+    // console.log(properties);
+    // return;
     setIsLoading(true);
     // NotificationManager.info("Please wait for a minutes.");
     IPFSUtils.uploadFileToIPFS([image]).then((lists) => {
@@ -150,7 +152,7 @@ function Mint({ setShowModal }) {
 
   return (
     <div>
-      <Header setShowModal={setShowModal} />
+      {/* <Header setShowModal={setShowModal} /> */}
       <div className="mint-container">
         {isLoading && <LoaderModal />}
         <div className="file-div">
