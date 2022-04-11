@@ -8,8 +8,7 @@ Modal.setAppElement("#root");
 function SellModal({ setShowModal, showModal }) {
   console.log(showModal);
   function closeModal() {
-    alert('ccc');
-    setShowModal();
+    setShowModal(currency, price);
   }
 
   const [currency, setCurrency] = useState("");

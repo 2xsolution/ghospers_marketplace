@@ -139,6 +139,7 @@ export const buyNFTWithBNB = async (tokenID, amount) => {
     }
 
     try {
+        alert(amount);
         let bnAmount = window.web3.utils.toWei("" + amount);
         await market_contract.methods.buyNFTWithBNB(tokenID, wallet.account).send({ from: wallet.account, value: bnAmount });
 
@@ -239,6 +240,7 @@ export const putTokenOnSale = async (tokenID, price, saleTokenType) => {
     }
 
     try {
+        alert(price);
         let bnPrice = window.web3.utils.toWei("" + price);
         await market_contract.methods.putTokenOnSale(tokenID, bnPrice, saleTokenType).send({ from: wallet.account });
     } catch (error) {

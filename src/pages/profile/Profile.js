@@ -50,8 +50,6 @@ function Profile() {
         setTotalRecords(response.data.data[1].totalRecords);
         setNftsArray(response.data.data[0]);
         setIsLoading(false);
-
-        console.log("111111111111", response.data.data[0]);
       })
       .catch((e) => {
         console.log(e);
@@ -169,10 +167,10 @@ function Profile() {
     }
   }, [walletAddress]);
 
-  const onClickSellInDialog = () => {
+  const onClickSellInDialog = (currency, price) => {
     setShowSellModal(false);
 
-    sellNft(currentNftIndex);
+    sellNft(currentNftIndex, currency, price);
   }
 
   const loadUserDetails = () => {
@@ -255,7 +253,7 @@ function Profile() {
       });
   };
 
-  const sellNft = async (index) => {
+  const sellNft = async (index, currency, price) => {
     if (index < 0 || index >= nftsArray.length) {
       console.log('invalid nft index', index);
       return;
@@ -267,15 +265,15 @@ function Profile() {
     setShowLoadingModal(true);
 
     let tokenType = 0;
-    if (item.currency == "ghsp") {
+    if (currency == "ghsp") {
       tokenType = 0;
-    } else if (item.currency == "busd") {
+    } else if (currency == "busd") {
       tokenType = 1;
     } else {
       tokenType = 2;
     }
     const nftId = item._id;
-    putTokenOnSale(item.tokenId, item.price, tokenType)
+    putTokenOnSale(item.tokenId, price, tokenType)
       .then((res) => {
         if (res === true) {
           sellNftFunction(nftId, index);

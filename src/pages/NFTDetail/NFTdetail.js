@@ -212,6 +212,13 @@ const NFTdetail = ({ setShowModal }) => {
         console.log(err);
       });
   };
+  
+  const onClickSellInDialog = (currency, price) => {
+    setShowSellModal(false);
+
+    sellNft(currency, price);
+  }
+
   //
   const sellNftFunction = async () => {
     // setShowLoadingModal(true);
@@ -234,19 +241,19 @@ const NFTdetail = ({ setShowModal }) => {
       });
   };
 
-  const sellNft = async () => {
+  const sellNft = async (currency, price) => {
     setShowLoadingModal(true);
     let tokenType = 0;
-    if (nftDetail.currency == "ghsp") {
+    if (currency == "ghsp") {
       tokenType = 0;
-    } else if (nftDetail.currency == "busd") {
+    } else if (currency == "busd") {
       tokenType = 1;
     } else {
       tokenType = 2;
     }
 
     console.log("sellNft info", nftDetail);
-    putTokenOnSale(tokenId, nftDetail.price, tokenType)
+    putTokenOnSale(tokenId, price, tokenType)
       .then((res) => {
         if (res === true) {
           sellNftFunction();
@@ -436,12 +443,13 @@ const NFTdetail = ({ setShowModal }) => {
                   <div className="buy-btn">
                     <a
                       onClick={(e) => {
+
                         if (nftDetail.nftOnSale) {
                           cancelNft();
                           // cancelNftFunction();
                         } else {
-                          sellNft();
-                          // setShowSellModal(true);
+                          // sellNft();
+                          setShowSellModal(true);
 
                           // sellNftFunction();
                         }
@@ -470,7 +478,7 @@ const NFTdetail = ({ setShowModal }) => {
       )}
 
       {nftDetail && (
-        <SellModal showModal={showSellModal} setShowModal={setShowSellModal} />
+        <SellModal showModal={showSellModal} setShowModal={onClickSellInDialog} />
       )}
     </>
   );
