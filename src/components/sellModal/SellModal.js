@@ -42,13 +42,16 @@ function SellModal({ setShowModal, showModal }) {
             />
           </div>
           <div>
-            <label htmlFor="" style={{ color: "white" }}>
+            <label
+              htmlFor=""
+              style={{ color: "white", display: "block", marginBottom: "8px" }}
+            >
               Currency
             </label>
             <select
               style={{
                 backgroundColor: "#41c6ff",
-                width: "90%",
+                width: "100%",
                 margin: "auto",
               }}
               onChange={(e) => setCurrency(e.target.value)}
