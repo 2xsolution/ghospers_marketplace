@@ -256,7 +256,6 @@ function Profile() {
   };
 
   const sellNft = async (index) => {
-    alert(index);
     if (index < 0 || index >= nftsArray.length) {
       console.log('invalid nft index', index);
       return;
