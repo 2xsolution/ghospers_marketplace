@@ -84,7 +84,6 @@ function Profile() {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(6);
   const [totalRecords, setTotalRecords] = useState(null);
-  //   filters
   const [min, setMin] = useState(null);
   const [minlevel, setMinlevel] = useState(0);
   const [maxlevel, setMaxlevel] = useState(100);
@@ -100,6 +99,9 @@ function Profile() {
   const [selectedProperties, setSelectedProperties] = useState([]);
   const [singleSelectedProperty, setSingleSelectedProperty] = useState(null);
   const [showLoadingModal, setShowLoadingModal] = useState(false);
+  const [newPrice, setNewPrice] = useState("");
+  const [newCurrency, setNewCurrency] = useState("");
+  const [selectedNft, setSelectedNft] = useState(null);
   useEffect(() => {
     if (walletAddress) {
       loadNfts();
@@ -171,7 +173,7 @@ function Profile() {
     setShowSellModal(false);
 
     sellNft(currentNftIndex, currency, price);
-  }
+  };
 
   const loadUserDetails = () => {
     axios
@@ -212,10 +214,12 @@ function Profile() {
         setShowLoadingModal(false);
       });
   };
-  const sellNftFunction = async (nft, index) => {
+  const sellNftFunction = async (nft, index, currency, price) => {
     axios
       .put(`${BASEURL}/nft/sell/${nft}`, {
         walletAddress,
+        price,
+        currency,
       })
       .then((response) => {
         console.log(response);
@@ -223,7 +227,7 @@ function Profile() {
         setNftsArray((prev) =>
           Object.values({
             ...prev,
-            [index]: { ...prev[index], nftOnSale: true },
+            [index]: { ...prev[index], nftOnSale: true, price, currency },
           })
         );
         setShowLoadingModal(false);
@@ -255,10 +259,9 @@ function Profile() {
 
   const sellNft = async (index, currency, price) => {
     if (index < 0 || index >= nftsArray.length) {
-      console.log('invalid nft index', index);
+      console.log("invalid nft index", index);
       return;
     }
-
 
     let item = nftsArray[index];
 
@@ -276,7 +279,7 @@ function Profile() {
     putTokenOnSale(item.tokenId, price, tokenType)
       .then((res) => {
         if (res === true) {
-          sellNftFunction(nftId, index);
+          sellNftFunction(nftId, index, currency, price);
         } else {
           setShowLoadingModal(false);
         }
@@ -415,6 +418,7 @@ function Profile() {
                                 } else {
                                   // sellNftFunction(e, elem, i);
                                   // sellNft(e, elem, i);
+                                  setSelectedNft(elem);
                                   setShowSellModal(true);
                                 }
                               }}
@@ -456,7 +460,7 @@ function Profile() {
                             <p>
                               {elem.price}&nbsp;{elem.currency?.toUpperCase()}
                             </p>
-                            <small>${elem.price} USD</small>
+                            {/* <small>${elem.price} USD</small> */}
                           </div>
                         </div>
                       </div>
@@ -657,6 +661,8 @@ function Profile() {
 
         {userDetails && (
           <SellModal
+            oldCurrency={selectedNft && selectedNft.currency}
+            oldPrice={selectedNft && selectedNft.price}
             showModal={showSellModal}
             setShowModal={onClickSellInDialog}
           />
