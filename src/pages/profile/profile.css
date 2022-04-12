@@ -70,7 +70,7 @@
 
 .profile-flex .sidebar {
   flex: 2;
-  padding: 20px 60px;
+  /* padding: 20px 60px; */
 }
 
 .profile-nft-div .card {
@@ -100,6 +100,10 @@
   margin: 20px auto;
   text-transform: uppercase;
   background-color: #41c6ff;
+}
+
+.profile-flex .sidebar {
+  top: 80px !important;
 }
 
 .profile-filters {

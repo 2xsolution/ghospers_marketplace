@@ -12,6 +12,8 @@ import Header from "../../components/Header";
 import Loader from "../../components/loader/Loader";
 import Accordian from "../../components/accordian/Accordian";
 import LoaderModal from "../../components/loaderModal/LoaderModal";
+import MultiRangeSlider from "multi-range-slider-react";
+
 import {
   loadWeb3,
   connectWallet,
@@ -73,7 +75,7 @@ function Profile() {
     setMinlevel(0);
     setMax(null);
     setMin(null);
-    setMaxlevel(100);
+    setMaxlevel(20);
   };
 
   const [sampleNFTTokenID, setSampleNFTTokenID] = useState(null);
@@ -86,7 +88,7 @@ function Profile() {
   const [totalRecords, setTotalRecords] = useState(null);
   const [min, setMin] = useState(null);
   const [minlevel, setMinlevel] = useState(0);
-  const [maxlevel, setMaxlevel] = useState(100);
+  const [maxlevel, setMaxlevel] = useState(20);
   const [currency, setCurrency] = useState(null);
   const [showSellModal, setShowSellModal] = useState(false);
   const [selectedType, setSelectedType] = useState(null);
@@ -418,7 +420,6 @@ function Profile() {
                                 } else {
                                   // sellNftFunction(e, elem, i);
                                   // sellNft(e, elem, i);
-                                  setSelectedNft(elem);
                                   setShowSellModal(true);
                                 }
                               }}
@@ -611,14 +612,19 @@ function Profile() {
               </div>
               <div className="hero">
                 <h4>LEVEL</h4>
-                <div className="levels">
-                  <MultiRangeInput
+                <div className="custom-range-div">
+                  <MultiRangeSlider
                     min={0}
-                    isProfileFilter
                     max={20}
-                    onChange={({ min, max }) => {
-                      setMinlevel(min);
-                      setMaxlevel(max);
+                    ruler={false}
+                    step={1}
+                    label={true}
+                    preventWheel={false}
+                    minValue={minlevel}
+                    maxValue={maxlevel}
+                    onInput={(e) => {
+                      setMaxlevel(e.maxValue);
+                      setMinlevel(e.minValue);
                     }}
                   />
                 </div>

@@ -50,7 +50,10 @@ function SellModal({ oldCurrency, oldPrice, setShowModal, showModal }) {
             />
           </div>
           <div>
-            <label htmlFor="" style={{ color: "white" }}>
+            <label
+              htmlFor=""
+              style={{ color: "white", display: "block", marginBottom: "8px" }}
+            >
               Currency
             </label>
             <select

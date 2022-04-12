@@ -6,6 +6,8 @@ import MultiRangeInput from "../../components/MultiRangeInput";
 import LeftIcon from "../../assets/img/lefticon.png";
 import RightIcon from "../../assets/img/righticon.png";
 import axios from "axios";
+import MultiRangeSlider from "multi-range-slider-react";
+
 import "./home.css";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -86,7 +88,7 @@ const Home = ({ setShowModal }) => {
   //   filters
   const [min, setMin] = useState(null);
   const [minlevel, setMinlevel] = useState(0);
-  const [maxlevel, setMaxlevel] = useState(100);
+  const [maxlevel, setMaxlevel] = useState(20);
   const [selectedType, setSelectedType] = useState(null);
   const [max, setMax] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -292,14 +294,19 @@ const Home = ({ setShowModal }) => {
             </div>
             <div className="hero">
               <h4>LEVEL</h4>
-              <div className="levels">
-                <MultiRangeInput
+              <div className="custom-range-div">
+                <MultiRangeSlider
                   min={0}
                   max={20}
-                  onChange={({ min, max }) => {
-                    setMinlevel(min);
-                    setMaxlevel(max);
-                    console.log(`min = ${min}, max = ${max}`);
+                  ruler={false}
+                  step={1}
+                  label={true}
+                  preventWheel={false}
+                  minValue={minlevel}
+                  maxValue={maxlevel}
+                  onInput={(e) => {
+                    setMaxlevel(e.maxValue);
+                    setMinlevel(e.minValue);
                   }}
                 />
               </div>
