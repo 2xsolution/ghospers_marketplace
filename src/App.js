@@ -9,12 +9,14 @@ import "react-loading-skeleton/dist/skeleton.css";
 import Mint from "./pages/mint/Mint";
 import Profile from "./pages/profile/Profile";
 import { Toaster } from "react-hot-toast";
+import CustomSlider from "./components/custom-slider/CustomSlider";
 function App() {
   const [showModal, setShowModal] = useState(false);
   return (
     <>
       <Routes>
         <Route path="/" element={<Home setShowModal={setShowModal} />} />
+        <Route path="/test" element={<CustomSlider />} />
         <Route
           path="/trending/:nftId/tokenid/:tokenId"
           element={<NFTdetail setShowModal={setShowModal} />}

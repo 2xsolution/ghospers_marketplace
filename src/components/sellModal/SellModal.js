@@ -5,15 +5,23 @@ import "./sellModal.css";
 
 Modal.setAppElement("#root");
 
-function SellModal({ setShowModal, showModal }) {
-  console.log(showModal);
+function SellModal({ oldCurrency, oldPrice, setShowModal, showModal }) {
+  console.log(oldCurrency, oldPrice);
   function closeModal() {
     setShowModal(currency, price);
   }
 
-  const [currency, setCurrency] = useState("");
-  const [price, setPrice] = useState("");
-  const [currencyArray, setCurrencyArray] = useState([]);
+  const [currency, setCurrency] = useState(oldCurrency);
+  const [price, setPrice] = useState(oldPrice);
+
+  useEffect(() => {
+    if (oldCurrency) {
+      if (oldCurrency.toLowerCase() === "ghsp") {
+        setCurrency("");
+      } else setCurrency(oldCurrency);
+    }
+    setPrice(oldPrice);
+  }, [oldCurrency, oldPrice]);
 
   return (
     <div className="sell-modal">
@@ -33,23 +41,26 @@ function SellModal({ setShowModal, showModal }) {
               Price
             </label>
             <input
-              type="text"
+              type="number"
               value={price}
               name="type"
               onChange={(e) => setPrice(e.target.value)}
               className="mint-input"
-              placeholder="Hair"
+              placeholder="Price"
             />
           </div>
           <div>
-            <label htmlFor="" style={{ color: "white" }}>
+            <label
+              htmlFor=""
+              style={{ color: "white", display: "block", marginBottom: "8px" }}
+            >
               Currency
             </label>
             <select
               style={{
                 backgroundColor: "#41c6ff",
-                width: "90%",
-                margin: "auto",
+                width: "100%",
+                margin: "10px auto 0",
               }}
               onChange={(e) => setCurrency(e.target.value)}
               value={currency}
@@ -61,7 +72,14 @@ function SellModal({ setShowModal, showModal }) {
               <option value="busd">BUSD</option>
             </select>
           </div>
-          <button onClick={() => closeModal()}>Sell</button>
+          <button
+            disabled={!price || !currency}
+            onClick={() => {
+              closeModal();
+            }}
+          >
+            Sell
+          </button>
         </div>
       </Modal>
     </div>

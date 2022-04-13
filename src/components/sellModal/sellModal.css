@@ -51,3 +51,8 @@
   transition: all 0.25s ease-in;
   background-color: #40c6ff;
 }
+
+button:disabled,
+button[disabled] {
+  cursor: no-drop;
+}

@@ -212,26 +212,30 @@ const NFTdetail = ({ setShowModal }) => {
         console.log(err);
       });
   };
-  
+
   const onClickSellInDialog = (currency, price) => {
     setShowSellModal(false);
 
     sellNft(currency, price);
-  }
+  };
 
   //
-  const sellNftFunction = async () => {
+  const sellNftFunction = async (currency, price) => {
     // setShowLoadingModal(true);
     let curWallet = await getCurrentWallet();
     axios
       .put(`${BASEURL}/nft/sell/${nftId}`, {
         walletAddress: curWallet.account,
+        currency,
+        price,
       })
       .then((response) => {
         console.log(response);
         setNftDetail((prev) => ({
           ...prev,
           nftOnSale: true,
+          price,
+          currency,
         }));
         setShowLoadingModal(false);
       })
@@ -256,7 +260,7 @@ const NFTdetail = ({ setShowModal }) => {
     putTokenOnSale(tokenId, price, tokenType)
       .then((res) => {
         if (res === true) {
-          sellNftFunction();
+          sellNftFunction(currency, price);
         } else {
           setShowLoadingModal(false);
         }
@@ -443,7 +447,6 @@ const NFTdetail = ({ setShowModal }) => {
                   <div className="buy-btn">
                     <a
                       onClick={(e) => {
-
                         if (nftDetail.nftOnSale) {
                           cancelNft();
                           // cancelNftFunction();
@@ -478,7 +481,12 @@ const NFTdetail = ({ setShowModal }) => {
       )}
 
       {nftDetail && (
-        <SellModal showModal={showSellModal} setShowModal={onClickSellInDialog} />
+        <SellModal
+          oldPrice={nftDetail.price}
+          oldCurrency={nftDetail.currency}
+          showModal={showSellModal}
+          setShowModal={onClickSellInDialog}
+        />
       )}
     </>
   );

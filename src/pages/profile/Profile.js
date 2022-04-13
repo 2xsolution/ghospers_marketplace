@@ -12,6 +12,8 @@ import Header from "../../components/Header";
 import Loader from "../../components/loader/Loader";
 import Accordian from "../../components/accordian/Accordian";
 import LoaderModal from "../../components/loaderModal/LoaderModal";
+import MultiRangeSlider from "multi-range-slider-react";
+
 import {
   loadWeb3,
   connectWallet,
@@ -73,7 +75,7 @@ function Profile() {
     setMinlevel(0);
     setMax(null);
     setMin(null);
-    setMaxlevel(100);
+    setMaxlevel(20);
   };
 
   const [sampleNFTTokenID, setSampleNFTTokenID] = useState(null);
@@ -84,10 +86,9 @@ function Profile() {
   const [page, setPage] = useState(1);
   const [size, setSize] = useState(6);
   const [totalRecords, setTotalRecords] = useState(null);
-  //   filters
   const [min, setMin] = useState(null);
   const [minlevel, setMinlevel] = useState(0);
-  const [maxlevel, setMaxlevel] = useState(100);
+  const [maxlevel, setMaxlevel] = useState(20);
   const [currency, setCurrency] = useState(null);
   const [showSellModal, setShowSellModal] = useState(false);
   const [selectedType, setSelectedType] = useState(null);
@@ -100,6 +101,9 @@ function Profile() {
   const [selectedProperties, setSelectedProperties] = useState([]);
   const [singleSelectedProperty, setSingleSelectedProperty] = useState(null);
   const [showLoadingModal, setShowLoadingModal] = useState(false);
+  const [newPrice, setNewPrice] = useState("");
+  const [newCurrency, setNewCurrency] = useState("");
+  const [selectedNft, setSelectedNft] = useState(null);
   useEffect(() => {
     if (walletAddress) {
       loadNfts();
@@ -171,7 +175,7 @@ function Profile() {
     setShowSellModal(false);
 
     sellNft(currentNftIndex, currency, price);
-  }
+  };
 
   const loadUserDetails = () => {
     axios
@@ -212,10 +216,12 @@ function Profile() {
         setShowLoadingModal(false);
       });
   };
-  const sellNftFunction = async (nft, index) => {
+  const sellNftFunction = async (nft, index, currency, price) => {
     axios
       .put(`${BASEURL}/nft/sell/${nft}`, {
         walletAddress,
+        price,
+        currency,
       })
       .then((response) => {
         console.log(response);
@@ -223,7 +229,7 @@ function Profile() {
         setNftsArray((prev) =>
           Object.values({
             ...prev,
-            [index]: { ...prev[index], nftOnSale: true },
+            [index]: { ...prev[index], nftOnSale: true, price, currency },
           })
         );
         setShowLoadingModal(false);
@@ -255,10 +261,9 @@ function Profile() {
 
   const sellNft = async (index, currency, price) => {
     if (index < 0 || index >= nftsArray.length) {
-      console.log('invalid nft index', index);
+      console.log("invalid nft index", index);
       return;
     }
-
 
     let item = nftsArray[index];
 
@@ -276,7 +281,7 @@ function Profile() {
     putTokenOnSale(item.tokenId, price, tokenType)
       .then((res) => {
         if (res === true) {
-          sellNftFunction(nftId, index);
+          sellNftFunction(nftId, index, currency, price);
         } else {
           setShowLoadingModal(false);
         }
@@ -456,7 +461,7 @@ function Profile() {
                             <p>
                               {elem.price}&nbsp;{elem.currency?.toUpperCase()}
                             </p>
-                            <small>${elem.price} USD</small>
+                            {/* <small>${elem.price} USD</small> */}
                           </div>
                         </div>
                       </div>
@@ -607,14 +612,19 @@ function Profile() {
               </div>
               <div className="hero">
                 <h4>LEVEL</h4>
-                <div className="levels">
-                  <MultiRangeInput
+                <div className="custom-range-div">
+                  <MultiRangeSlider
                     min={0}
-                    isProfileFilter
                     max={20}
-                    onChange={({ min, max }) => {
-                      setMinlevel(min);
-                      setMaxlevel(max);
+                    ruler={false}
+                    step={1}
+                    label={true}
+                    preventWheel={false}
+                    minValue={minlevel}
+                    maxValue={maxlevel}
+                    onInput={(e) => {
+                      setMaxlevel(e.maxValue);
+                      setMinlevel(e.minValue);
                     }}
                   />
                 </div>
@@ -657,6 +667,8 @@ function Profile() {
 
         {userDetails && (
           <SellModal
+            oldCurrency={selectedNft && selectedNft.currency}
+            oldPrice={selectedNft && selectedNft.price}
             showModal={showSellModal}
             setShowModal={onClickSellInDialog}
           />
