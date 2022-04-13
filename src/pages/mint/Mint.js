@@ -34,6 +34,7 @@ function Mint({ setShowModal }) {
   const [image, setImage] = useState("");
   const [selectedType, setSelectedType] = useState("");
   const [level, setLevel] = useState("");
+  const [quantity, setQuantity] = useState(1);
   const [properties, setProperties] = useState(null);
   // const [traitsArray, setTraitsArray] = useState([
   //   "tank",
@@ -76,7 +77,7 @@ function Mint({ setShowModal }) {
 
         IPFSUtils.uploadTextToIPFS(content_uri1).then((path) => {
           try {
-            createNFT(path).then((res) => {
+            createNFT(path, quantity).then((res) => {
               console.log(
                 "********** minted token id ***********",
                 res?.tokenId
@@ -95,6 +96,7 @@ function Mint({ setShowModal }) {
                 formData.append("ipfs", ipfs);
                 formData.append("properties", JSON.stringify(properties));
                 formData.append("level", level);
+                formData.append("quantity", quantity);
 
                 console.log(...formData);
 
@@ -110,6 +112,7 @@ function Mint({ setShowModal }) {
                     setImage("");
                     setProperties(null);
                     setLevel("");
+                    setQuantity(1);
                     setIsLoading(false);
                     NotificationManager.success("Nft Created Successfully");
                     // window.location.reload();
@@ -245,6 +248,25 @@ function Mint({ setShowModal }) {
               type="number"
               className="mint-input"
               placeholder="Level"
+            />
+          </div>
+          <div>
+            <label htmlFor="">Quantity</label>
+            <input
+              value={quantity}
+              max="20"
+              min="0"
+              onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+              onChange={(e) => {
+                if (e.target.value < 0) {
+                  setQuantity(0);
+                } else if (e.target.value > 20) {
+                  setQuantity(20);
+                } else setQuantity(e.target.value);
+              }}
+              type="number"
+              className="mint-input"
+              placeholder="Quantity"
             />
           </div>
           <button onClick={() => setShowPropertyModal(true)}>

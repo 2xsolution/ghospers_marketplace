@@ -6,14 +6,17 @@ const busdAbi = require('./abi/busd.json');
 const ghospAbi = require('./abi/ghosp.json');
 const marketAbi = require('./abi/marketplace.json');
 const minterAbi = require('./abi/minter.json');
+const bulkminterAbi = require('./abi/bulkminter.json');
 
 
+const BULKMINTER_ADDRESS = "0xbC98fF434095aB0751F7BF368a1b481587b49fF7"
 const MINTER_ADDRESS = "0xfA9bB2B3119A7b9d40235F9e92052AB6Fd6DaD12"
 const MARKETPLACE_ADDRESS = "0xC4d193F224Ec31c7BDc959D2D1b9Eb9d16E97A78"
 const GHOSP_ADDRESS = "0x91c70ba82a8ed676c5a09ce1cd94cc18923e8371"
 const BUSD_ADDRESS = "0x8301f2213c0eed49a7e28ae4c3e91722919b8b47"   // Faucet Token
 let market_contract = null;
 let minter_contract = null;
+let bulkminter_contract = null;
 let ghosp_contract = null;
 let busd_contract = null;
 
@@ -46,6 +49,7 @@ export const loadWeb3 = async () => {
     }
 
     minter_contract = new window.web3.eth.Contract(minterAbi, MINTER_ADDRESS);
+    bulkminter_contract = new window.web3.eth.Contract(bulkminterAbi, BULKMINTER_ADDRESS);
     market_contract = new window.web3.eth.Contract(marketAbi, MARKETPLACE_ADDRESS);
     ghosp_contract = new window.web3.eth.Contract(ghospAbi, GHOSP_ADDRESS);
     busd_contract = new window.web3.eth.Contract(busdAbi, BUSD_ADDRESS);
@@ -240,7 +244,6 @@ export const putTokenOnSale = async (tokenID, price, saleTokenType) => {
     }
 
     try {
-        alert(price);
         let bnPrice = window.web3.utils.toWei("" + price);
         await market_contract.methods.putTokenOnSale(tokenID, bnPrice, saleTokenType).send({ from: wallet.account });
     } catch (error) {
@@ -266,7 +269,7 @@ export const getSaleItems = async (tokenIds) => {
     return saleItems;
 }
 
-export const createNFT = async (tokenURI) => {
+export const createNFT = async (tokenURI, quantity) => {
     const wallet = await getCurrentWallet();
     if (wallet.success === false) {
         return null;
@@ -274,7 +277,8 @@ export const createNFT = async (tokenURI) => {
 
     try {
         let tokenID = 0;
-        let tx = await minter_contract.methods.createNFT(tokenURI).send({ from: wallet.account });
+        // let tx = await minter_contract.methods.createNFT(tokenURI).send({ from: wallet.account });
+        let tx = await bulkminter_contract.methods.bulkMint(quantity).send({ from: wallet.account });
         tokenID = tx.events.Transfer.returnValues.tokenId;
         return { tokenId: tokenID, wallet: wallet.account };
     } catch (error) {
