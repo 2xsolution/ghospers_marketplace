@@ -94,7 +94,7 @@ const NFTdetail = ({ setShowModal }) => {
                   walletAddress: wallet,
                 })
                 .then((response) => {
-                  console.log("owner changed", response.data.data);
+                  // console.log("owner changed", response.data.data);
                   setNftDetail(response.data.data);
                   setNftDetail((prev) => ({
                     ...prev,
@@ -124,7 +124,7 @@ const NFTdetail = ({ setShowModal }) => {
                   walletAddress: wallet,
                 })
                 .then((response) => {
-                  console.log("owner changed", response.data.data);
+                  // console.log("owner changed", response.data.data);
                   setNftDetail((prev) => ({
                     ...prev,
                     walletAddress: wallet,
@@ -153,7 +153,7 @@ const NFTdetail = ({ setShowModal }) => {
                   walletAddress: wallet,
                 })
                 .then((response) => {
-                  console.log("owner changed", response.data.data);
+                  // console.log("owner changed", response.data.data);
                   setNftDetail((prev) => ({
                     ...prev,
                     walletAddress: wallet,
@@ -230,7 +230,7 @@ const NFTdetail = ({ setShowModal }) => {
         price,
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         setNftDetail((prev) => ({
           ...prev,
           nftOnSale: true,
@@ -256,7 +256,7 @@ const NFTdetail = ({ setShowModal }) => {
       tokenType = 2;
     }
 
-    console.log("sellNft info", nftDetail);
+    // console.log("sellNft info", nftDetail);
     putTokenOnSale(tokenId, price, tokenType)
       .then((res) => {
         if (res === true) {

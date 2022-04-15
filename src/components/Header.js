@@ -30,7 +30,7 @@ const Header = ({ setShowModal, setWalletAddress }) => {
         walletAddress: curWallet,
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         //NotificationManager.success("User Created Successfully");
       })
       .catch((e) => {

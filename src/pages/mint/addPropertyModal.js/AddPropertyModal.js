@@ -18,7 +18,7 @@ function AddPropertyModal({
   setProperties,
   properties,
 }) {
-  console.log(showModal);
+  // console.log(showModal);
   function closeModal() {
     setShowModal(false);
   }
@@ -31,7 +31,7 @@ function AddPropertyModal({
         delete x.values;
         return x;
       });
-    console.log(propertiesTemp);
+    // console.log(propertiesTemp);
     setProperties(propertiesTemp);
     // setProperties(selectedProperties);
     setShowModal(false);

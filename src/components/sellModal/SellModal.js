@@ -6,7 +6,7 @@ import "./sellModal.css";
 Modal.setAppElement("#root");
 
 function SellModal({ oldCurrency, oldPrice, setShowModal, showModal }) {
-  console.log(oldCurrency, oldPrice);
+  // console.log(oldCurrency, oldPrice);
   function closeModal() {
     setShowModal(currency, price);
   }
@@ -65,9 +65,7 @@ function SellModal({ oldCurrency, oldPrice, setShowModal, showModal }) {
               onChange={(e) => setCurrency(e.target.value)}
               value={currency}
             >
-              <option selected value="">
-                Select Currency
-              </option>
+              <option value="">Select Currency</option>
               <option value="bnb">BNB</option>
               <option value="busd">BUSD</option>
             </select>

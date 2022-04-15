@@ -61,7 +61,7 @@ function Profile() {
 
   const [sidebar, setSidebar] = useState(false);
   const openSidebar = (e) => {
-    console.log("sidebar");
+    // console.log("sidebar");
     e.preventDefault();
     setSidebar((prev) => !prev);
   };
@@ -89,7 +89,7 @@ function Profile() {
   const [min, setMin] = useState(null);
   const [minlevel, setMinlevel] = useState(0);
   const [maxlevel, setMaxlevel] = useState(20);
-  const [currency, setCurrency] = useState(null);
+  const [currency, setCurrency] = useState("");
   const [showSellModal, setShowSellModal] = useState(false);
   const [selectedType, setSelectedType] = useState(null);
   const [max, setMax] = useState(null);
@@ -144,7 +144,7 @@ function Profile() {
       } else {
         setSelectedProperties((prev) => [...prev, singleSelectedProperty]);
       }
-      console.log(selectedProperties);
+      // console.log(selectedProperties);
     }
   }, [singleSelectedProperty]);
 
@@ -183,7 +183,7 @@ function Profile() {
         walletAddress,
       })
       .then((response) => {
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setUserDetails(response.data.data);
       })
       .catch((e) => console.log(e));
@@ -224,7 +224,7 @@ function Profile() {
         currency,
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
 
         setNftsArray((prev) =>
           Object.values({
@@ -601,9 +601,7 @@ function Profile() {
                     onChange={(e) => setCurrency(e.target.value)}
                     value={currency}
                   >
-                    <option selected value="">
-                      Select Currency
-                    </option>
+                    <option value="">Select Currency</option>
                     <option value="ghsp">GHSP</option>
                     <option value="bnb">BNB</option>
                     <option value="busd">BUSD</option>
