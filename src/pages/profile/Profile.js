@@ -209,7 +209,7 @@ function Profile() {
 
   const cancelNftFunction = async (e, nft, index) => {
     axios
-      .put(`${BASEURL}/nft/${nft}`, {
+      .put(`${BASEURL}/nft/cancel/${nft}`, {
         walletAddress,
       })
       .then((response) => {
@@ -417,8 +417,8 @@ function Profile() {
                           </h4>
                           {/* <span>{elem.description}</span> */}
                           {walletAddressUser &&
-                          walletAddressUser.toLowerCase() ==
-                            elem?.walletAddressUser?.toLowerCase() ? (
+                          walletAddressUser.toLowerCase() ===
+                            elem?.walletAddress?.toLowerCase() ? (
                             <button
                               className="custom-btn"
                               onClick={(e) => {
