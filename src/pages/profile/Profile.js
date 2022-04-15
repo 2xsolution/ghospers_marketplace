@@ -95,6 +95,7 @@ function Profile() {
   const [max, setMax] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [walletAddress, setWalletAddress] = useState("");
+  const [walletAddressUser, setWalletAddressUser] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [userDetails, setUserDetails] = useState(null);
   const [properties, setProperties] = useState(null);
@@ -122,6 +123,15 @@ function Profile() {
     selectedProperties,
   ]);
 
+  useEffect(() => {
+    const initWeb3 = async () => {
+      await loadWeb3();
+      let res = await connectWallet();
+      setWalletAddressUser(res.address);
+    };
+    loadProperties();
+    initWeb3();
+  }, []);
   useEffect(() => {
     if (
       singleSelectedProperty &&
@@ -294,7 +304,7 @@ function Profile() {
 
   return (
     <div>
-      <Header setShowModal={setShowModal} setWalletAddress={setWalletAddress} />
+      <Header setShowModal={setShowModal} setWalletAddress={setWalletAddressUser} />
       <div className="profile-content">
         {showLoadingModal && <LoaderModal />}
 
@@ -320,14 +330,14 @@ function Profile() {
                 <div className="red-div">
                   <img src={userDetails && `${userDetails.imageUrl}`} alt="" />
                 </div>
-                {walletAddress && walletAddress == userDetails.walletAddress && (
+                {walletAddressUser && (walletAddressUser === userDetails?.walletAddress) ? (
                   <button
                     className="custom-btn"
                     onClick={() => setShowModal(true)}
                   >
                     Edit Profile
                   </button>
-                )}
+                ): (<p></p>)}
                 <h2>{userDetails && userDetails.name}</h2>
                 <p>{userDetails && userDetails.walletAddress}</p>{" "}
                 <div className="profile-about">
@@ -357,12 +367,14 @@ function Profile() {
               <div className="overlay-blue">
                 <div>
                   <h3>Profile is not updated</h3>
+                  {walletAddressUser && walletAddressUser === userDetails?.walletAddress ? (
                   <button
                     className="custom-btn"
                     onClick={() => setShowModal(true)}
                   >
                     Edit Profile
                   </button>
+                  ) : (<p></p>)}
                 </div>
               </div>
             )}
@@ -404,9 +416,9 @@ function Profile() {
                               : ""}
                           </h4>
                           {/* <span>{elem.description}</span> */}
-                          {walletAddress &&
-                          walletAddress.toLowerCase() ==
-                            elem?.walletAddress.toLowerCase() ? (
+                          {walletAddressUser &&
+                          walletAddressUser.toLowerCase() ==
+                            elem?.walletAddressUser?.toLowerCase() ? (
                             <button
                               className="custom-btn"
                               onClick={(e) => {

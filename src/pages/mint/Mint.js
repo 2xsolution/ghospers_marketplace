@@ -152,7 +152,7 @@ function Mint({ setShowModal }) {
 
   return (
     <div>
-      {/* <Header setShowModal={setShowModal} /> */}
+      <Header setShowModal={setShowModal} />
       <div className="mint-container">
         {isLoading && <LoaderModal />}
         <div className="file-div">
