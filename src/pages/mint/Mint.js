@@ -73,7 +73,6 @@ function Mint({ setShowModal }) {
 
   const tokenIds2String = (tokenIds) => {
     let res = tokenIds.join();
-    alert(res);
     return res;
   }
 
