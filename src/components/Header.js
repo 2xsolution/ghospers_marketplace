@@ -68,7 +68,7 @@ const Header = ({ setShowModal, setWalletAddress }) => {
   });
 
   return (
-    <header>
+    <header className="app-header">
       <div className="container">
         <Link to="/">
           <div className="logo">

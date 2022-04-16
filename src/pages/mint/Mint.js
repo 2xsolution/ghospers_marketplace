@@ -35,6 +35,8 @@ function Mint({ setShowModal }) {
   const [selectedType, setSelectedType] = useState("");
   const [level, setLevel] = useState("");
   const [properties, setProperties] = useState(null);
+  const [allProperties, setAllProperties] = useState(null);
+
   // const [traitsArray, setTraitsArray] = useState([
   //   "tank",
   //   "marksman",
@@ -48,7 +50,18 @@ function Mint({ setShowModal }) {
     "legendary",
   ]);
 
+  const loadProperties = () => {
+    axios
+      .get(BASEURL + "/property/all")
+      .then((response) => {
+        // console.log(response.data.data);
+        setAllProperties(response.data.data);
+      })
+      .catch((e) => console.log(e));
+  };
+
   useEffect(() => {
+    loadProperties();
     const initWeb3 = async () => {
       await loadWeb3();
       await connectWallet();
@@ -276,7 +289,7 @@ function Mint({ setShowModal }) {
         </div>
         <AddPropertyModal
           setProperties={setProperties}
-          properties={properties}
+          properties={allProperties}
           showModal={showPropertyModal}
           setShowModal={setShowPropertyModal}
         />
