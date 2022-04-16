@@ -181,7 +181,7 @@ const NFTdetail = ({ setShowModal }) => {
     setShowLoadingModal(true);
     let curWallet = await getCurrentWallet();
     axios
-      .put(`${BASEURL}/nft/${nftId}`, {
+      .put(`${BASEURL}/nft/cancel/${nftId}`, {
         walletAddress: curWallet.account,
       })
       .then((response) => {
