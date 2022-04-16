@@ -5,10 +5,24 @@ import "./sellModal.css";
 
 Modal.setAppElement("#root");
 
-function SellModal({ oldCurrency, oldPrice, setShowModal, showModal }) {
-  console.log(oldCurrency, oldPrice);
-  function closeModal() {
-    setShowModal(currency, price);
+function SellModal({
+  oldCurrency,
+  oldPrice,
+  setShowModal,
+  showModal,
+  setShowSellModal,
+}) {
+  // console.log(oldCurrency, oldPrice);
+  function closeModal(e) {
+    e.preventDefault();
+    if (e.keyCode === 27) {
+      setShowSellModal(false);
+      setPrice(oldPrice);
+      if (oldCurrency.toLowerCase() === "ghsp") {
+        setCurrency("");
+      } else setCurrency(oldCurrency);
+    } else console.log("else");
+    //  setShowModal(currency, price);
   }
 
   const [currency, setCurrency] = useState(oldCurrency);
@@ -27,7 +41,7 @@ function SellModal({ oldCurrency, oldPrice, setShowModal, showModal }) {
     <div className="sell-modal">
       <Modal
         isOpen={showModal}
-        shouldCloseOnOverlayClick={false}
+        // shouldCloseOnOverlayClick={false}
         // onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         // style={customStyles}
@@ -35,7 +49,20 @@ function SellModal({ oldCurrency, oldPrice, setShowModal, showModal }) {
         contentLabel="Example Modal"
       >
         <div className="properties-modal-content">
-          <h2 style={{ marginBottom: "20px" }}>Sell </h2>
+          <div className="sell-modal-flex">
+            <h2>Sell </h2>
+            <p
+              onClick={() => {
+                setShowSellModal(false);
+                setPrice(oldPrice);
+                if (oldCurrency.toLowerCase() === "ghsp") {
+                  setCurrency("");
+                } else setCurrency(oldCurrency);
+              }}
+            >
+              <i class="fa-solid fa-xmark"></i>
+            </p>
+          </div>
           <div>
             <label htmlFor="" style={{ color: "white" }}>
               Price
@@ -65,17 +92,15 @@ function SellModal({ oldCurrency, oldPrice, setShowModal, showModal }) {
               onChange={(e) => setCurrency(e.target.value)}
               value={currency}
             >
-              <option selected value="">
-                Select Currency
-              </option>
+              <option value="">Select Currency</option>
               <option value="bnb">BNB</option>
               <option value="busd">BUSD</option>
             </select>
           </div>
           <button
             disabled={!price || !currency}
-            onClick={() => {
-              closeModal();
+            onClick={(e) => {
+              closeModal(e);
             }}
           >
             Sell

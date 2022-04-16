@@ -18,30 +18,53 @@ function AddPropertyModal({
   setProperties,
   properties,
 }) {
-  console.log(showModal);
+  // console.log(showModal);
   function closeModal() {
     setShowModal(false);
   }
 
   const AddRows = () => {
     var propertiesTemp = propertiesArray
-      .filter((r) => r.value != "")
+      .filter((r) => r?.value)
       .map((x) => {
         x.value = x.value.value;
         delete x.values;
         return x;
       });
-    console.log(propertiesTemp);
+    // console.log(propertiesTemp);
     setProperties(propertiesTemp);
     // setProperties(selectedProperties);
     setShowModal(false);
   };
 
   const [selectedProperties, setSelectedProperties] = useState([]);
-  const [propertiesArray, setPropertiesArray] = useState(PropertiesData);
+  const [propertiesArray, setPropertiesArray] = useState(properties);
   // const [selectedValue, setSelectedValue] = useState("");
 
+  useEffect(() => {
+    if (!propertiesArray) {
+      var transformedProperties =
+        properties &&
+        properties.map((property) => {
+          var innerArray =
+            property &&
+            property.values.map((x) => {
+              var data = {};
+              data.label = x;
+              data.value = x.toLowerCase();
+              return data;
+            });
+          property.values = innerArray;
+          return property;
+        });
+      console.log(transformedProperties);
+      setPropertiesArray(transformedProperties);
+    }
+  }, [properties]);
+
   const handleCreate = (index, obj) => {
+    console.log(obj);
+
     setPropertiesArray((prev) =>
       Object.values({
         ...prev,
@@ -129,7 +152,7 @@ function AddPropertyModal({
                         // isClearable
                         className="createble-select"
                         value={property?.value}
-                        options={property.values}
+                        options={property?.values}
                         onChange={(value) => handleChange(index, value)}
                         onCreateOption={(value) => handleCreate(index, value)}
                       />
