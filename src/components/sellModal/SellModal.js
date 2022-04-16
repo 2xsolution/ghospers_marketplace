@@ -22,7 +22,7 @@ function SellModal({
         setCurrency("");
       } else setCurrency(oldCurrency);
     } else console.log("else");
-    //  setShowModal(currency, price);
+     setShowModal(currency, price);
   }
 
   const [currency, setCurrency] = useState(oldCurrency);
