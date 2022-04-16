@@ -27,11 +27,13 @@ function App() {
           element={<Contact setShowModal={setShowModal} />}
         />
         <Route
-          path="/profile"
+          path="/profile/:address"
+          exact
           element={<Profile setShowModal={setShowModal} />}
         />
         <Route
-          path="/profile/:address"
+          path="/profile"
+          exact
           element={<Profile setShowModal={setShowModal} />}
         />
       </Routes>

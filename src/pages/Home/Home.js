@@ -26,7 +26,7 @@ import Accordian from "../../components/accordian/Accordian";
 const Home = ({ setShowModal }) => {
   const [sidebar, setSidebar] = useState(false);
   const openSidebar = (e) => {
-    console.log("sidebar");
+    // console.log("sidebar");
     e.preventDefault();
     setSidebar((prev) => !prev);
   };
@@ -36,7 +36,7 @@ const Home = ({ setShowModal }) => {
   const [typeArray] = useState(["common", "rare", "epic", "legendary"]);
 
   const loadNfts = async (e) => {
-    console.log(selectedProperties);
+    // console.log(selectedProperties);
 
     setIsLoading(true);
 
@@ -67,13 +67,13 @@ const Home = ({ setShowModal }) => {
 
   const buyNft = async (e, nftId) => {
     e.stopPropagation();
-    console.log(walletAddress);
+    // console.log(walletAddress);
     axios
       .put(`${BASEURL}/nft/${nftId}`, {
         walletAddress,
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
       })
       .catch((e) => console.log(e));
   };
@@ -92,14 +92,14 @@ const Home = ({ setShowModal }) => {
   const [selectedType, setSelectedType] = useState(null);
   const [max, setMax] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [currency, setCurrency] = useState(null);
+  const [currency, setCurrency] = useState("");
   const [walletAddress, setWalletAddress] = useState("xyz");
   const [properties, setProperties] = useState(null);
   const [selectedProperties, setSelectedProperties] = useState([]);
   const [singleSelectedProperty, setSingleSelectedProperty] = useState(null);
 
   useEffect(() => {
-    console.log(singleSelectedProperty);
+    // console.log(singleSelectedProperty);
     if (
       singleSelectedProperty &&
       singleSelectedProperty.values &&
@@ -121,14 +121,14 @@ const Home = ({ setShowModal }) => {
       } else {
         setSelectedProperties((prev) => [...prev, singleSelectedProperty]);
       }
-      console.log(selectedProperties);
+      // console.log(selectedProperties);
     }
   }, [singleSelectedProperty]);
 
   const updateTokenIds = async () => {
     let res = await getTokenIds();
     setTokenIds(res);
-    console.log("======= getTokenIds ========== ", res);
+    // console.log("======= getTokenIds ========== ", res);
 
     res = await getSaleItems(res);
     setSaleItems(res);
@@ -138,7 +138,7 @@ const Home = ({ setShowModal }) => {
     axios
       .get(BASEURL + "/property/all")
       .then((response) => {
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setProperties(response.data.data);
       })
       .catch((e) => console.log(e));
@@ -283,9 +283,7 @@ const Home = ({ setShowModal }) => {
                   onChange={(e) => setCurrency(e.target.value)}
                   value={currency}
                 >
-                  <option selected value="">
-                    Select Currency
-                  </option>
+                  <option value="">Select Currency</option>
                   <option value="ghsp">GHSP</option>
                   <option value="bnb">BNB</option>
                   <option value="busd">BUSD</option>
@@ -312,9 +310,9 @@ const Home = ({ setShowModal }) => {
               </div>
             </div>
             {properties &&
-              properties.map((data) => {
+              properties.map((data, index) => {
                 return (
-                  <div className="hero">
+                  <div className="hero" key={index}>
                     <Accordian
                       setSingleSelectedProperty={setSingleSelectedProperty}
                       title={data.type}

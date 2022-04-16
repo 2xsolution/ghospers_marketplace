@@ -289,7 +289,7 @@ option {
 
 .loader-flex {
   display: flex;
-  height: 80vh;
+  /* height: 80vh; */
   margin-top: 20px;
   align-items: center;
   justify-content: space-between;

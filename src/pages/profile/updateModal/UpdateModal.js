@@ -31,7 +31,7 @@ function UpdateModal({
   function closeModal() {
     setShowModal(false);
   }
-  console.log(userDetails);
+  // console.log(userDetails);
 
   const fileTypes = ["JPEG", "PNG", "GIF", "JPG"];
 
@@ -66,7 +66,7 @@ function UpdateModal({
     axios
       .put(BASEURL + "/user/update", formData)
       .then((response) => {
-        console.log(response.data.data);
+        // console.log(response.data.data);
         setUserDetails(response.data.data);
         // setUserDetails
         // setFacebook("");

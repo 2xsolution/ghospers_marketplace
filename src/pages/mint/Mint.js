@@ -36,6 +36,8 @@ function Mint({ setShowModal }) {
   const [level, setLevel] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [properties, setProperties] = useState(null);
+  const [allProperties, setAllProperties] = useState(null);
+
   // const [traitsArray, setTraitsArray] = useState([
   //   "tank",
   //   "marksman",
@@ -49,7 +51,18 @@ function Mint({ setShowModal }) {
     "legendary",
   ]);
 
+  const loadProperties = () => {
+    axios
+      .get(BASEURL + "/property/all")
+      .then((response) => {
+        // console.log(response.data.data);
+        setAllProperties(response.data.data);
+      })
+      .catch((e) => console.log(e));
+  };
+
   useEffect(() => {
+    loadProperties();
     const initWeb3 = async () => {
       await loadWeb3();
       await connectWallet();
@@ -82,7 +95,7 @@ function Mint({ setShowModal }) {
                 "********** minted token id ***********",
                 res?.tokenId
               );
-              console.log(res);
+              // console.log(res);
               if (res && res.tokenId && res.wallet) {
                 var formData = new FormData();
                 formData.append("title", title);
@@ -98,12 +111,12 @@ function Mint({ setShowModal }) {
                 formData.append("level", level);
                 formData.append("quantity", quantity);
 
-                console.log(...formData);
+                // console.log(...formData);
 
                 axios
                   .post(BASEURL + "/nft/save", formData)
                   .then((response) => {
-                    console.log(response);
+                    // console.log(response);
                     setCurrency("ghsp");
                     setTitle("");
                     setDescription("");
@@ -118,10 +131,10 @@ function Mint({ setShowModal }) {
                     // window.location.reload();
                   })
                   .catch((e) => {
-                    console.log(e.response.data.message);
+                    // console.log(e.response.data.message);
                     NotificationManager.error("Error Writing to DB");
                     NotificationManager.error(e.response.data.message);
-                    console.log(e);
+                    // console.log(e);
                     setIsLoading(false);
                     // window.location.reload();
                   });
@@ -155,7 +168,7 @@ function Mint({ setShowModal }) {
 
   return (
     <div>
-      {/* <Header setShowModal={setShowModal} /> */}
+      <Header setShowModal={setShowModal} />
       <div className="mint-container">
         {isLoading && <LoaderModal />}
         <div className="file-div">
@@ -223,9 +236,7 @@ function Mint({ setShowModal }) {
                 onChange={(e) => setCurrency(e.target.value)}
                 value={currency}
               >
-                <option selected value="ghsp">
-                  GHSP
-                </option>
+                <option value="ghsp">GHSP</option>
                 <option value="bnb">BNB</option>
                 <option value="busd">BUSD</option>
               </select>
@@ -300,7 +311,7 @@ function Mint({ setShowModal }) {
         </div>
         <AddPropertyModal
           setProperties={setProperties}
-          properties={properties}
+          properties={allProperties}
           showModal={showPropertyModal}
           setShowModal={setShowPropertyModal}
         />
