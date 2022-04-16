@@ -462,15 +462,17 @@ const NFTdetail = ({ setShowModal }) => {
                     </a>
                   </div>
                 ) : (
-                  <div className="buy-btn">
-                    <a
-                      // href="/"
-                      // onClick={buyNFT}
-                      onClick={changeOwner}
-                    >
-                      BUY NOW
-                    </a>
-                  </div>
+                  nftDetail?.nftOnSale && (
+                    <div className="buy-btn">
+                      <a
+                        // href="/"
+                        // onClick={buyNFT}
+                        onClick={changeOwner}
+                      >
+                        BUY NOW
+                      </a>
+                    </div>
+                  )
                 )}
               </div>
             </div>
