@@ -21,8 +21,9 @@ function SellModal({
       if (oldCurrency.toLowerCase() === "ghsp") {
         setCurrency("");
       } else setCurrency(oldCurrency);
-    } else console.log("else");
-    //  setShowModal(currency, price);
+    } else {
+     setShowModal(currency, price);
+    }
   }
 
   const [currency, setCurrency] = useState(oldCurrency);
