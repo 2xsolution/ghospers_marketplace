@@ -2,6 +2,23 @@
   height: auto;
   overflow: scroll;
 }
+
+.sell-modal-flex {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  justify-content: space-between;
+}
+
+.sell-modal-flex i {
+  color: white;
+}
+
+.sell-modal-flex p {
+  margin: 0;
+  cursor: pointer;
+}
+
 .properties-modal-content::-webkit-scrollbar {
   display: none !important;
 }

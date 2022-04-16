@@ -13,7 +13,7 @@ import Loader from "../../components/loader/Loader";
 import Accordian from "../../components/accordian/Accordian";
 import LoaderModal from "../../components/loaderModal/LoaderModal";
 import MultiRangeSlider from "multi-range-slider-react";
-
+import UserImage from "../../assets/img/UserImage.png";
 import {
   loadWeb3,
   connectWallet,
@@ -105,6 +105,7 @@ function Profile() {
   const [newPrice, setNewPrice] = useState("");
   const [newCurrency, setNewCurrency] = useState("");
   const [selectedNft, setSelectedNft] = useState(null);
+
   useEffect(() => {
     if (walletAddress) {
       loadNfts();
@@ -163,9 +164,12 @@ function Profile() {
   useEffect(() => {
     setIsLoading(true);
     if (address) {
+      console.log("inside 000000000000000");
       setWalletAddress(address);
       setIsLoading(false);
     } else {
+      console.log("else");
+
       const initWeb3 = async () => {
         await loadWeb3();
         let res = await connectWallet();
@@ -179,7 +183,7 @@ function Profile() {
     if (walletAddress) {
       loadUserDetails();
     }
-  }, [walletAddress]);
+  }, [walletAddress, address]);
 
   const onClickSellInDialog = (currency, price) => {
     setShowSellModal(false);
@@ -302,9 +306,17 @@ function Profile() {
       });
   };
 
+  const openSellModal = (index) => {
+    setShowSellModal(true);
+    setSelectedNft(nftsArray[index]);
+  };
+
   return (
     <div>
-      <Header setShowModal={setShowModal} setWalletAddress={setWalletAddressUser} />
+      <Header
+        setShowModal={setShowModal}
+        setWalletAddress={setWalletAddressUser}
+      />
       <div className="profile-content">
         {showLoadingModal && <LoaderModal />}
 
@@ -328,16 +340,24 @@ function Profile() {
             {userDetails && userDetails.facebook ? (
               <div className="profile-div">
                 <div className="red-div">
-                  <img src={userDetails && `${userDetails.imageUrl}`} alt="" />
+                  <img
+                    src={
+                      userDetails ? `${userDetails.imageUrl}` : `${UserImage}`
+                    }
+                    alt=""
+                  />
                 </div>
-                {walletAddressUser && (walletAddressUser === userDetails?.walletAddress) ? (
+                {walletAddressUser &&
+                walletAddressUser === userDetails?.walletAddress ? (
                   <button
                     className="custom-btn"
                     onClick={() => setShowModal(true)}
                   >
                     Edit Profile
                   </button>
-                ): (<p></p>)}
+                ) : (
+                  <p></p>
+                )}
                 <h2>{userDetails && userDetails.name}</h2>
                 <p>{userDetails && userDetails.walletAddress}</p>{" "}
                 <div className="profile-about">
@@ -367,14 +387,17 @@ function Profile() {
               <div className="overlay-blue">
                 <div>
                   <h3>Profile is not updated</h3>
-                  {walletAddressUser && walletAddressUser === userDetails?.walletAddress ? (
-                  <button
-                    className="custom-btn"
-                    onClick={() => setShowModal(true)}
-                  >
-                    Edit Profile
-                  </button>
-                  ) : (<p></p>)}
+                  {walletAddressUser &&
+                  walletAddressUser === userDetails?.walletAddress ? (
+                    <button
+                      className="custom-btn"
+                      onClick={() => setShowModal(true)}
+                    >
+                      Edit Profile
+                    </button>
+                  ) : (
+                    <p></p>
+                  )}
                 </div>
               </div>
             )}
@@ -432,7 +455,7 @@ function Profile() {
                                 } else {
                                   // sellNftFunction(e, elem, i);
                                   // sellNft(e, elem, i);
-                                  setShowSellModal(true);
+                                  openSellModal(i);
                                 }
                               }}
                             >
@@ -681,6 +704,7 @@ function Profile() {
             oldPrice={selectedNft && selectedNft.price}
             showModal={showSellModal}
             setShowModal={onClickSellInDialog}
+            setShowSellModal={setShowSellModal}
           />
         )}
       </div>

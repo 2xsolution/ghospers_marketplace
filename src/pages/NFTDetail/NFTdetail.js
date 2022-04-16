@@ -487,6 +487,7 @@ const NFTdetail = ({ setShowModal }) => {
           oldPrice={nftDetail.price}
           oldCurrency={nftDetail.currency}
           showModal={showSellModal}
+          setShowSellModal={setShowSellModal}
           setShowModal={onClickSellInDialog}
         />
       )}
