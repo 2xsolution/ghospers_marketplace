@@ -304,7 +304,7 @@ const NFTdetail = ({ setShowModal }) => {
               <div className="nft-detail">
                 <div className="nft-titles">
                   <div className="title">
-                    <h1>{nftDetail && nftDetail.title} </h1>
+                    <h1>{nftDetail && nftDetail.title} ({nftDetail && nftDetail.quantity ? nftDetail.quantity : 1}) </h1>
                     <p>{nftDetail && nftDetail.description} </p>
                   </div>
                   <div className="title-right">

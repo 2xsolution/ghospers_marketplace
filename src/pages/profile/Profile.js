@@ -428,7 +428,7 @@ function Profile() {
                         </div>
                         <div className="card-title">
                           <h4>
-                            {elem.title}
+                          {elem.title} ({elem.quantity ? elem.quantity : 1})
                             {Number(sampleNFTTokenID) === Number(i) ? (
                               <span>&#10003;</span>
                             ) : (
