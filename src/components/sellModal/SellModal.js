@@ -18,7 +18,7 @@ function SellModal({
     if (e.keyCode === 27) {
       setShowSellModal(false);
       setPrice(oldPrice);
-      if (oldCurrency.toLowerCase() === "ghsp") {
+      if (oldCurrency.toLowerCase() === "ghs") {
         setCurrency("");
       } else setCurrency(oldCurrency);
     } else {
@@ -31,7 +31,7 @@ function SellModal({
 
   useEffect(() => {
     if (oldCurrency) {
-      if (oldCurrency.toLowerCase() === "ghsp") {
+      if (oldCurrency.toLowerCase() === "ghs") {
         setCurrency("");
       } else setCurrency(oldCurrency);
     }
@@ -94,6 +94,7 @@ function SellModal({
               value={currency}
             >
               <option value="">Select Currency</option>
+              <option value="ghsp">GHSP</option>
               <option value="bnb">BNB</option>
               <option value="busd">BUSD</option>
             </select>
