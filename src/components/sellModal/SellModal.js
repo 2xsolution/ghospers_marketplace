@@ -61,7 +61,7 @@ function SellModal({
                 } else setCurrency(oldCurrency);
               }}
             >
-              <i class="fa-solid fa-xmark"></i>
+              <i className="fa-solid fa-xmark"></i>
             </p>
           </div>
           <div>
