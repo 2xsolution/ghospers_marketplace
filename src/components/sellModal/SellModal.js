@@ -8,6 +8,7 @@ Modal.setAppElement("#root");
 function SellModal({
   oldCurrency,
   oldPrice,
+  oldQuantity,
   setShowModal,
   showModal,
   setShowSellModal,
@@ -22,12 +23,14 @@ function SellModal({
         setCurrency("");
       } else setCurrency(oldCurrency);
     } else {
-     setShowModal(currency, price);
+      setShowModal(currency, price, quantity);
     }
   }
 
   const [currency, setCurrency] = useState(oldCurrency);
   const [price, setPrice] = useState(oldPrice);
+  const [quantity, setQuantity] = useState(oldQuantity);
+
 
   useEffect(() => {
     if (oldCurrency) {
@@ -36,7 +39,8 @@ function SellModal({
       } else setCurrency(oldCurrency);
     }
     setPrice(oldPrice);
-  }, [oldCurrency, oldPrice]);
+    setQuantity(oldQuantity);
+  }, [oldCurrency, oldPrice, oldQuantity]);
 
   return (
     <div className="sell-modal">
@@ -98,6 +102,28 @@ function SellModal({
               <option value="busd">BUSD</option>
             </select>
           </div>
+
+          <div>
+            <label htmlFor="" style={{ color: "white" }}>Quantity</label>
+            <input
+              value={quantity}
+              max={oldQuantity}
+              min="1"
+              onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+              onChange={(e) => {
+                if (e.target.value < 1) {
+                  setQuantity(1);
+                } else if (e.target.value > oldQuantity) {
+                  setQuantity(oldQuantity);
+                } else setQuantity(e.target.value);
+              }}
+              type="number"
+              className="mint-input"
+              placeholder="Quantity"
+              readOnly
+            />
+          </div>
+
           <button
             disabled={!price || !currency}
             onClick={(e) => {

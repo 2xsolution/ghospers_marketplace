@@ -292,7 +292,7 @@ function Profile() {
       tokenType = 2;
     }
     const nftId = item._id;
-    putTokenOnSale(item.tokenId, price, tokenType)
+    putTokenOnSale(item.tokenId, price, item.quantity, tokenType)
       .then((res) => {
         if (res === true) {
           sellNftFunction(nftId, index, currency, price);
@@ -307,8 +307,8 @@ function Profile() {
   };
 
   const openSellModal = (index) => {
-    setShowSellModal(true);
     setSelectedNft(nftsArray[index]);
+    setShowSellModal(true);
   };
 
   return (
@@ -702,6 +702,7 @@ function Profile() {
           <SellModal
             oldCurrency={selectedNft && selectedNft.currency}
             oldPrice={selectedNft && selectedNft.price}
+            oldQuantity={selectedNft && selectedNft.quantity}
             showModal={showSellModal}
             setShowModal={onClickSellInDialog}
             setShowSellModal={setShowSellModal}

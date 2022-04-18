@@ -4,14 +4,14 @@ import Web3 from 'web3';
 
 const busdAbi = require('./abi/busd.json');
 const ghospAbi = require('./abi/ghosp.json');
-const marketAbi = require('./abi/marketplace.json');
+const marketAbi = require('./abi/bulkmarketplace.json'); //require('./abi/marketplace.json');
 const minterAbi = require('./abi/minter.json');
 const bulkminterAbi = require('./abi/bulkminter.json');
 
 
 const BULKMINTER_ADDRESS = "0x552e5cBBbf2f23F8309110bB20d482Da18E5F872"
 const MINTER_ADDRESS = "0xfA9bB2B3119A7b9d40235F9e92052AB6Fd6DaD12"
-const MARKETPLACE_ADDRESS = "0xC4d193F224Ec31c7BDc959D2D1b9Eb9d16E97A78"
+const MARKETPLACE_ADDRESS = "0x1b02AcE666D31275DB7985603156BDC273E212Cc" // "0xC4d193F224Ec31c7BDc959D2D1b9Eb9d16E97A78"
 const GHOSP_ADDRESS = "0x91c70ba82a8ed676c5a09ce1cd94cc18923e8371"
 const BUSD_ADDRESS = "0x8301f2213c0eed49a7e28ae4c3e91722919b8b47"   // Faucet Token
 let market_contract = null;
@@ -229,14 +229,18 @@ export const removeTokenFromSale = async (tokenID) => {
     return true;
 }
 
-export const putTokenOnSale = async (tokenID, price, saleTokenType) => {
+const string2TokenIds = (tokenIds) => {
+    return tokenIds.split(',');
+}
+
+export const putTokenOnSale = async (tokenID, price, quantity, saleTokenType) => {
     const wallet = await getCurrentWallet();
     if (wallet.success === false) {
         return false;
     }
 
     try {
-        await minter_contract.methods.setApprovalForAll(MARKETPLACE_ADDRESS, true).send({ from: wallet.account });
+        await bulkminter_contract.methods.setApprovalForAll(MARKETPLACE_ADDRESS, true).send({ from: wallet.account });
         // return true;
     } catch (error) {
         console.log('setApprovalForAll error', error);
@@ -244,8 +248,17 @@ export const putTokenOnSale = async (tokenID, price, saleTokenType) => {
     }
 
     try {
-        let bnPrice = window.web3.utils.toWei("" + price);
-        await market_contract.methods.putTokenOnSale(tokenID, bnPrice, saleTokenType).send({ from: wallet.account });
+        let strTokenIdList = string2TokenIds(tokenID);
+        let bnPrice = window.web3.utils.toWei("" + price, 'ether');
+
+        let bnAmountList = [];
+        for (let i = 0; i < quantity; i++) {
+            bnAmountList.push(bnPrice);
+        }
+
+        let quanTokenIds = strTokenIdList.slice(0, quantity);
+        await market_contract.methods.putTokenOnSale(quanTokenIds, bnAmountList, saleTokenType).send({ from: wallet.account });
+        // await market_contract.methods.putTokenOnSale(["1"], ["1000000000000000000"], 2).send({ from: wallet.account });
     } catch (error) {
         console.log('putTokenOnSale error', error);
         return false;

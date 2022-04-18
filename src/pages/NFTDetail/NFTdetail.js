@@ -213,10 +213,10 @@ const NFTdetail = ({ setShowModal }) => {
       });
   };
 
-  const onClickSellInDialog = (currency, price) => {
+  const onClickSellInDialog = (currency, price, quantity) => {
     setShowSellModal(false);
 
-    sellNft(currency, price);
+    sellNft(currency, price, quantity);
   };
 
   //
@@ -245,7 +245,7 @@ const NFTdetail = ({ setShowModal }) => {
       });
   };
 
-  const sellNft = async (currency, price) => {
+  const sellNft = async (currency, price, quantity) => {
     setShowLoadingModal(true);
     let tokenType = 0;
     if (currency == "ghsp") {
@@ -257,7 +257,7 @@ const NFTdetail = ({ setShowModal }) => {
     }
 
     // console.log("sellNft info", nftDetail);
-    putTokenOnSale(tokenId, price, tokenType)
+    putTokenOnSale(tokenId, price, quantity, tokenType)
       .then((res) => {
         if (res === true) {
           sellNftFunction(currency, price);
