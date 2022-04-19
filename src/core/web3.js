@@ -7,18 +7,22 @@ const ghospAbi = require('./abi/ghosp.json');
 const marketAbi = require('./abi/bulkmarketplace.json'); //require('./abi/marketplace.json');
 const minterAbi = require('./abi/minter.json');
 const bulkminterAbi = require('./abi/bulkminter.json');
+const otherNFTAbi = require('./abi/otherNFT.json');
 
 
 const BULKMINTER_ADDRESS = "0x552e5cBBbf2f23F8309110bB20d482Da18E5F872"
 const MINTER_ADDRESS = "0xfA9bB2B3119A7b9d40235F9e92052AB6Fd6DaD12"
-const MARKETPLACE_ADDRESS = "0x1b02AcE666D31275DB7985603156BDC273E212Cc" // "0xC4d193F224Ec31c7BDc959D2D1b9Eb9d16E97A78"
+const MARKETPLACE_ADDRESS = "0x9f75186333E1475CF8aa50df30F6C974Fb536E9d" // "0xC4d193F224Ec31c7BDc959D2D1b9Eb9d16E97A78"
 const GHOSP_ADDRESS = "0x91c70ba82a8ed676c5a09ce1cd94cc18923e8371"
 const BUSD_ADDRESS = "0x8301f2213c0eed49a7e28ae4c3e91722919b8b47"   // Faucet Token
+const OTHERNFT_ADDRESS = "0x75BB08a1B1ee868cd1f35bc816AeAcB6E622dc5B"   // Faucet Token
+
 let market_contract = null;
 let minter_contract = null;
 let bulkminter_contract = null;
 let ghosp_contract = null;
 let busd_contract = null;
+let otherNFT_contract = null;
 
 const NETWORK_ID = 97;
 
@@ -53,6 +57,7 @@ export const loadWeb3 = async () => {
     market_contract = new window.web3.eth.Contract(marketAbi, MARKETPLACE_ADDRESS);
     ghosp_contract = new window.web3.eth.Contract(ghospAbi, GHOSP_ADDRESS);
     busd_contract = new window.web3.eth.Contract(busdAbi, BUSD_ADDRESS);
+    otherNFT_contract = new window.web3.eth.Contract(otherNFTAbi, OTHERNFT_ADDRESS);
 
     window.ethereum.on('chainChanged', function (chainId) {
         console.log('chain chainged with this chain id : ', chainId);
@@ -60,7 +65,20 @@ export const loadWeb3 = async () => {
     });
 };
 
+const getNftsOfOwner = async (wallet) => {
+    if (!wallet || !otherNFT_contract) {
+        return [];
+    }
 
+    let cnt = await otherNFT_contract.methods.balanceOf(wallet).call();
+    await otherNFT_contract.methods.setApprovalForAll(MARKETPLACE_ADDRESS, true).send({ from: wallet });
+
+    for (let i = 0; i < cnt; i++) {
+        
+    }
+}
+
+let prevWalletAddress = null;
 export const connectWallet = async () => {
     // const chainId = await getConnectedNetworkId();
     // if (checkConnectedNetwork(chainId) == false) {
@@ -80,6 +98,10 @@ export const connectWallet = async () => {
                 status: "Metamask successfuly connected.",
                 address: addressArray[0],
             };
+            // if (prevWalletAddress != addressArray[0]) {
+            //     obj.nftList = await getNftsOfOwner(addressArray[0]);
+            //     prevWalletAddress = addressArray[0];
+            // }
             return obj;
         } catch (err) {
             return {
@@ -143,9 +165,12 @@ export const buyNFTWithBNB = async (tokenID, amount) => {
     }
 
     try {
-        alert(amount);
+        let strTokenIdList = string2TokenIds(tokenID);
         let bnAmount = window.web3.utils.toWei("" + amount);
-        await market_contract.methods.buyNFTWithBNB(tokenID, wallet.account).send({ from: wallet.account, value: bnAmount });
+
+        console.log('222222222', strTokenIdList, amount, bnAmount);
+
+        await market_contract.methods.buyNFTWithBNB(strTokenIdList, wallet.account).send({ from: wallet.account, value: bnAmount });
 
         await removeTokenFromSale(tokenID);
         return true;
@@ -172,7 +197,8 @@ export const buyNFTWithGHSP = async (tokenID, amount) => {
     }
 
     try {
-        await market_contract.methods.buyNFTWithGHSP(tokenID, wallet.account).send({ from: wallet.account });
+        let strTokenIdList = string2TokenIds(tokenID);
+        await market_contract.methods.buyNFTWithGHSP(strTokenIdList, wallet.account).send({ from: wallet.account });
 
         await removeTokenFromSale(tokenID);
         return true;
@@ -200,7 +226,8 @@ export const buyNFTWithBUSD = async (tokenID, amount) => {
     }
 
     try {
-        await market_contract.methods.buyNFTWithBUSD(tokenID, wallet.account).send({ from: wallet.account });
+        let strTokenIdList = string2TokenIds(tokenID);
+        await market_contract.methods.buyNFTWithBUSD(strTokenIdList, wallet.account).send({ from: wallet.account });
 
         await removeTokenFromSale(tokenID);
         return true;
@@ -219,7 +246,8 @@ export const removeTokenFromSale = async (tokenID) => {
     }
 
     try {
-        await market_contract.methods.removeTokenFromSale(tokenID).send({ from: wallet.account });
+        let strTokenIdList = string2TokenIds(tokenID);
+        await market_contract.methods.removeTokenFromSale(strTokenIdList).send({ from: wallet.account });
         return true;
     } catch (error) {
         console.log('removeTokenFromSale error', error);

@@ -18,6 +18,7 @@ import {
 } from "../../core/web3";
 import LoaderModal from "../../components/loaderModal/LoaderModal";
 import SellModal from "../../components/sellModal/SellModal";
+import { isCompositeComponent } from "react-dom/test-utils";
 
 const NFTdetail = ({ setShowModal }) => {
   const [nftDetail, setNftDetail] = useState(null);
@@ -486,6 +487,7 @@ const NFTdetail = ({ setShowModal }) => {
         <SellModal
           oldPrice={nftDetail.price}
           oldCurrency={nftDetail.currency}
+          oldQuantity={nftDetail.quantity}
           showModal={showSellModal}
           setShowSellModal={setShowSellModal}
           setShowModal={onClickSellInDialog}
