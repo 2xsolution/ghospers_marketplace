@@ -189,7 +189,8 @@ export const buyNFTWithGHSP = async (tokenID, amount) => {
     }
 
     try {
-        let ghspAmount = window.web3.utils.toWei("" + amount, 'ether');
+        let maxAllowance = 1000000;
+        let ghspAmount = window.web3.utils.toWei("" + maxAllowance, 'ether');
         await ghosp_contract.methods.approve(MARKETPLACE_ADDRESS, ghspAmount).send({ from: wallet.account });
     } catch (error) {
         console.log("approve failed : ", error);
