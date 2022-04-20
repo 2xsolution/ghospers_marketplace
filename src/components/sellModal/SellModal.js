@@ -29,7 +29,7 @@ function SellModal({
 
   const [currency, setCurrency] = useState(oldCurrency);
   const [price, setPrice] = useState(oldPrice);
-  const [quantity, setQuantity] = useState(oldQuantity);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     if (oldCurrency) {
@@ -103,15 +103,18 @@ function SellModal({
             </select>
           </div>
 
-          <div className="qty-div">
+          {oldQuantity > 1 && <div className="qty-div">
             <label htmlFor="" style={{ color: "white" }}>
               Quantity
             </label>
             <div className="qty-div-content">
-              {}
-              <button disabled={quantity == 1} style={{ margin: "auto" }}>
-                +
-              </button>
+              <button style={{ margin: "auto" }} 
+              disabled={quantity === 1}
+              onClick={()=> {
+                if(quantity>1){
+                  setQuantity(prev=> prev-1)
+              }
+              }}>-</button>
               <input
                 value={quantity}
                 max={oldQuantity}
@@ -129,9 +132,17 @@ function SellModal({
                 placeholder="Quantity"
                 readOnly
               />
-              <button style={{ margin: "auto" }}>-</button>
+              
+              <button disabled={quantity >= oldQuantity} style={{ margin: "auto" }}
+              onClick={()=> {
+                if(quantity < oldQuantity){
+                  setQuantity(prev=> prev+1)
+              }
+              }}>
+                +
+              </button>
             </div>
-          </div>
+          </div>}
 
           <button
             disabled={!price || !currency}
