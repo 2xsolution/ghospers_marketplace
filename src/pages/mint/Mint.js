@@ -110,7 +110,7 @@ function Mint({ setShowModal }) {
                 formData.append("currency", currency);
                 formData.append("walletAddress", res.wallet);
                 formData.append("type", selectedType);
-                formData.append("tokenId", tokenIds2String(res.tokenId));
+                formData.append("tokenId", (res.tokenId));
                 formData.append("ipfs", ipfs);
                 formData.append("properties", JSON.stringify(properties));
                 formData.append("level", level);
