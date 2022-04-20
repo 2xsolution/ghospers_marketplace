@@ -26,7 +26,7 @@ const NFTdetail = ({ setShowModal }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedTabIndex, setSelectedTabIndex] = useState(0);
   const [showSellModal, setShowSellModal] = useState(false);
-
+  const [quantity, setQuantity] = useState(1);
   const [showLoadingModal, setShowLoadingModal] = useState(false);
   useEffect(() => {
     const initWeb3 = async () => {
@@ -471,31 +471,46 @@ const NFTdetail = ({ setShowModal }) => {
                     <>
                       <div className="qty-div-content">
                         <button
-                          // disabled={quantity == 1}
                           style={{ margin: "auto" }}
+                          disabled={quantity === 1}
+                          onClick={() => {
+                            if (quantity > 1) {
+                              setQuantity((prev) => prev - 1);
+                            }
+                          }}
                         >
-                          +
+                          -
                         </button>
                         <input
-                          // value={quantity}
-                          // max={oldQuantity}
+                          value={quantity}
+                          max={nftDetail.quantity}
                           min="1"
                           onKeyDown={(evt) =>
                             evt.key === "e" && evt.preventDefault()
                           }
-                          // onChange={(e) => {
-                          //   if (e.target.value < 1) {
-                          //     setQuantity(1);
-                          //   } else if (e.target.value > oldQuantity) {
-                          //     setQuantity(oldQuantity);
-                          //   } else setQuantity(e.target.value);
-                          // }}
+                          onChange={(e) => {
+                            if (e.target.value < 1) {
+                              setQuantity(1);
+                            } else if (e.target.value > nftDetail.quantity) {
+                              setQuantity(nftDetail.quantity);
+                            } else setQuantity(e.target.value);
+                          }}
                           type="number"
                           className="mint-input"
                           placeholder="Quantity"
                           readOnly
                         />
-                        <button style={{ margin: "auto" }}>-</button>
+                        <button
+                          disabled={quantity >= nftDetail.quantity}
+                          style={{ margin: "auto" }}
+                          onClick={() => {
+                            if (quantity < nftDetail.quantity) {
+                              setQuantity((prev) => prev + 1);
+                            }
+                          }}
+                        >
+                          +
+                        </button>{" "}
                       </div>
                       <div className="buy-btn">
                         <a
