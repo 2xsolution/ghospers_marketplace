@@ -73,3 +73,32 @@ button:disabled,
 button[disabled] {
   cursor: no-drop;
 }
+
+.qty-div {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.qty-div-content {
+  display: flex;
+  align-items: center !important;
+}
+
+.qty-div-content button {
+  display: block;
+  border: 2px solid #41c6ff;
+  width: 80%;
+  cursor: pointer !important;
+  min-width: 200px;
+  margin: 30px auto 10px;
+  padding: 12px 0px;
+  border-radius: 55px;
+  transition: all 0.25s ease-in;
+
+  background-color: #40c6ff;
+  width: 50px !important;
+  height: 50px !important;
+  padding: 0;
+  margin: auto !important;
+  min-width: 50px !important;
+}

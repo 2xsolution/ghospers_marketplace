@@ -305,7 +305,11 @@ const NFTdetail = ({ setShowModal }) => {
               <div className="nft-detail">
                 <div className="nft-titles">
                   <div className="title">
-                    <h1>{nftDetail && nftDetail.title} ({nftDetail && nftDetail.quantity ? nftDetail.quantity : 1}) </h1>
+                    <h1>
+                      {nftDetail && nftDetail.title} (
+                      {nftDetail && nftDetail.quantity ? nftDetail.quantity : 1}
+                      ){" "}
+                    </h1>
                     <p>{nftDetail && nftDetail.description} </p>
                   </div>
                   <div className="title-right">
@@ -464,15 +468,45 @@ const NFTdetail = ({ setShowModal }) => {
                   </div>
                 ) : (
                   nftDetail?.nftOnSale && (
-                    <div className="buy-btn">
-                      <a
-                        // href="/"
-                        // onClick={buyNFT}
-                        onClick={changeOwner}
-                      >
-                        BUY NOW
-                      </a>
-                    </div>
+                    <>
+                      <div className="qty-div-content">
+                        <button
+                          // disabled={quantity == 1}
+                          style={{ margin: "auto" }}
+                        >
+                          +
+                        </button>
+                        <input
+                          // value={quantity}
+                          // max={oldQuantity}
+                          min="1"
+                          onKeyDown={(evt) =>
+                            evt.key === "e" && evt.preventDefault()
+                          }
+                          // onChange={(e) => {
+                          //   if (e.target.value < 1) {
+                          //     setQuantity(1);
+                          //   } else if (e.target.value > oldQuantity) {
+                          //     setQuantity(oldQuantity);
+                          //   } else setQuantity(e.target.value);
+                          // }}
+                          type="number"
+                          className="mint-input"
+                          placeholder="Quantity"
+                          readOnly
+                        />
+                        <button style={{ margin: "auto" }}>-</button>
+                      </div>
+                      <div className="buy-btn">
+                        <a
+                          // href="/"
+                          // onClick={buyNFT}
+                          onClick={changeOwner}
+                        >
+                          BUY NOW
+                        </a>
+                      </div>
+                    </>
                   )
                 )}
               </div>

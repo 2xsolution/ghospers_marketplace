@@ -4,7 +4,7 @@
   width: 80%;
   cursor: pointer !important;
   min-width: 200px;
-  margin: 30px auto 10px !important ;
+  margin: 30px auto 10px;
   padding: 12px 0px;
   border-radius: 55px;
   transition: all 0.25s ease-in;
