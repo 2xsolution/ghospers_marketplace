@@ -35,7 +35,9 @@ const Header = ({ setShowModal, setWalletAddress }) => {
       })
       .catch((e) => {
         if (e.response?.status !== 400) {
-          NotificationManager.error(e.response.data.message);
+          if (e.response && e.response.data && e.response.message) {
+            NotificationManager.error(e.response.data.message);
+          }
         }
       });
   };
