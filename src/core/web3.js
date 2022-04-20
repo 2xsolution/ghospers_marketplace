@@ -74,7 +74,7 @@ const getNftsOfOwner = async (wallet) => {
     await otherNFT_contract.methods.setApprovalForAll(MARKETPLACE_ADDRESS, true).send({ from: wallet });
 
     for (let i = 0; i < cnt; i++) {
-        
+
     }
 }
 
@@ -322,9 +322,14 @@ export const createNFT = async (tokenURI, quantity) => {
         // let tx = await minter_contract.methods.createNFT(tokenURI).send({ from: wallet.account });
         let tx = await bulkminter_contract.methods.bulkMint(quantity).send({ from: wallet.account });
         let tokenIdList = [];
-        for (let i = 0; i < tx.events.Transfer.length; i++) {
-            tokenID = tx.events.Transfer[i].returnValues.tokenId;
+        if (!tx.events.Transfer.length) {
+            tokenID = tx.events.Transfer.returnValues.tokenId;
             tokenIdList.push(tokenID);
+        } else {
+            for (let i = 0; i < tx.events.Transfer.length; i++) {
+                tokenID = tx.events.Transfer[i].returnValues.tokenId;
+                tokenIdList.push(tokenID);
+            }
         }
         return { tokenId: tokenIdList, wallet: wallet.account };
     } catch (error) {
