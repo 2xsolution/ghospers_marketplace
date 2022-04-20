@@ -31,7 +31,6 @@ function SellModal({
   const [price, setPrice] = useState(oldPrice);
   const [quantity, setQuantity] = useState(oldQuantity);
 
-
   useEffect(() => {
     if (oldCurrency) {
       if (oldCurrency.toLowerCase() === "ghs") {
@@ -104,25 +103,34 @@ function SellModal({
             </select>
           </div>
 
-          <div>
-            <label htmlFor="" style={{ color: "white" }}>Quantity</label>
-            <input
-              value={quantity}
-              max={oldQuantity}
-              min="1"
-              onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
-              onChange={(e) => {
-                if (e.target.value < 1) {
-                  setQuantity(1);
-                } else if (e.target.value > oldQuantity) {
-                  setQuantity(oldQuantity);
-                } else setQuantity(e.target.value);
-              }}
-              type="number"
-              className="mint-input"
-              placeholder="Quantity"
-              readOnly
-            />
+          <div className="qty-div">
+            <label htmlFor="" style={{ color: "white" }}>
+              Quantity
+            </label>
+            <div className="qty-div-content">
+              {}
+              <button disabled={quantity == 1} style={{ margin: "auto" }}>
+                +
+              </button>
+              <input
+                value={quantity}
+                max={oldQuantity}
+                min="1"
+                onKeyDown={(evt) => evt.key === "e" && evt.preventDefault()}
+                onChange={(e) => {
+                  if (e.target.value < 1) {
+                    setQuantity(1);
+                  } else if (e.target.value > oldQuantity) {
+                    setQuantity(oldQuantity);
+                  } else setQuantity(e.target.value);
+                }}
+                type="number"
+                className="mint-input"
+                placeholder="Quantity"
+                readOnly
+              />
+              <button style={{ margin: "auto" }}>-</button>
+            </div>
           </div>
 
           <button
