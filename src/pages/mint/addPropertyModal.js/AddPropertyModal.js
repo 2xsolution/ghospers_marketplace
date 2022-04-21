@@ -51,7 +51,7 @@ function AddPropertyModal({
             property.values.map((x) => {
               var data = {};
               data.label = x;
-              data.value = x.toLowerCase();
+              data.value = x?.toLowerCase();
               return data;
             });
           property.values = innerArray;
